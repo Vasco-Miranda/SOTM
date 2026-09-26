@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://brp75e366bbif"
+path="res://.godot/imported/emilie.dialogue-37f7b23d53d2431fcb7d3ffd8ba603a6.tres"
+
+[deps]
+
+source_file="res://dialogue/emilie.dialogue"
+dest_files=["res://.godot/imported/emilie.dialogue-37f7b23d53d2431fcb7d3ffd8ba603a6.tres"]
+
+[params]
+
+defaults=true

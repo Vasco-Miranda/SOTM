@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxohvyj15hr0l"]
+
+[ext_resource type="Script" uid="uid://dlk6atumusrgq" path="res://scripts/inventory/inventory_ui_item_stack.gd" id="1_3ldq0"]
+
+[node name="Panel" type="Panel"]
+script = ExtResource("1_3ldq0")
+
+[node name="Item_Display" type="Sprite2D" parent="."]

@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://kwqxkdk0hy56"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_tspnf"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_jvsxl"]
+[ext_resource type="Texture2D" uid="uid://c7spk6841bfjl" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/east/frame_000.png" id="2_kbmod"]
+[ext_resource type="Texture2D" uid="uid://bssmxvm2mqux3" path="res://assets/NPCs/Emilie_Vale/Emilie_Vale-portrait1.png" id="3_q3xgu"]
+[ext_resource type="Texture2D" uid="uid://bxfsas3idilai" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/east/frame_001.png" id="3_tgyoh"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="4_qetsl"]
+[ext_resource type="Texture2D" uid="uid://cgopp07ywxhyl" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/east/frame_002.png" id="4_rbw18"]
+[ext_resource type="Resource" uid="uid://brp75e366bbif" path="res://dialogue/emilie.dialogue" id="5_dq1qr"]
+[ext_resource type="Texture2D" uid="uid://mb26xjlg31k3" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/east/frame_003.png" id="5_w32oq"]
+[ext_resource type="Texture2D" uid="uid://dikl1x65o016v" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/north/frame_000.png" id="6_jvsxl"]
+[ext_resource type="Texture2D" uid="uid://bi6bignhyvkks" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/north/frame_001.png" id="7_q3xgu"]
+[ext_resource type="Texture2D" uid="uid://bvysgj3vn0nut" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/north/frame_002.png" id="8_qetsl"]
+[ext_resource type="Texture2D" uid="uid://c1bwjl3ei4ntg" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/north/frame_003.png" id="9_dq1qr"]
+[ext_resource type="Texture2D" uid="uid://c3aucw475dvr5" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/south/frame_000.png" id="10_puarp"]
+[ext_resource type="Texture2D" uid="uid://ctn64ifmbj86o" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/south/frame_001.png" id="11_d1h28"]
+[ext_resource type="Texture2D" uid="uid://crn6m2be0tqu8" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/south/frame_002.png" id="12_ygvdu"]
+[ext_resource type="Texture2D" uid="uid://d1rp32nqu34rb" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/south/frame_003.png" id="13_c6rj2"]
+[ext_resource type="Texture2D" uid="uid://cg3r81460u6xv" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/west/frame_000.png" id="14_cbum7"]
+[ext_resource type="Texture2D" uid="uid://bsa1v2pl868lo" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/west/frame_001.png" id="15_s4v2g"]
+[ext_resource type="Texture2D" uid="uid://cle7hxc1dl5e6" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/west/frame_002.png" id="16_s7ocp"]
+[ext_resource type="Texture2D" uid="uid://1aegdi2l6860" path="res://assets/NPCs/Emilie_Vale/animations/breathing-idle/west/frame_003.png" id="17_1suhu"]
+
+[sub_resource type="Resource" id="Resource_puarp"]
+script = ExtResource("2_jvsxl")
+age = 53
+nationality = "British"
+blood_type = 3
+description = "Victim's wife, hides a sadness and melancholy behind a fake smile. The couple didn't appear publicly for months."
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_d1h28"]
+script = ExtResource("4_qetsl")
+name = "Emilie Vale"
+char_info = SubResource("Resource_puarp")
+portrait = ExtResource("3_q3xgu")
+dialogue = ExtResource("5_dq1qr")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5s31d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kbmod")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tgyoh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_rbw18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_w32oq")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_jvsxl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q3xgu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_qetsl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_dq1qr")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_puarp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_d1h28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ygvdu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_c6rj2")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_cbum7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_s4v2g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_s7ocp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_1suhu")
+}],
+"loop": true,
+"name": &"idle_weast",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kbmod"]
+size = Vector2(10, 12)
+
+[node name="Emilie" unique_id=2130193388 instance=ExtResource("1_tspnf")]
+char = SubResource("Resource_d1h28")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_5s31d")
+animation = &"idle_south"
+autoplay = "idle_south"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_kbmod")

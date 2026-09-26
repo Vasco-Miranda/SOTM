@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://dtg7dmc7avjmm"]
+
+[ext_resource type="PackedScene" uid="uid://v4bkqjs1wwru" path="res://minigames/sequence_minigame/base_sequence_minigame.tscn" id="1_sedta"]
+[ext_resource type="Texture2D" uid="uid://ctlrgctums5a6" path="res://assets/minigames/solutions/solution_green.png" id="2_1qw30"]
+[ext_resource type="Texture2D" uid="uid://hnt8nap4olwj" path="res://assets/minigames/solutions/solution_purple.png" id="3_87p2e"]
+[ext_resource type="Texture2D" uid="uid://d3rvp63bbs2bm" path="res://assets/minigames/solutions/solution_yellow.png" id="4_v3sfx"]
+[ext_resource type="Texture2D" uid="uid://c44gp08tvwtv0" path="res://assets/minigames/solutions/solution_blue.png" id="5_hrlda"]
+[ext_resource type="Texture2D" uid="uid://dbskv23gsw7k3" path="res://assets/minigames/solutions/solution_red.png" id="6_avcmc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mfxdn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d0coy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xkwy"]
+
+[node name="Sequence" unique_id=1955577464 instance=ExtResource("1_sedta")]
+
+[node name="GreenButton" parent="NinePatchRect/VBoxContainer/OptionsContainer" index="0"]
+custom_minimum_size = Vector2(100, 100)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mfxdn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d0coy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3xkwy")
+text = ""
+icon = ExtResource("2_1qw30")
+expand_icon = true
+
+[node name="PurpleButton" parent="NinePatchRect/VBoxContainer/OptionsContainer" index="1"]
+custom_minimum_size = Vector2(100, 100)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mfxdn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d0coy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3xkwy")
+text = ""
+icon = ExtResource("3_87p2e")
+expand_icon = true
+
+[node name="YellowButton" parent="NinePatchRect/VBoxContainer/OptionsContainer" index="2"]
+custom_minimum_size = Vector2(100, 100)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mfxdn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d0coy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3xkwy")
+text = ""
+icon = ExtResource("4_v3sfx")
+expand_icon = true
+
+[node name="BlueButton" parent="NinePatchRect/VBoxContainer/OptionsContainer" index="3"]
+custom_minimum_size = Vector2(100, 100)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mfxdn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d0coy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3xkwy")
+text = ""
+icon = ExtResource("5_hrlda")
+expand_icon = true
+
+[node name="RedButton" parent="NinePatchRect/VBoxContainer/OptionsContainer" index="4"]
+custom_minimum_size = Vector2(100, 100)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mfxdn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d0coy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3xkwy")
+text = ""
+icon = ExtResource("6_avcmc")
+expand_icon = true

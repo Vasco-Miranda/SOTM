@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://31rtikqvusy0"]
+
+[ext_resource type="PackedScene" uid="uid://c3222yxfognu0" path="res://minigames/match_minigame/base_match_minigame.tscn" id="1_j2324"]
+[ext_resource type="Texture2D" uid="uid://cyp27k5tddncf" path="res://assets/minigames/words/anti-depressants.png" id="2_c5ed6"]
+
+[node name="Match" instance=ExtResource("1_j2324")]
+correct_word = "anti-depressants"
+wrong_word_1 = "anti-septics"
+wrong_word_2 = "anti-histamines"
+wrong_word_3 = "anti-coagulants"
+
+[node name="HiddenTexture" parent="NinePatchRect/VBoxContainer/Header" index="1"]
+texture = ExtResource("2_c5ed6")

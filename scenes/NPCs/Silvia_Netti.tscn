@@ -1,0 +1,127 @@
+[gd_scene load_steps=26 format=3 uid="uid://b52t5nrimlk7r"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_s2amo"]
+[ext_resource type="Texture2D" uid="uid://daknfyspw7agm" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/east/frame_000.png" id="2_4wjrn"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_wmxp0"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="3_nodtr"]
+[ext_resource type="Texture2D" uid="uid://k2uf7rl5sxl2" path="res://assets/NPCs/Silvia_Netti/silvia_netti-portrait2.png" id="3_thrlt"]
+[ext_resource type="Texture2D" uid="uid://cw1bwf4d0ktg1" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/east/frame_001.png" id="3_vkqag"]
+[ext_resource type="Texture2D" uid="uid://wtjitll6xaep" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/east/frame_002.png" id="4_do0h2"]
+[ext_resource type="Texture2D" uid="uid://c5evj8a5ibrtj" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/east/frame_003.png" id="5_170si"]
+[ext_resource type="Resource" uid="uid://dsmfhi2gpwrjj" path="res://dialogue/silvia.dialogue" id="5_thrlt"]
+[ext_resource type="Texture2D" uid="uid://doag2k2s2rdad" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/north/frame_000.png" id="6_hgdw2"]
+[ext_resource type="Texture2D" uid="uid://du4we4ls5cen6" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/north/frame_001.png" id="7_wmxp0"]
+[ext_resource type="Texture2D" uid="uid://8ig0n6edywag" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/north/frame_002.png" id="8_nodtr"]
+[ext_resource type="Texture2D" uid="uid://coqc5so2udjwv" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/north/frame_003.png" id="9_thrlt"]
+[ext_resource type="Texture2D" uid="uid://rxywdx2febwx" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/south/frame_000.png" id="10_13qg4"]
+[ext_resource type="Texture2D" uid="uid://w0fq8chrs08t" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/south/frame_001.png" id="11_ar4wg"]
+[ext_resource type="Texture2D" uid="uid://l38a0hx0ruxm" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/south/frame_002.png" id="12_47kuw"]
+[ext_resource type="Texture2D" uid="uid://bwnyxrokyppb" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/south/frame_003.png" id="13_8vld3"]
+[ext_resource type="Texture2D" uid="uid://blutut28vibr8" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/west/frame_000.png" id="14_170si"]
+[ext_resource type="Texture2D" uid="uid://bnweyjcdakcxm" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/west/frame_001.png" id="15_hgdw2"]
+[ext_resource type="Texture2D" uid="uid://cwbjuusmq8ly" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/west/frame_002.png" id="16_wmxp0"]
+[ext_resource type="Texture2D" uid="uid://bayst863aglmi" path="res://assets/NPCs/Silvia_Netti/animations/breathing-idle/west/frame_003.png" id="17_nodtr"]
+
+[sub_resource type="Resource" id="Resource_thrlt"]
+script = ExtResource("2_wmxp0")
+age = 29
+nationality = "Italian"
+blood_type = 3
+description = "The victim's niece, calm, reserved and methodical. Grew up rich, was the heiress to the victim's empire. "
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_13qg4"]
+script = ExtResource("3_nodtr")
+name = "Silvia Netti"
+char_info = SubResource("Resource_thrlt")
+portrait = ExtResource("3_thrlt")
+dialogue = ExtResource("5_thrlt")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_chgtm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4wjrn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vkqag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_do0h2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_170si")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_hgdw2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wmxp0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_nodtr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_thrlt")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_13qg4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ar4wg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_47kuw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8vld3")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_170si")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_hgdw2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_wmxp0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_nodtr")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nodtr"]
+size = Vector2(8, 11)
+
+[node name="Silvia" instance=ExtResource("1_s2amo")]
+char_name = "Silvia Netti"
+char = SubResource("Resource_13qg4")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_chgtm")
+animation = &"idle_south"
+autoplay = "idle_south"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_nodtr")

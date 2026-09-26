@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://bnw4jd00y1070"]
+
+[ext_resource type="Script" uid="uid://c5j745w3hg31u" path="res://scripts/inventory/inventory_ui.gd" id="1_8ojme"]
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="2_mme0t"]
+[ext_resource type="PackedScene" uid="uid://dg7glmlly8pjj" path="res://scenes/ui/inventory/inventory_ui_slot.tscn" id="3_iy21j"]
+[ext_resource type="PackedScene" uid="uid://dgppl3c6moirb" path="res://scenes/ui/inventory/inventory_ui_info_panel.tscn" id="4_mme0t"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="5_iy21j"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="6_vpiwh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vpiwh"]
+font = ExtResource("5_iy21j")
+font_size = 38
+
+[sub_resource type="LabelSettings" id="LabelSettings_iy21j"]
+font = ExtResource("5_iy21j")
+font_size = 38
+
+[sub_resource type="LabelSettings" id="LabelSettings_ktvow"]
+font = ExtResource("5_iy21j")
+font_size = 19
+
+[node name="Inventory_UI" type="Control" unique_id=553814562]
+custom_minimum_size = Vector2(112, 88)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 112.0
+offset_bottom = 178.72145
+scale = Vector2(1.0407257, 1.0407257)
+script = ExtResource("1_8ojme")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1733515991]
+layout_mode = 0
+offset_right = 112.50001
+offset_bottom = 230.60834
+scale = Vector2(0.83843476, 0.79999995)
+texture = ExtResource("2_mme0t")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="GridContainer" type="GridContainer" parent="NinePatchRect" unique_id=199500091]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.789745
+offset_top = -89.1033
+offset_right = -8.616001
+offset_bottom = -13.10331
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.37, 2.37)
+columns = 2
+
+[node name="slot1" parent="NinePatchRect/GridContainer" unique_id=1172628400 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot2" parent="NinePatchRect/GridContainer" unique_id=219131315 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot3" parent="NinePatchRect/GridContainer" unique_id=1779809939 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot4" parent="NinePatchRect/GridContainer" unique_id=955493559 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot5" parent="NinePatchRect/GridContainer" unique_id=167783007 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot6" parent="NinePatchRect/GridContainer" unique_id=750555987 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot7" parent="NinePatchRect/GridContainer" unique_id=1555893960 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="slot8" parent="NinePatchRect/GridContainer" unique_id=1840826804 instance=ExtResource("3_iy21j")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NinePatchRect" unique_id=1327434765]
+layout_mode = 0
+offset_left = 5.963493
+offset_right = 133.83035
+offset_bottom = 42.0
+scale = Vector2(0.76000017, 0.76000017)
+text = "Clues"
+label_settings = SubResource("LabelSettings_vpiwh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InfoPanel" parent="NinePatchRect" unique_id=791606817 instance=ExtResource("4_mme0t")]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 5.7301307
+offset_top = 205.38554
+offset_right = 98.558235
+offset_bottom = 220.38554
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=913652102]
+layout_mode = 0
+offset_left = 137.4041
+offset_top = -0.9608679
+offset_right = 248.62628
+offset_bottom = 230.84851
+scale = Vector2(0.838, 0.8)
+texture = ExtResource("2_mme0t")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Label" type="Label" parent="NinePatchRect2" unique_id=1517111785]
+layout_mode = 0
+offset_left = 5.733078
+offset_top = 3.6032534
+offset_right = 137.73308
+offset_bottom = 45.603252
+scale = Vector2(0.75311935, 0.598991)
+text = "Item Details"
+label_settings = SubResource("LabelSettings_iy21j")
+horizontal_alignment = 1
+
+[node name="Display" type="Control" parent="NinePatchRect2" unique_id=1780286097]
+anchors_preset = 0
+offset_left = 24.079054
+offset_top = 28.82604
+offset_right = 88.289795
+offset_bottom = 92.48354
+
+[node name="Background" type="Sprite2D" parent="NinePatchRect2/Display" unique_id=2133100192]
+position = Vector2(32.105366, 31.228209)
+scale = Vector2(3.9398613, 3.9398613)
+texture = ExtResource("6_vpiwh")
+
+[node name="Container" type="CenterContainer" parent="NinePatchRect2/Display" unique_id=1120145400]
+layout_mode = 0
+offset_right = 64.21074
+offset_bottom = 62.456413
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect2/Display/Container" unique_id=1750228415]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Details" type="VBoxContainer" parent="NinePatchRect2" unique_id=1076057660]
+layout_mode = 0
+offset_top = 93.68462
+offset_right = 108.928955
+offset_bottom = 224.60287
+
+[node name="InfoPanel_name" parent="NinePatchRect2/Details" unique_id=937150264 instance=ExtResource("4_mme0t")]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="InfoPanel_description" parent="NinePatchRect2/Details" unique_id=518218024 instance=ExtResource("4_mme0t")]
+custom_minimum_size = Vector2(0, 85)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InspectButton" type="Button" parent="NinePatchRect2/Details" unique_id=494114676]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 10
+flat = true
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect2/Details/InspectButton" unique_id=561808021]
+layout_mode = 0
+offset_left = 21.785803
+offset_top = 5.0976496
+offset_right = 89.30126
+offset_bottom = 26.772438
+texture = ExtResource("6_vpiwh")
+
+[node name="Label" type="Label" parent="NinePatchRect2/Details/InspectButton" unique_id=1110373066]
+layout_mode = 0
+offset_left = 27.518908
+offset_top = 5.097646
+offset_right = 84.518906
+offset_bottom = 33.92368
+text = "Inspect"
+label_settings = SubResource("LabelSettings_ktvow")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="NinePatchRect2/Details/InspectButton" to="." method="_on_button_pressed"]

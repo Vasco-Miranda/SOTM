@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://c3spdog14hk3m"
+path="res://.godot/imported/richie.dialogue-83bba5e63e038d6bff64dcb0743dcd0f.tres"
+
+[deps]
+
+source_file="res://dialogue/richie.dialogue"
+dest_files=["res://.godot/imported/richie.dialogue-83bba5e63e038d6bff64dcb0743dcd0f.tres"]
+
+[params]
+
+defaults=true

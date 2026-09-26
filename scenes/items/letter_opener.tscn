@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://7tqgoq4o0byg"]
+
+[ext_resource type="PackedScene" uid="uid://crxbeic5uasw2" path="res://scenes/items/collectable.tscn" id="1_isqbb"]
+[ext_resource type="Resource" uid="uid://can8ia8icbl3f" path="res://inventory/items/letter_opener.tres" id="2_isqbb"]
+[ext_resource type="Texture2D" uid="uid://dsjyp5j672hkc" path="res://assets/items/letter_opener.png" id="3_rfwvh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wahao"]
+resource_local_to_scene = true
+radius = 18.0
+
+[node name="Collectable" instance=ExtResource("1_isqbb")]
+itemRes = ExtResource("2_isqbb")
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_wahao")
+
+[node name="Sprite2D" parent="." index="1"]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_rfwvh")

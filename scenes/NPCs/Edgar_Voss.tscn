@@ -1,0 +1,126 @@
+[gd_scene load_steps=26 format=3 uid="uid://c7hwqayjenekw"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_ue2o5"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_2jccw"]
+[ext_resource type="Texture2D" uid="uid://dua045sv281he" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/east/frame_000.png" id="2_e6wtn"]
+[ext_resource type="Texture2D" uid="uid://bgkrddeaa5o0x" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/east/frame_001.png" id="3_eiluu"]
+[ext_resource type="Texture2D" uid="uid://coamohgdaqpio" path="res://assets/NPCs/Edgar_Voss/Edgar_Voss-portrait.png" id="3_sv0y8"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="4_4wb7a"]
+[ext_resource type="Texture2D" uid="uid://cawo15dynqjci" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/east/frame_002.png" id="4_a1x06"]
+[ext_resource type="Texture2D" uid="uid://b5ajagi0ctvk1" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/east/frame_003.png" id="5_2jccw"]
+[ext_resource type="Resource" uid="uid://db48cg4sktcwv" path="res://dialogue/edgar.dialogue" id="5_m2uqg"]
+[ext_resource type="Texture2D" uid="uid://32pcfhe3vavr" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/north/frame_000.png" id="6_sv0y8"]
+[ext_resource type="Texture2D" uid="uid://bub5jb54t6giy" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/north/frame_001.png" id="7_4wb7a"]
+[ext_resource type="Texture2D" uid="uid://c33gg7ktd8svn" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/north/frame_002.png" id="8_m2uqg"]
+[ext_resource type="Texture2D" uid="uid://dv8kohwvcp0w3" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/north/frame_003.png" id="9_ig435"]
+[ext_resource type="Texture2D" uid="uid://tld7kedpwow0" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/south/frame_000.png" id="10_qnr42"]
+[ext_resource type="Texture2D" uid="uid://coxs6n2n0deiq" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/south/frame_001.png" id="11_knn82"]
+[ext_resource type="Texture2D" uid="uid://bseckjvglq8b3" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/south/frame_002.png" id="12_n0mtk"]
+[ext_resource type="Texture2D" uid="uid://btyohfj6rncph" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/south/frame_003.png" id="13_8pajb"]
+[ext_resource type="Texture2D" uid="uid://orvpi4al4flk" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/west/frame_000.png" id="14_6hyd7"]
+[ext_resource type="Texture2D" uid="uid://6631qkxeme3p" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/west/frame_001.png" id="15_nei0i"]
+[ext_resource type="Texture2D" uid="uid://xwi2otulb58e" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/west/frame_002.png" id="16_it1dg"]
+[ext_resource type="Texture2D" uid="uid://kfw203oykol2" path="res://assets/NPCs/Edgar_Voss/animations/Breathing_Idle-14b93b24/west/frame_003.png" id="17_yele3"]
+
+[sub_resource type="Resource" id="Resource_ig435"]
+script = ExtResource("2_2jccw")
+age = 58
+nationality = "German"
+blood_type = 2
+description = "Mansion's butler, worked here for decades. Calm and observant."
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_qnr42"]
+script = ExtResource("4_4wb7a")
+name = "Edgar Voss"
+char_info = SubResource("Resource_ig435")
+portrait = ExtResource("3_sv0y8")
+dialogue = ExtResource("5_m2uqg")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f3b0c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_e6wtn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_eiluu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_a1x06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2jccw")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_sv0y8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4wb7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_m2uqg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ig435")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_qnr42")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_knn82")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_n0mtk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8pajb")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_6hyd7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_nei0i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_it1dg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_yele3")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vi8la"]
+size = Vector2(12, 10)
+
+[node name="Edgar" instance=ExtResource("1_ue2o5")]
+char = SubResource("Resource_qnr42")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_f3b0c")
+animation = &"idle_south"
+autoplay = "idle_south"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_vi8la")

@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://bknl06fvl2obl"]
+
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="1_iobld"]
+[ext_resource type="Script" uid="uid://dfbsaly2lmyqs" path="res://minigames/search_minigame/base_search_minigame.gd" id="1_k7nmx"]
+[ext_resource type="PackedScene" uid="uid://bvi8p7nmulkhw" path="res://minigames/search_minigame/search_cell.tscn" id="2_k7nmx"]
+[ext_resource type="Texture2D" uid="uid://byxa873mfsn2i" path="res://assets/minigames/arrows/up_arrow.png" id="3_jgx70"]
+[ext_resource type="Texture2D" uid="uid://c5qqoylvmaeue" path="res://assets/minigames/arrows/down_arrow.png" id="4_da86c"]
+[ext_resource type="Texture2D" uid="uid://kr5q734f0bh0" path="res://assets/minigames/arrows/left_arrow.png" id="5_gxoqf"]
+[ext_resource type="Texture2D" uid="uid://dc5g8gcp8kms6" path="res://assets/minigames/arrows/right_arrow.png" id="6_vsfit"]
+
+[node name="Search" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k7nmx")
+cell_scene = ExtResource("2_k7nmx")
+arrow_up = ExtResource("3_jgx70")
+arrow_down = ExtResource("4_da86c")
+arrow_left = ExtResource("5_gxoqf")
+arrow_right = ExtResource("6_vsfit")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_iobld")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="GridContainer" type="GridContainer" parent="NinePatchRect/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 12
+columns = 10

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cg5rl44wwy66f"]
+
+[ext_resource type="PackedScene" uid="uid://crxbeic5uasw2" path="res://scenes/items/collectable.tscn" id="1_1c3dl"]
+[ext_resource type="Texture2D" uid="uid://duvdcfw28wamf" path="res://assets/items/bloody-knife.png" id="2_ad0st"]
+[ext_resource type="Resource" uid="uid://5kvriv7p8gil" path="res://inventory/items/bloody_knife.tres" id="2_mwaim"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ad0st"]
+resource_local_to_scene = true
+radius = 15.0
+
+[node name="Bloody_knife" unique_id=285362082 instance=ExtResource("1_1c3dl")]
+itemRes = ExtResource("2_mwaim")
+
+[node name="CollisionShape2D" parent="." index="0"]
+scale = Vector2(2.120001, 2.120001)
+shape = SubResource("CircleShape2D_ad0st")
+
+[node name="Sprite2D" parent="." index="1"]
+position = Vector2(2.3841858e-07, 2.3841858e-07)
+scale = Vector2(0.71428573, 0.71428573)
+texture = ExtResource("2_ad0st")

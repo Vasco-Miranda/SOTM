@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dg7glmlly8pjj"]
+
+[ext_resource type="Script" uid="uid://tsat6f0m4pub" path="res://scripts/inventory/inventory_ui_slot.gd" id="1_nd2am"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="2_wfpd1"]
+
+[node name="inventory_UI_slot" type="Button"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(16, 16)
+offset_right = 16.0
+offset_bottom = 16.0
+script = ExtResource("1_nd2am")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("2_wfpd1")
+centered = false
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

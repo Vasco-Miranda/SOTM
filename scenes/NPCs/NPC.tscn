@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://i53d2k83u02q"]
+
+[ext_resource type="Script" uid="uid://ubyn33uvce8c" path="res://scripts/NPC/NPC.gd" id="1_fe8o6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fe8o6"]
+radius = 27.5
+
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["NPC"]]
+script = ExtResource("1_fe8o6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_fe8o6")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_body_exited"]

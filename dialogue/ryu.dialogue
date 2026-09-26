@@ -1,0 +1,522 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Ryu: Ah. You have stopped asking and started casting.
+	Ryu: I have no intention of standing here just to give your little story a convenient ending.
+	=> END
+else
+	if Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 2
+		Ryu: Back to my corner of the ballroom so soon?
+		Ryu: I'd feel quite flattered by the attention if it weren't such a morbid habit of yours.
+	elif Utils.ctx["is_self_incriminating"]
+		Ryu: Watch your step, Mr. Hilde.
+		Ryu: You keep speaking about this murder as if it's a room you've already walked through before.
+	elif Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Ryu: You march over here with a crown in one hand and a noose in the other.
+		Ryu: It's certainly an efficient accusation, but terribly lacking in subtlety.
+	elif Utils.ctx["is_stressed"]
+		Ryu: Your questions are tumbling out far quicker than your breath, detective.
+		Ryu: Slow down, or the panic in this room will start answering for you.
+	elif Utils.ctx["is_confused"]
+		Ryu: You're holding far too many loose threads at once.
+		Ryu: Pull on one, by all means, but try not to tear down the entire tapestry while you do it.
+	elif Utils.ctx["is_aggressive"]
+		Ryu: If your goal was to make me defensive, congratulations.
+		Ryu: But if you actually want an honest answer, I suggest you lower your volume.
+	elif Utils.ctx["evidence_focus"] >= 8
+		Ryu: Now this is more interesting.
+		Ryu: You have stopped admiring the masks and started counting the seams.
+	else
+		Ryu: Back again, detective.
+		Ryu: Or novelist. I still have not decided which one is worse.
+		
+	- Your relationship with Mr. Bellini? [if not Utils.character.has_talked("relation")] => relation
+	- You seem very calm about all this. [if not Utils.character.has_talked("calm")] => calm
+	- Tell me about your rivalry. [if Utils.character.has_talked("relation") and not Utils.character.has_talked("rivalry")] => rivalry
+	- You talk like this is theatre. [if not Utils.character.has_talked("theatre")] => theatre
+	- You keep calling me a role. Why? [if not Utils.character.has_talked("player")] => player
+	- Read the part I am playing right now. [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+
+	# Clues
+	- Ask about the knife. [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Ask about the wine glass. [if Utils.is_clue_surface_ready("wine")] => wine
+	- Ask about the residue in the wine glass. [if Utils.is_clue_hidden_ready("wine")] => wine
+	- Revisit the wine glass with what you uncovered. [if Utils.is_clue_revisit_ready("wine")] => wine
+	- Ask about the candlestick. [if Utils.is_clue_surface_ready("candlestick")] => candlestick
+	- Ask about the dents and strange wax on the candlestick. [if Utils.is_clue_hidden_ready("candlestick")] => candlestick
+	- Revisit the candlestick with what you uncovered. [if Utils.is_clue_revisit_ready("candlestick")] => candlestick
+	- Ask about the cryptic note [if Utils.is_clue_surface_ready("note")]. => note
+	- Ask about the distorted note. [if Utils.is_clue_hidden_ready("note")] => note
+	- Revisit the note with what you uncovered. [if Utils.is_clue_revisit_ready("note")] => note
+
+	# Costume-related options
+	- Are you dressed as a prince? Or something similar. [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- Ask about the victim's costume. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+
+	- I will leave you to your theatre.
+		Ryu: Do come back. The play is just beginning.
+		=> END
+
+~ meet
+do Utils.character.meet()
+Ryu: Ah, a curious face.
+Ryu: Ryu Imada. A pleasure.
+
+- You seem entertained.
+	do Utils.register_dialogue_choice("ryu_meet_entertained", "You seem entertained.", "probe", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: Entertained is too cheap a word.
+	Ryu: I am paying attention, which at parties like this is nearly the same thing.
+	do Utils.character.increase_interest()
+- You do not seem concerned.
+	do Utils.register_dialogue_choice("ryu_meet_concerned", "You do not seem concerned.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: True concern is an entirely private luxury.
+	Ryu: I've never cared for displaying my private thoughts to a room full of strangers.
+	do Utils.character.decrease_apprehension()
+- You knew the victim?
+	do Utils.register_dialogue_choice("ryu_meet_knew", "You knew the victim?", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: Years of history, fierce business rivalry, and a handful of expensive dinners neither of us actually enjoyed.
+	do Utils.character.increase_apprehension()
+Ryu: Tell me, do you enjoy mysteries, or only the pose of solving them?
+- I prefer answers.
+	do Utils.register_dialogue_choice("ryu_meet_answers", "I prefer answers.", "pressure", -0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: How devastatingly practical of you. And how terribly dull.
+	do Utils.character.decrease_trust()
+- Depends on the ending.
+	do Utils.register_dialogue_choice("ryu_meet_ending", "Depends on the ending.", "probe,flirt", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: Good. A man who fears the last page is at least awake.
+
+Ryu: You are not wandering. You are testing angles.
+Ryu: Ask, then. I enjoy a competent intrusion.
+- Your relationship with Mr. Bellini? => relation
+- You seem very calm about all this. => calm
+- I will leave you to your theatre.
+	Ryu: Do come back. The play is just beginning.
+	=> END
+
+
+~ relation
+do Utils.character.talked("relation")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_supportive"]
+	Ryu: We competed.
+	Ryu: He called it vision when he took ground from other men.
+	- Sounds dangerous.
+		do Utils.register_dialogue_choice("ryu_relation_dangerous", "Sounds dangerous.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+		Ryu: Only dangerous for the man who ends up losing the game.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Ryu: He was starting to lose his grip on the market.
+	Ryu: It's fascinating how moral men suddenly become when their influence begins to slip.
+	- Sounds dangerous.
+		do Utils.register_dialogue_choice("ryu_relation_dangerous", "Sounds dangerous.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+		Ryu: Only to those who lose.
+		do Utils.character.increase_apprehension()
+else
+	Ryu: Competition makes men inventive.
+	Ryu: Resentment merely decides where the invention points.
+	- Which was it?
+		do Utils.register_dialogue_choice("ryu_relation_which", "Which was it?", "evidence", 0.1, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+		Ryu: Why separate the two? They make a marvelous pair.
+		do Utils.character.increase_interest()
+	- Sounds dangerous.
+		do Utils.register_dialogue_choice("ryu_relation_dangerous", "Sounds dangerous.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+		Ryu: Only dangerous for the man who ends up losing the game.
+		do Utils.character.increase_apprehension()
+=> END
+
+
+~ calm
+do Utils.character.talked("calm")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Ryu: Calmness keeps the hands from doing something foolish.
+	Ryu: I recommend it to anyone near sharp objects.
+elif Utils.character.get_apprehension() >= 5
+	Ryu: Panic is noisy.
+	Ryu: Noisy people reveal where they keep their fear.
+else
+	Ryu: Panic is common.
+	Ryu: I have expensive taste.
+	- That is a strange preference.
+		do Utils.register_dialogue_choice("ryu_calm_preference", "That is a strange preference.", "pressure", -0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+		Ryu: It keeps life stimulating.
+		do Utils.character.decrease_trust()
+	- It keeps you distant.
+		do Utils.register_dialogue_choice("ryu_calm_distant", "It keeps you distant.", "probe,reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.1)
+		Ryu: Distance improves perspective.
+=> END
+
+
+~ rivalry
+do Utils.character.talked("rivalry")
+if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+	Ryu: Ah. You have found the pulse of it.
+	Ryu: Business rivalry is a beautiful thing to watch, right up until it starts breaking bones.
+elif Utils.character.get_trust() >= 5
+	Ryu: He was absolutely terrified of becoming irrelevant.
+	Ryu: In the end, that fear did far more damage than his actual ambition ever could.
+	- And you?
+		do Utils.register_dialogue_choice("ryu_rivalry_you", "And you?", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+		Ryu: I chose to embrace it. It's the only way to survive a man like him.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Ryu: You desperately want our rivalry to fit into a tidy little box labeled 'motive.'
+	Ryu: How remarkably uninspired of you.
+	do Utils.character.decrease_trust()
+else
+	Ryu: We played on the exact same board, Mr. Hilde. But don't confuse that with playing by the same rules.
+=> END
+
+
+~ theatre
+do Utils.character.talked("theatre")
+Ryu: Just take a look around us.
+Ryu: The silk masks, the fragile inheritances, the bleeding egos... 'Theatre' isn't a metaphor here, it's the only honest word for it.
+- And murder?
+	do Utils.register_dialogue_choice("ryu_theatre_murder", "And murder?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: The grand final entrance that absolutely everyone was waiting for, even if they won't admit it.
+- That sounds practiced.
+	do Utils.register_dialogue_choice("ryu_theatre_practiced", "That sounds practiced.", "pressure,deflect", -0.1, 0.1, "", 0.0, 0.0, 0.1, 0.1)
+	Ryu: It sounds practiced because human behavior is endlessly repetitive. The scripts rarely change.
+=> END
+
+
+~ player
+do Utils.character.talked("player")
+if Utils.ctx["is_suspicious"]
+	Ryu: Because you keep checking your own expression in the mirror after every single question you ask.
+elif Utils.ctx["is_stressed"]
+	Ryu: Because you are physically present, but mentally elsewhere.
+	Ryu: Half of you is interrogating me, and the other half is taking notes on your own anxiety.
+else
+	Ryu: Because you listen to people the way an editor reviews a messy paragraph.
+	Ryu: People notice these things, Mr. Hilde, even if they can't quite name them.
+- Occupational hazard.
+	do Utils.register_dialogue_choice("ryu_player_hazard", "Occupational hazard.", "self_incriminate,deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.2)
+	Ryu: Ah, see? The author peeks right through the detective's coat.
+- That makes me sound guilty.
+	do Utils.register_dialogue_choice("ryu_player_guilty", "That makes me sound guilty.", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Ryu: Not at all. It simply means you are highly self-aware, which is often far more dangerous.
+- And if I understand the killer too well?
+	do Utils.register_dialogue_choice("ryu_player_understand", "And if I understand the killer too well?", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Ryu: Then I would have to ask whether you came to this mansion to solve a murder, or simply to conduct research.
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+Ryu: There it is. The very first unscripted reaction you've shown me all night.
+Ryu: You are trying to keep pace with a room that keeps changing scenes.
+- And how does that part end?
+	do Utils.register_dialogue_choice("ryu_stress_end", "And how does that part end?", "probe,self_incriminate", 0.1, 0.0, "", 0.0, 0.0, 0.1, 0.1)
+	Ryu: A grand revelation, provided you take a moment to breathe. Otherwise? Total collapse.
+- Then what would you change?
+	do Utils.register_dialogue_choice("ryu_stress_change", "Then what would you change?", "reassure", 0.2, 0.0, "", 0.0, -0.2, -0.1, 0.0)
+	Ryu: Drastically fewer sweeping conclusions, and far more small, uncomfortable facts.
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Ryu: A positive blood type match, and yet absolute ambiguity remains.
+		Ryu: A magnificent piece of evidence that utterly refuses to clear up the plot.
+	else
+		Ryu: The updated detail preserves the mystery beautifully.
+		Ryu: It's excellent staging.
+	- So the knife was written to distract.
+		do Utils.register_dialogue_choice("ryu_knife_revisit_distract", "So the knife was written to distract.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Ryu: 'Written' to distract... I like that phrasing. You're using the correct verbs now.
+	- And the uncertainty is part of the design.
+		do Utils.register_dialogue_choice("ryu_knife_revisit_design", "And the uncertainty is part of the design.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Precisely. A bit of engineered chaos keeps everyone guessing.
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.ctx["is_pressured"]
+		Ryu: Such an unpleasant object.
+		Ryu: But lacks substantial evidence.
+	else
+		Ryu: Inconclusive, even now.
+		Ryu: Deliciously evasive.
+	- Evasive by intent.
+		do Utils.register_dialogue_choice("ryu_knife_hidden_intent", "Evasive by intent.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Ryu: My instinct exactly. Misdirection is the cornerstone of any good performance, detective.
+	- Evasive by incompetence.
+		do Utils.register_dialogue_choice("ryu_knife_hidden_incompetence", "Evasive by incompetence.", "pressure,evidence", -0.1, 0.2, "knife", 0.7, 0.0, 0.0, 0.0)
+		Ryu: A far less stylish explanation, but certainly possible.
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Ryu: Ah, symbolism.
+		Ryu: Direct, sharp, and intensely dramatic.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() >= 5
+		yu: It's far too obvious.
+		Ryu: Which, of course, makes it highly useful as a distraction.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Ryu: A crude instrument.
+		Ryu: Not my preferred method.
+		- Preferred?
+			do Utils.register_dialogue_choice("ryu_knife_preferred", "Preferred?", "pressure,accusation", -0.1, 0.3, "knife", 0.7, 0.0, 0.0, 0.0)
+			Ryu: In theory, Mr. Hilde.
+			Ryu: Do keep up.
+			do Utils.character.decrease_trust()
+	else
+		Ryu: A prop, perhaps.
+	- So you agree it performs something.
+		do Utils.register_dialogue_choice("ryu_knife_performs", "So you agree it performs something.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Of course. Everyone and everything is constantly performing.
+		Ryu: Oh, and I do love a good part.
+=> END
+
+
+~ wine
+if Utils.is_clue_revisit_ready("wine")
+	do Utils.mark_clue_topic("wine", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Ryu: Chemical residue at the bottom of a vintage glass.
+		Ryu: Hospitality transformed into precise chemistry. I love the drama of it.
+	else
+		Ryu: So the glass was actively working to hide something after all.
+	- Concealment through refinement.
+		do Utils.register_dialogue_choice("ryu_wine_revisit_refinement", "Concealment through refinement.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Beautifully phrased, detective.
+	- Concealment through trust.
+		do Utils.register_dialogue_choice("ryu_wine_revisit_trust", "Concealment through trust.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Indeed. To introduce a poison, one must first establish perfect trust.
+		Ryu: Assuming it's poison, of course.
+elif Utils.is_clue_hidden_ready("wine")
+	do Utils.mark_clue_topic("wine", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Ryu: A bitter sediment hidden beneath a rich bouquet.
+		Ryu: A remarkably intimate way to do someone in, wouldn't you say?
+	else
+		Ryu: Wine plus something else.
+		Ryu: A duet, not a solo.
+	- So the killer relied on elegance.
+		do Utils.register_dialogue_choice("ryu_wine_hidden_elegance", "So the killer relied on elegance.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Ryu: On elegance and proximity.
+	- So the killer relied on ritual.
+		do Utils.register_dialogue_choice("ryu_wine_hidden_ritual", "So the killer relied on ritual.", "evidence", 0.0, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Had to. Hard to trust luck on a murder attempt.
+else
+	do Utils.character.talked("wine")
+	do Utils.mark_clue_topic("wine", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Ryu: Take a very careful sniff of it.
+		Ryu: Wine has a delightful way of masking an unpleasant truth, if only for a few swallows.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_trust() >= 5
+		Ryu: Poison is subtle.
+		Ryu: It lacks spectacle.
+		yu: One only poisons a vintage they know the target will swallow without a single thought.
+	elif Utils.character.get_apprehension() >= 5
+		Ryu: Invisible threats are the most effective.
+	else
+		Ryu: A remarkably civilized method.
+	- You make poisoning sound elegant.
+		do Utils.register_dialogue_choice("ryu_wine_elegant", "You make poisoning sound elegant.", "pressure,evidence", -0.1, 0.2, "wine", 0.7, 0.0, 0.0, 0.0)
+		Ryu: Only when compared to the vulgar mess of a frantic panic.
+	- Could it be personal?
+		do Utils.register_dialogue_choice("ryu_wine_personal", "Could it be personal?", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Intimacy and murder are old companions.
+=> END
+
+
+~ candlestick
+if Utils.is_clue_revisit_ready("candlestick")
+	do Utils.mark_clue_topic("candlestick", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Ryu: Deep dents, displaced wax, an object that clearly traveled across the room.
+		Ryu: Suddenly, the crime has real choreography.
+	else
+		Ryu: So it moved between rooms before the final act.
+		Ryu: Now that makes things significantly more interesting.
+	- Which means it was curated.
+		do Utils.register_dialogue_choice("ryu_candle_revisit_curated", "Which means it was curated.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Curated is exactly right.
+	- You think it was carried in desperation.
+		do Utils.register_dialogue_choice("ryu_candle_revisit_desperation", "You think it was carried in desperation.", "evidence", 0.1, 0.0, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Desperation can still have style.
+elif Utils.is_clue_hidden_ready("candlestick")
+	do Utils.mark_clue_topic("candlestick", "hidden")
+	if Utils.character.get_interest() >= 5
+		Ryu: Faint dents near the base.
+		Ryu: There lies the actual, unvarnished truth of the moment.
+	else
+		Ryu: Mismatched wax and concealed damage.
+		Ryu: The object clearly remembers being a part of a very different scene.
+	- So it was never just decor.
+		do Utils.register_dialogue_choice("ryu_candle_hidden_decor", "So it was never just decor.", "evidence", 0.1, 0.0, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Of course not. It was far too convenient to ignore.
+	- It was cast in a second role.
+		do Utils.register_dialogue_choice("ryu_candle_hidden_role", "It was cast in a second role.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Splendidly put. Cast on short notice, but it played its part perfectly.
+else
+	do Utils.character.talked("candlestick")
+	do Utils.mark_clue_topic("candlestick", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Ryu: Ah, now that is elegant.
+		Ryu: A weapon born entirely of opportunity.
+		Ryu: That implies a sudden, beautiful spontaneity.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() >= 5
+		Ryu: An improvised bludgeon usually points to a total lack of planning.
+	elif Utils.character.get_apprehension() >= 5
+		Ryu: A weapon used out of sheer panic. It always leaves a mess behind.
+	else
+		Ryu: Practical, if uninspired.
+	- You admire the improvisation.
+		do Utils.register_dialogue_choice("ryu_candle_improv", "You admire the improvisation.", "evidence", 0.1, 0.1, "candlestick", 0.7, 0.0, -0.1, 0.0)
+		Ryu: I appreciate anyone who shows absolute commitment to the form of the moment.
+	- You relate to it.
+		do Utils.register_dialogue_choice("ryu_candle_relate", "You relate to it.", "pressure", -0.1, 0.2, "candlestick", 0.6, 0.0, 0.0, 0.0)
+		Ryu: In this world, detective, survival and performance are often the exact same thing.
+=> END
+
+
+~ note
+if Utils.is_clue_revisit_ready("note")
+	do Utils.mark_clue_topic("note", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Ryu: "Tonight", "truth", "he knows."
+		Ryu: A fragmented little script written in a brilliantly forced hand.
+		- And anonymity for the writer.
+			do Utils.register_dialogue_choice("ryu_note_revisit_writer", "And anonymity for the writer.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+			Ryu: Or perhaps for the poor soul they were trying to impersonate.
+	else
+		Ryu: So the author was actively seeking both anonymity and a heavy sense of atmosphere.
+		- Atmosphere for whom?
+			do Utils.register_dialogue_choice("ryu_note_revisit_whom", "Atmosphere for whom?", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+			Ryu: For the audience, naturally. Who else matters?
+elif Utils.is_clue_hidden_ready("note")
+	do Utils.mark_clue_topic("note", "hidden")
+	if Utils.ctx["is_suspicious"]
+		Ryu: Distorted handwriting.
+		Ryu: Someone was far more terrified of being recognized than they were of being caught.
+	else
+		Ryu: "Tonight", "truth", "he knows."
+		Ryu: Deliciously cryptic. It leaves so much room for interpretation.
+		- Incomplete on purpose.
+			do Utils.register_dialogue_choice("ryu_note_hidden_purpose", "Incomplete on purpose.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+			Ryu: Naturally. A straight answer is terribly boring.
+		- To provoke interpretation.
+			do Utils.register_dialogue_choice("ryu_note_hidden_interpretation", "To provoke interpretation.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+			Ryu: You truly do understand the mechanics of a good drama, don't you?
+else
+	do Utils.character.talked("note")
+	do Utils.mark_clue_topic("note", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Ryu: Ah, a message.
+		Ryu: It's always infinitely more intimate than a blade.
+	elif Utils.character.get_apprehension() >= 5
+		Ryu: Hurried writing often means either fear or theater.
+	else
+		Ryu: Cryptic by design, wouldn't you agree?
+	- You sound pleased by that.
+		do Utils.register_dialogue_choice("ryu_note_pleased", "You sound pleased by that.", "pressure,evidence", -0.1, 0.2, "note", 0.7, 0.0, 0.0, 0.0)
+		Ryu: I have always appreciated a dedicated commitment to form.
+	- That makes you sound suspicious.
+		do Utils.register_dialogue_choice("ryu_note_suspicious", "That makes you sound suspicious.", "accusation", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Ryu: Oh thank you, detective! I love to be cast as the lead role.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+Ryu: A king.
+Ryu: Or perhaps the illusion of one.
+- You like power?
+	do Utils.register_dialogue_choice("ryu_costume_power", "You like power?", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: Power is entirely a matter of social perception, Mr. Hilde.
+	do Utils.character.increase_interest()
+- Seems fitting.
+	do Utils.register_dialogue_choice("ryu_costume_fitting", "Seems fitting.", "flirt", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: Every single thing in this world is, provided you view it from the correct angle.
+	do Utils.character.increase_interest()
+=> END
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+if Utils.character.get_interest() >= 5 or Utils.ctx["is_favorite"]
+	Ryu: The detective.
+	Ryu: The one who thinks he understands the story.
+	Ryu: Or the author?
+	- Author?
+		do Utils.register_dialogue_choice("ryu_costume_author", "Author?", "self_incriminate", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+		Ryu: Someone shaping events.
+		Ryu: Not merely observing them.
+		do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Ryu: You are far too hyper-aware of narrative structure, Mr. Hilde.
+	Ryu: It feels entirely unnatural.
+elif Utils.character.get_apprehension() >= 5
+	Ryu: Tell me truthfully...
+	Ryu: Has a single thing that happened tonight actually managed to surprise you?
+	- What do you mean? 
+		do Utils.register_dialogue_choice("ryu_costume_what", "What do you mean?", "deflect,self-incriminate", 0.0, 0.0, "", 0.0, 0.1, 0.1, 0.1)
+		Ryu: ... Never mind.
+		Ryu: Don't even know why I bothered asking
+		do Utils.character.decrease_trust()
+	- Can't say I walked in expecting a murder.
+		do Utils.register_dialogue_choice("ryu_costume_expecting", "Can't say I walked in expecting a murder.", "deflect,reasure", 0.1, 0.0, "", 0.0, 0.0, 0.1, 0.1)
+		Ryu: None of us did.
+		Ryu: Supposedly.
+	- Honestly? Not really. This all almost seems rehearsed.
+		do Utils.register_dialogue_choice("ryu_costume_honestly", "Honestly? Not really. This all almost seems rehearsed.", "reasure,self-incriminate", 0.3, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+		Ryu: Wow, Mr. Hile.
+		Ryu: That was probably the most truthful you've been all night.
+		Ryu: And also the most correct.
+		do Utils.character.increase_trust()
+		do Utils.character.increase_apprehension()
+else
+	Ryu: You play your assumed role with remarkable dedication.
+	- Maybe way too much.
+		do Utils.register_dialogue_choice("ryu_costume_convincing", "Maybe way too much.", "self_incriminate", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+		Ryu: Ah.
+		Ryu: Then it seems we have finally found something to agree on.
+	- It is only a costume.
+		do Utils.register_dialogue_choice("ryu_costume_only", "It is only a costume.", "deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.1)
+		Ryu: Nonsense.
+		Ryu: It rarely is.
+		Ryu: A costume is never just a costume.
+=> END
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+Ryu: A magician.
+Ryu: The literal embodiment of misdirection.
+- You mean deception?
+	do Utils.register_dialogue_choice("ryu_costume_deception", "You mean deception?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Ryu: Are they not the same?
+	do Utils.character.increase_interest()
+=> END
+
+
+~ blamed
+if Utils.character.get_interest() >= 6 and Utils.character.get_trust() >= 4 and not Utils.ctx["is_suspicious"] and not Utils.ctx["is_pressured"]
+	Ryu: Ah.
+	Ryu: So that is where you wanted the crown to land.
+	Ryu: I genuinely thought you were listening to me, but you were merely waiting for me to look sufficiently guilty.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Ryu: Of course.
+	Ryu: The fierce business rival, the eccentric guest, the man in the crown. You had this accusation written before I even opened my mouth.
+elif Utils.ctx["evidence_focus"] >= 9 and Utils.ctx["blame"] < 3
+	Ryu: How incredibly curious.
+	Ryu: Your evidence was finally starting to line up logically, and then you threw it away for a piece of cheap spectacle.
+elif Utils.ctx["is_self_incriminating"] or Utils.ctx["is_roleplaying"]
+	Ryu: You accuse me like a sloppy author killing off the most inconvenient character in the room.
+	Ryu: Leave me alive, Mr. Hilde, or the story starts asking very uncomfortable questions about you.
+elif Utils.ctx["is_stressed"] or Utils.ctx["is_confused"]
+	Ryu: This is not a brilliant conclusion, detective.
+	Ryu: This is you sprinting toward the nearest exit and calling it a breakthrough.
+else
+	Ryu: Then lower the curtain if you must, Mr. Hilde.
+	Ryu: Just don't confuse the applause inside your own head with actual proof.
+=> END

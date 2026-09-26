@@ -1,0 +1,128 @@
+[gd_scene load_steps=26 format=3 uid="uid://mk2qj17hqy5k"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_x1ycw"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_7yma6"]
+[ext_resource type="Texture2D" uid="uid://c48xckdwcuevq" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/east/frame_000.png" id="2_o2ps0"]
+[ext_resource type="Texture2D" uid="uid://buish6vdgeonk" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/east/frame_001.png" id="3_bqdfa"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="3_g1i6e"]
+[ext_resource type="Texture2D" uid="uid://db4tixrj4pgm8" path="res://assets/NPCs/Lucille_Lafleur/Lucille_Lafleur-portrait2.png" id="4_20gyi"]
+[ext_resource type="Texture2D" uid="uid://b2cio3ddduaqr" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/east/frame_002.png" id="4_42ld0"]
+[ext_resource type="Texture2D" uid="uid://cyfwx7yvgp5ls" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/east/frame_003.png" id="5_7yma6"]
+[ext_resource type="Resource" uid="uid://bm042a3g02yau" path="res://dialogue/lucille.dialogue" id="5_g1i6e"]
+[ext_resource type="Texture2D" uid="uid://c22rcbid38lx1" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/north/frame_000.png" id="6_g1i6e"]
+[ext_resource type="Texture2D" uid="uid://bwb5d8q7ryt57" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/north/frame_001.png" id="7_20gyi"]
+[ext_resource type="Texture2D" uid="uid://bkpf5j2iwbd3h" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/north/frame_002.png" id="8_wgjqa"]
+[ext_resource type="Texture2D" uid="uid://btjwig84ysko" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/north/frame_003.png" id="9_bi8uf"]
+[ext_resource type="Texture2D" uid="uid://dwwcye8o0fmn4" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/south/frame_000.png" id="10_7l58r"]
+[ext_resource type="Texture2D" uid="uid://b762r2iux4v2u" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/south/frame_001.png" id="11_apdl2"]
+[ext_resource type="Texture2D" uid="uid://ctjrohj8mm0ny" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/south/frame_002.png" id="12_jtb5p"]
+[ext_resource type="Texture2D" uid="uid://b0038pyvbkok6" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/south/frame_003.png" id="13_gdese"]
+[ext_resource type="Texture2D" uid="uid://dhp4fbw32tb68" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/west/frame_000.png" id="14_oa4rx"]
+[ext_resource type="Texture2D" uid="uid://drrloj6pvna51" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/west/frame_001.png" id="15_ie8wc"]
+[ext_resource type="Texture2D" uid="uid://bp03fb6sjtkbp" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/west/frame_002.png" id="16_xnegj"]
+[ext_resource type="Texture2D" uid="uid://5pi4ynwk7xvu" path="res://assets/NPCs/Lucille_Lafleur/animations/breathing-idle/west/frame_003.png" id="17_3kiht"]
+
+[sub_resource type="Resource" id="Resource_7yma6"]
+script = ExtResource("2_7yma6")
+age = 26
+nationality = "French"
+description = "A digital influencer, Sivlia's best friend. Appears shallow and evasive."
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_bi8uf"]
+script = ExtResource("3_g1i6e")
+name = "Lucille Lafleur"
+char_info = SubResource("Resource_7yma6")
+portrait = ExtResource("4_20gyi")
+dialogue = ExtResource("5_g1i6e")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2o2va"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_o2ps0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bqdfa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_42ld0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7yma6")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_g1i6e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_20gyi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_wgjqa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_bi8uf")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_7l58r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_apdl2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_jtb5p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_gdese")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_oa4rx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ie8wc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_xnegj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_3kiht")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2ps0"]
+size = Vector2(12, 13)
+
+[node name="Lucille" instance=ExtResource("1_x1ycw")]
+char_name = "Lucille Lafleur"
+char = SubResource("Resource_bi8uf")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_2o2va")
+animation = &"idle_south"
+autoplay = "idle_south"
+frame = 2
+frame_progress = 0.19666907
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_o2ps0")

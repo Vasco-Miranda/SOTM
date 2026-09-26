@@ -1,0 +1,621 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Vicenzo: No.
+	Vicenzo: You've already made up your mind about me, so go play detective in someone else's face.
+	=> END
+else
+	if Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Vicenzo: Look who's back.
+		Vicenzo: Either you're secretly obsessed with me, or you're just dying to slap handcuffs on my wrists.
+	elif Utils.ctx["is_self_incriminating"]
+		Vicenzo: You know, half the stuff coming out of your mouth sounds like a confession.
+		Vicenzo: Shouldn't I be the one interrogating you?
+	elif Utils.ctx["family_focus"] >= 5 and Utils.ctx["comfort_focus"] >= (Utils.ctx["pressure_focus"] / 2) and Utils.character.has_talked("father")
+		Vicenzo: There's that look again.
+		Vicenzo: Like you're trying to figure out if you should pity the bastard son or lock him up.
+	elif Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 3
+		Vicenzo: Hey, you.
+		Vicenzo: I was starting to think you only liked me when I was useful.
+	elif Utils.ctx["is_stressed"] and Utils.ctx["comfort_focus"] >= (Utils.ctx["pressure_focus"] / 2)
+		Vicenzo: Whoa, easy.
+		Vicenzo: You look like your engine's running redline. Take a breath before you spin out.
+	elif Utils.ctx["is_confused"] and Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+		Vicenzo: You look like the room keeps moving under your feet.
+		Vicenzo: Sit with me a second. Ask better questions after.
+	elif Utils.ctx["is_aggressive"]
+		Vicenzo: Whoa, brakes!
+		Vicenzo: Do you charge at everybody like a bull, or am I getting the VIP treatment?
+	elif Utils.ctx["is_suspicious"]
+		Vicenzo: Still giving me that prosecutor stare, huh?
+		Vicenzo: Makes a guy feel guilty just for breathing the room's air.
+	else
+		Vicenzo: Back for another lap?
+
+	
+	- How did you get invited? [if not Utils.character.has_talked("invite")] => invite
+	- Did you know the victim? [if not Utils.character.has_talked("victim")] => victim
+	- Tell me about your past. [if not Utils.character.has_talked("past")] => past
+	- Talk to me about your father. [if Utils.character.has_talked("past") and not Utils.character.has_talked("father")] => father
+	- Any words of wisdom for me? [if not Utils.character.has_talked("suspicion")] => suspicion
+	- I think this place is getting under my skin. [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+	- I think you are being harder on yourself than anyone else here. [if ( Utils.ctx["is_favorite"] or Utils.character.get_trust() > 1) and not Utils.character.has_talked("mirror")] => mirror
+	- I keep coming back to you for a reason. [if Utils.ctx["is_favorite"] and not Utils.character.has_talked("pull")] => pull
+
+	# Clue-based options
+	- Ask about the knife. [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Ask about the wine glass. [if Utils.is_clue_surface_ready("wine")] => wine
+	- Ask about the residue in the wine glass. [if Utils.is_clue_hidden_ready("wine")] => wine
+	- Revisit the wine glass with what you uncovered. [if Utils.is_clue_revisit_ready("wine")] => wine
+	- Have you seen this glove before? [if Utils.is_clue_surface_ready("glove")] => glove
+	- Ask about the hidden traces on the glove. [if Utils.is_clue_hidden_ready("glove")] => glove
+	- Revisit the glove with what you uncovered. [if Utils.is_clue_revisit_ready("glove")] => glove
+	- Ask about the letter opener. [if Utils.is_clue_surface_ready("opener")] => opener
+	- Ask about the cleaned letter opener. [if Utils.is_clue_hidden_ready("opener")] => opener
+	- Revisit the letter opener with what you uncovered. [if Utils.is_clue_revisit_ready("opener")] => opener
+
+	# Costume-related options
+	- You are a car racer, right? [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- Ask about the victim's costume. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+
+	- I'll see you around.
+		Vicenzo: Try not to get too lost.
+		=> END
+
+~ meet
+do Utils.character.meet()
+Vicenzo: Well, well. Hiding from the crowd, or just looking for the bar?
+Vicenzo: Vicenzo. Just Vicenzo.
+- Just Vicenzo?
+	do Utils.register_dialogue_choice("vicenzo_meet_name", "Just Vicenzo?", "probe,flirt", 0.3, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+	Vicenzo: Keeps things interesting.
+	do Utils.character.increase_interest()
+- You seem awfully relaxed.
+	do Utils.register_dialogue_choice("vicenzo_meet_relaxed", "You seem awfully relaxed.", "probe,reassure", 0.2, 0.0, "", 0.0, -0.2, 0.0, 0.0)
+	Vicenzo: Hey, if you don't laugh, you end up like our host.
+	Vicenzo: And I prefer staying vertical.
+	do Utils.character.decrease_apprehension()
+- Do you belong here?
+	do Utils.register_dialogue_choice("vicenzo_meet_belong", "Do you belong here?", "pressure,family", -0.1, 0.6, "", 0.0, 0.2, 0.1, 0.1)
+	Vicenzo: Oof, straight for the throat.
+	Vicenzo: Honestly? Still trying to figure out if my invitation was a bad joke.
+	do Utils.character.increase_apprehension()
+	=> past
+Vicenzo: What about you? You look like you are thinking too much.
+- Just observing.
+	do Utils.register_dialogue_choice("vicenzo_meet_observing", "Just observing.", "evidence", 0.1, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+	Vicenzo: Careful with that. Watching people too closely in this house is a dangerous hobby.
+	do Utils.character.increase_apprehension()
+- I could say the same about you.
+	do Utils.register_dialogue_choice("vicenzo_meet_reflect", "I could say the same about you.", "pressure,flirt", -0.1, 0.3, "", 0.0, 0.0, 0.1, -0.1)
+	Vicenzo: Oh, I don't overthink, sweetheart. I just steer into the skid.
+	do Utils.character.decrease_trust()
+
+Vicenzo: Anyway, you've got that 'I need answers' look. Fire away.
+- How did you get invited? => invite
+- Did you know the victim? => victim
+- Actually, I'll leave you to it.
+	Vicenzo: Do not be a stranger.
+	=> END
+
+
+~ invite
+do Utils.character.talked("invite")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Vicenzo: Look, let's just say I wasn't exactly on the gold-embossed guest list.
+	Vicenzo: Call it an unannounced family visit.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Vicenzo: I probably shouldn't even be walking these halls.
+	Vicenzo: Let's leave it at that before you get me thrown out. Or worse.
+else
+	Vicenzo: Let's just say I had my own reasons to take a drive out here tonight.
+- That is vague.
+	do Utils.register_dialogue_choice("vicenzo_invite_vague", "That is vague.", "pressure", -0.2, 0.5, "", 0.0, 0.1, 0.0, -0.1)
+	Vicenzo: Mystery is part of my charm, isn't it?
+	do Utils.character.decrease_trust()
+- Sounds personal.
+	do Utils.register_dialogue_choice("vicenzo_invite_personal", "Sounds personal.", "family,reassure", 0.4, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	if Utils.ctx["family_focus"] >= 5
+		Vicenzo: Yeah... way more personal than I bargained for when I put this suit on.
+	else
+		Vicenzo: Oh, trust me, it's personal.
+	do Utils.character.increase_apprehension()
+- You snuck in to confront him, didn't you?
+	do Utils.register_dialogue_choice("vicenzo_invite_confront", "You snuck in to confront him, didn't you?", "pressure,accusation,family", -0.3, 0.8, "", 0.0, 0.2, 0.1, -0.2)
+	Vicenzo: Confront the guy? Wow, you give me way too much credit.
+	Vicenzo: I'm reckless, detective, not suicidal.
+	do Utils.character.increase_apprehension()
+=> END
+
+
+~ victim
+do Utils.character.talked("victim")
+if Utils.character.get_trust() >= 5 or Utils.ctx["family_focus"] >= 5
+	Vicenzo: I knew *of* him. Watched from the sidelines my whole life.
+	Vicenzo: But tonight... tonight was supposed to be different.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Vicenzo: Guys sitting in mansions like this don't actually *know* anyone below their tax bracket.
+else
+	Vicenzo: Funny thing about blood relatives. You can share DNA with someone and still be total strangers.
+- Which was it for you?
+	do Utils.register_dialogue_choice("vicenzo_victim_between", "Which was it for you?", "probe,family", 0.2, 0.0, "", 0.0, 0.0, -0.1, 0.1)
+	Vicenzo: Let's go with the 'total strangers who share a nose' category.
+	do Utils.character.increase_interest()
+- That doesn't answer much.
+	do Utils.register_dialogue_choice("vicenzo_victim_push", "That doesn't answer much.", "pressure", -0.2, 0.4, "", 0.0, 0.1, 0.0, -0.1)
+	Vicenzo: Maybe I don't have a clean little answer for you, detective.
+	do Utils.character.decrease_trust()
+- You sound disappointed, not grieving.
+	do Utils.register_dialogue_choice("vicenzo_victim_disappointed", "You sound disappointed, not grieving.", "probe,family", 0.1, 0.2, "", 0.0, 0.0, 0.0, 0.2)
+	if Utils.ctx["comfort_focus"] >= (Utils.ctx["pressure_focus"] / 2)
+		Vicenzo: Grief is for people who actually had a relationship to lose.
+		Vicenzo: All I lost was the chance to look him in the eye and ask why.
+	else
+		Vicenzo: Sorry, did you want me to squeeze out a tear for the audience?
+	do Utils.character.increase_apprehension()
+=> END
+
+
+~ past
+do Utils.character.talked("past")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_supportive"]
+	Vicenzo: I definitely didn't grow up with silver spoons and masquerade balls.
+	Vicenzo: Raised by my mom, living fast, just trying to scrape by on the outside.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Vicenzo: Look, my life outside this mansion has zero to do with whatever happened upstairs.
+else
+	Vicenzo: Nothing glamorous.
+	Vicenzo: Just a guy who never really fit into the high-society mold.
+- Different how?
+	do Utils.register_dialogue_choice("vicenzo_past_different", "Different how?", "probe,family", 0.2, 0.0, "", 0.0, 0.0, -0.1, 0.1)
+	Vicenzo: Different enough that I stick out like a sore thumb in a room full of silk and velvet.
+	do Utils.character.increase_interest()
+- Does it connect to the victim?
+	do Utils.register_dialogue_choice("vicenzo_past_connect", "Does it connect to the victim?", "probe,family,pressure", 0.0, 0.4, "", 0.0, 0.1, 0.0, 0.1)
+	Vicenzo: Everything in this twisted house connects eventually, doesn't it?
+	do Utils.character.increase_apprehension()
+- You learned something tonight, didn't you?
+	do Utils.register_dialogue_choice("vicenzo_past_learned", "You learned something tonight, didn't you?", "probe,family,evidence", 0.1, 0.1, "", 0.0, 0.0, -0.1, 0.0)
+	if Utils.ctx["family_focus"] >= 5
+		Vicenzo: Am I leaking that much?
+		Vicenzo: Yeah... turned out the grand prize tonight was a massive reality check.
+	else
+		Vicenzo: Maybe.
+		Vicenzo: Or maybe we're all just realizing this party was a trap.
+	do Utils.character.increase_apprehension()
+=> END
+
+
+~ father
+do Utils.character.talked("father")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Vicenzo: You ever feel like your life is just a setup for a terrible punchline?
+	Vicenzo: Turns out the great man hosting this circus was my old man.
+	Vicenzo: Hilarious, right?
+	- And how did that make you feel?
+		do Utils.register_dialogue_choice("vicenzo_father_feel", "And how did that make you feel?", "reassure,empathetic,family", 0.6, 0.0, "", 0.0, -0.3, 0.0, -0.1)
+		Vicenzo: Like I showed up to a race after the finish line was already torn down.
+		Vicenzo: He knew I existed this whole time. And he just let me stay out in the cold.
+		do Utils.character.increase_apprehension()
+	- That gives you a motive.
+		do Utils.register_dialogue_choice("vicenzo_father_motive", "That gives you a motive.", "pressure,accusation,family", -0.4, 1.0, "", 0.0, 0.3, 0.1, -0.2)
+		Vicenzo: Boom. And there it is.
+		Vicenzo: I knew it wouldn't take you long to connect the dots and paint me as the villain.
+		Vicenzo: I just was wondering how long it would take you to say it out loud.
+		do Utils.character.decrease_trust()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Vicenzo: Why do you care?
+	Vicenzo: Just looking for a juicy illegitimate-son motive to wrap up your case?
+	- Just asking.
+		do Utils.register_dialogue_choice("vicenzo_father_just_asking", "Just asking.", "deflect", 0.0, 0.1, "", 0.0, 0.0, 0.2, 0.1)
+		Vicenzo: Right. Just casual small talk about dead estranged fathers. Totally natural.
+		do Utils.character.decrease_trust()
+	- I think you deserved the truth.
+		do Utils.register_dialogue_choice("vicenzo_father_deserved", "I think you deserved the truth.", "reassure,empathetic,family", 0.5, -0.1, "", 0.0, -0.2, 0.0, -0.2)
+		if Utils.ctx["blame"] < 5
+			Vicenzo: ...Damn. Don't go saying nice things to me right now, I might actually believe you.
+			Vicenzo: Thanks.
+			do Utils.character.increase_trust()
+		else
+			Vicenzo: Hard to accept pity from someone who's practically measuring my wrists for cuffs.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Vicenzo: I drove all the way out here just to look him in the eye... and someone beat me to the punch.
+	Vicenzo: End of story. Problem solved itself.
+	- That is a cold way to put it.
+		do Utils.register_dialogue_choice("vicenzo_father_cold", "That is a cold way to put it.", "pressure,family", -0.2, 0.4, "", 0.0, 0.1, 0.0, 0.1)
+		Vicenzo: Better cold than pretending I'm heartbroken over a guy who abandoned me.
+		do Utils.character.increase_apprehension()
+	- That sounds defensive. And kinda sad.
+		do Utils.register_dialogue_choice("vicenzo_father_defensive", "That sounds defensive. And kinda sad.", "probe,family", 0.1, 0.3, "", 0.0, 0.0, 0.0, 0.0)
+		Vicenzo: Can't argue with you there. It *is* pathetic.
+else
+	Vicenzo: Let's just say family reunions aren't really my strong suit.
+	- You can joke if you want. It still hurt.
+		do Utils.register_dialogue_choice("vicenzo_father_hurt", "You can joke if you want. It still hurt.", "reassure,empathetic,family", 0.5, 0.0, "", 0.0, -0.2, 0.0, -0.1)
+		Vicenzo: ...Yeah.
+		Vicenzo: Yeah, it felt like crashing at eighty miles an hour.
+		do Utils.character.increase_trust()
+=> END
+
+
+~ suspicion
+do Utils.character.talked("suspicion")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Vicenzo: You know... sometimes you look at people like you're reading them off a script.
+	- What do you mean?
+		do Utils.register_dialogue_choice("vicenzo_suspicion_mean", "What do you mean?", "probe,reassure", 0.3, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+		Vicenzo: Just that you seem way too comfortable around all this madness.
+		Vicenzo: Like you've walked through this nightmare before.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Vicenzo: You're getting a real kick out of picking us apart, aren't you?
+	- That is not true.
+		do Utils.register_dialogue_choice("vicenzo_suspicion_deny", "That is not true.", "deflect", 0.0, 0.2, "", 0.0, 0.0, 0.2, 0.1)
+		Vicenzo: Then why are your eyes lighting up every time someone stumbles on their words?
+		do Utils.character.decrease_trust()
+	- Focus keeps people alive.
+		do Utils.register_dialogue_choice("vicenzo_suspicion_focus", "Focus keeps people alive.", "evidence,pressure", 0.0, 0.2, "", 0.0, 0.0, -0.1, -0.1)
+		Vicenzo: Maybe. But it makes you look pretty cold-blooded from where I'm standing.
+else
+	Vicenzo: You ask questions like you're just waiting to see if we fall into a trap.
+	- Maybe I know the shape of one.
+		do Utils.register_dialogue_choice("vicenzo_suspicion_shape", "Maybe I know the shape of one.", "evidence", 0.2, 0.0, "", 0.0, 0.0, -0.1, -0.1)
+		Vicenzo: Well, I hope you're actually chasing the truth and not just spinning a good story.
+if Utils.ctx["is_stressed"]
+	Vicenzo: And right now?
+	Vicenzo: You look like the brakes just went out and you're heading straight for a wall.
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+if Utils.ctx["comfort_focus"] >= (Utils.ctx["pressure_focus"] / 2)
+	Vicenzo: Yeah, I can tell.
+	Vicenzo: You've got that look people get right before they either crash or make a run for it.
+else
+	Vicenzo: Took you long enough to admit it.
+	Vicenzo: You've been bouncing from room to room like a pinball.
+- Then tell me something steady.
+	do Utils.register_dialogue_choice("vicenzo_stress_steady", "Then tell me something steady.", "reassure,empathetic", 0.4, 0.0, "", 0.0, -0.3, -0.1, -0.1)
+	Vicenzo: Alright. Here's something steady: you don't have to carry the whole damn night on your shoulders.
+	Vicenzo: Take a breath.
+	do Utils.character.increase_trust()
+- I am trying not to lose the thread.
+	do Utils.register_dialogue_choice("vicenzo_stress_thread", "I am trying not to lose the thread.", "self_incriminate,probe", 0.1, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Vicenzo: Then stop yanking on every loose string you see!
+	Vicenzo: Focus on the one that actually matters.
+=> END
+
+
+~ mirror
+do Utils.character.talked("mirror")
+Vicenzo: Am I wearing it on my sleeve?
+if Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Vicenzo: You have a weird habit of noticing the cracks in my armor.
+else
+	Vicenzo: Careful now. Don't go getting sympathetic on me.
+- You hide behind jokes.
+	do Utils.register_dialogue_choice("vicenzo_mirror_jokes", "You hide behind jokes.", "probe,reassure", 0.4, 0.0, "", 0.0, -0.1, 0.0, -0.1)
+	Vicenzo: Hey, a laugh is a better shield than whatever fake polite crap everyone else here is wearing.
+	do Utils.character.increase_trust()
+- I think you want someone to contradict your worst thoughts.
+	do Utils.register_dialogue_choice("vicenzo_mirror_worst", "I think you want someone to contradict your worst thoughts.", "empathetic,reassure,family", 0.6, 0.0, "", 0.0, -0.3, 0.0, -0.2)
+	Vicenzo: ...Damn. You don't pull punches, do you?
+	Vicenzo: Keep seeing through me like that and I might start getting attached.
+	do Utils.character.increase_trust()
+=> END
+
+
+~ pull
+do Utils.character.talked("pull")
+Vicenzo: Is that right?
+if Utils.ctx["blame"] > Utils.ctx["affinity"]
+	Vicenzo: Please tell me it's not just because I look like the easiest guy to frame.
+else
+	Vicenzo: Glad to know I am winning whatever silent competition is happening in your head.
+- You feel central to this.
+	do Utils.register_dialogue_choice("vicenzo_pull_central", "You feel central to this.", "family,evidence", 0.2, 0.2, "", 0.0, 0.0, -0.1, 0.0)
+	Vicenzo: Maybe because being the secret son suddenly makes me the main attraction of tonight's freak show.
+	do Utils.character.increase_interest()
+- I trust your reactions more than most people's here.
+	do Utils.register_dialogue_choice("vicenzo_pull_trust", "I trust your reactions more than most people's here.", "empathetic,reassure", 0.7, -0.2, "", 0.0, -0.2, 0.0, -0.1)
+	Vicenzo: That is either incredibly sweet or completely reckless.
+	Vicenzo: I haven't decided which yet.
+	do Utils.character.increase_trust()
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: Positive for blood, but still no clear match?
+		Vicenzo: Someone staged that blade just enough to cause a scene.
+	else
+		Vicenzo: So we dug deeper and found out even less.
+		Vicenzo: Very on-brand for tonight.
+	- So the blood was meant to suggest more than prove.
+		do Utils.register_dialogue_choice("vicenzo_knife_revisit_suggest", "So the blood was meant to suggest more than prove.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: I think so. It screams 'look at me, I'm the murder weapon' without actually sealing the deal.
+	- And you still think it was planted?
+		do Utils.register_dialogue_choice("vicenzo_knife_revisit_planted", "And you still think it was planted.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Bet my car on it. It's a total decoy.
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.ctx["is_pressured"]
+		Vicenzo: Ah, held onto that detail until you could corner me with it?
+		Vicenzo: Very tactical.
+	else
+		Vicenzo: Positive, but not even confirmed human blood?
+		Vicenzo: That feels deliberate.
+	- Chosen to mislead?
+		do Utils.register_dialogue_choice("vicenzo_knife_hidden_mislead", "Chosen to mislead?", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Chosen to throw people like you into a tailspin, chasing ghosts.
+	- Chosen because it was available?
+		do Utils.register_dialogue_choice("vicenzo_knife_hidden_available", "Chosen because it was available?", "pressure,evidence", -0.1, 0.2, "knife", 0.7, 0.0, 0.0, 0.0)
+		Vicenzo: Maybe. But even a crime of passion needs a steady hand to drop a prop like that.
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Vicenzo: Sitting out in the open like that? Come on.
+		Vicenzo: Someone practically left a spotlight on it for you to find.
+		do Utils.character.increase_interest()
+		- So you think it was planted?
+			do Utils.register_dialogue_choice("vicenzo_knife_planted", "So you think it was planted?", "evidence", 0.2, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Vicenzo: I think high-society folks love their cheap theater.
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: I swear I saw knives just like that in the catering kitchen.
+		Vicenzo: That's staff gear, not guest cutlery.
+		do Utils.character.increase_apprehension()
+		- You noticed the kitchen connection fast.
+			do Utils.register_dialogue_choice("vicenzo_knife_kitchen", "You noticed the kitchen connection fast.", "pressure,evidence", -0.1, 0.4, "knife", 0.7, 0.0, 0.0, -0.1)
+			Vicenzo: When you spend half the night feeling like an outsider, you pay attention to the service corridors.
+	else
+		Vicenzo: Classic murder weapon.
+		Vicenzo: Feels a little too cinematic, don't you think?
+		- So you think it was planted?
+			do Utils.register_dialogue_choice("vicenzo_knife_planted", "So you think it was planted?", "evidence", 0.2, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Vicenzo: I think high-society folks love their cheap theater.
+=> END
+
+
+~ wine
+if Utils.is_clue_revisit_ready("wine")
+	do Utils.mark_clue_topic("wine", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: Traces of something bitter under the wine.
+		Vicenzo: Someone definitely spiked his glass.
+	else
+		Vicenzo: So it really was carrying a second story.
+	- Then he trusted whoever handed it to him.
+		do Utils.register_dialogue_choice("vicenzo_wine_revisit_trusted", "Then he trusted whoever handed it to him.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Or he was just too arrogant to think anyone would dare touch his drink.
+	- Which makes the party itself part of the weapon.
+		do Utils.register_dialogue_choice("vicenzo_wine_revisit_party", "Which makes the party itself part of the weapon.", "evidence", 0.0, 0.1, "wine", 0.7, 0.0, -0.1, 0.0)
+		Vicenzo: Using his own luxury against him. Brutal.
+elif Utils.is_clue_hidden_ready("wine")
+	do Utils.mark_clue_topic("wine", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Vicenzo: So it wasn't just a heavy pour.
+		Vicenzo: Someone slipped him a sleeper.
+	else
+		Vicenzo: Spiked wine... man, that's a cold, cowardly way to take someone out.
+	- Delivery from someone close by.
+		do Utils.register_dialogue_choice("vicenzo_wine_hidden_close", "Delivery from someone close by.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Had to be someone standing close enough to smile while he took a sip.
+	- From someone who understood appearances.
+		do Utils.register_dialogue_choice("vicenzo_wine_hidden_appearances", "From someone who understood appearances.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Around this crowd? That's literally everyone.
+else
+	do Utils.character.talked("wine")
+	do Utils.mark_clue_topic("wine", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: I saw him swirling a red wine glass earlier tonight.
+		Vicenzo: Looked pretty attached to it.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_apprehension() >= 5
+		Vicenzo: Damn. To go out over a drink... he probably didn't even realize what hit him.
+	else
+		Vicenzo: Fancy parties, fancy poison.
+	- Was he alone?
+		do Utils.register_dialogue_choice("vicenzo_wine_alone", "Was he alone?", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: In a room full of people? Never. But alone enough for someone to tamper with his cup.
+	- You are thinking poison, then.
+		do Utils.register_dialogue_choice("vicenzo_wine_poison", "You are thinking poison, then.", "evidence", 0.0, 0.1, "wine", 0.7, 0.0, -0.1, 0.0)
+		Vicenzo: I'm thinking nobody in this mansion plays fair.
+=> END
+
+
+~ glove
+if Utils.is_clue_revisit_ready("glove")
+	do Utils.mark_clue_topic("glove", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: Wax stains and wrong sizing.
+		Vicenzo: The "blood" on top was just for show.
+	else
+		Vicenzo: Doesn't even fit the guy?
+		Vicenzo: That definitely makes it a prop dropped on purpose.
+	- So it belongs to someone still walking around.
+		do Utils.register_dialogue_choice("vicenzo_glove_revisit_walking", "So it belongs to someone still walking around.", "evidence", 0.1, 0.1, "glove", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Yeah, someone with slightly different hands... and a really good poker face.
+	- The wax links it to another part of the night.
+		do Utils.register_dialogue_choice("vicenzo_glove_revisit_wax", "The wax links it to another part of the night.", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Bingo. Somebody had a busy night before they left their glove behind
+elif Utils.is_clue_hidden_ready("glove")
+	do Utils.mark_clue_topic("glove", "hidden")
+	if Utils.ctx["is_pressured"]
+		Vicenzo: Wax underneath, and it's the wrong size?
+		Vicenzo: You're really compiling a full dossier, aren't you?
+	else
+		Vicenzo: So that glove has seen more action than just one red stain.
+		Vicenzo: Tells a whole story on its own.
+	- Honest because it was not meant to be found.
+		do Utils.register_dialogue_choice("vicenzo_glove_hidden_honest", "Honest because it was not meant to be found.", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Or because whoever dropped it was sloppy under pressure.
+	- Like someone lost control of the scene.
+		do Utils.register_dialogue_choice("vicenzo_glove_hidden_control", "Like someone lost control of the scene.", "pressure,evidence", -0.1, 0.2, "glove", 0.7, 0.0, 0.0, 0.0)
+		Vicenzo: Now *that* sounds more like real life than some criminal mastermind.
+else
+	do Utils.character.talked("glove")
+	do Utils.mark_clue_topic("glove", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: Could be blood...
+		Vicenzo: Or could just be oil or paint from somewhere else on the estate.
+	elif Utils.character.get_trust() >= 5
+		Vicenzo: Feels sloppy.
+		Vicenzo: Like someone grabbed whatever was closest to wipe their hands.
+	else
+		Vicenzo: A stained glove? Wow, straight out of a dime-store detective novel.
+	- You say that like you have someone in mind.
+		do Utils.register_dialogue_choice("vicenzo_glove_someone", "You say that like you have someone in mind.", "evidence", 0.1, 0.1, "glove", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: In this madhouse? I could give you a top-five list right now.
+	- You sound like you are trying not to say something out loud.
+		do Utils.register_dialogue_choice("vicenzo_glove_unsaid", "You sound like you are trying not to say something out loud.", "pressure,evidence", -0.1, 0.3, "glove", 0.6, 0.1, 0.0, 0.0)
+		Vicenzo: Don't go putting words in my mouth, detective. I've got enough problems.
+=> END
+
+
+~ opener
+if Utils.is_clue_revisit_ready("opener")
+	do Utils.mark_clue_topic("opener", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: Wiped clean in a panic.
+		Vicenzo: Whoever used it wanted to erase their fingerprints fast.
+	else
+		Vicenzo: So someone tried to scrub their involvement and did a rushed job.
+	- Which means they thought the opener mattered.
+		do Utils.register_dialogue_choice("vicenzo_opener_revisit_mattered", "Which means they thought the opener mattered.", "evidence", 0.1, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Mattered enough to take a rag to it before running off.
+	- So they panicked after using whatever was near.
+		do Utils.register_dialogue_choice("vicenzo_opener_revisit_panic", "So they panicked after using whatever was near.", "pressure,evidence", -0.1, 0.2, "opener", 0.7, 0.0, 0.0, 0.0)
+		Vicenzo: Panic makes people do stupid, messy things. Believe me, I know.
+elif Utils.is_clue_hidden_ready("opener")
+	do Utils.mark_clue_topic("opener", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Vicenzo: Wiped down recently?
+		Vicenzo: That means the killer's nerves were rattled
+	else
+		Vicenzo: Sharp, ornate, and hurriedly cleaned.
+		Vicenzo: Somebody realized what they did a second too late.
+	- Someone trying to erase the act.
+		do Utils.register_dialogue_choice("vicenzo_opener_hidden_erase", "Someone trying to erase the act.", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+		Vicenzo: Trying to scrub away guilt is a lot harder than wiping metal.
+	- More interested in hiding their steps than feeling guilty.
+		do Utils.register_dialogue_choice("vicenzo_opener_hidden_touch", "More interested in hiding their steps than feeling guilty.", "evidence", 0.0, 0.1, "opener", 0.7, 0.0, -0.1, 0.0)
+		Vicenzo: Self-preservation is the only rule these rich bastards actually follow.
+else
+	do Utils.character.talked("opener")
+	do Utils.mark_clue_topic("opener", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Vicenzo: Fancy way to stab someone.
+		Vicenzo: Very personal.
+		- Personal because it was close?
+			do Utils.register_dialogue_choice("vicenzo_opener_close", "Personal because it was close?", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+			Vicenzo: Close, messy, and driven by serious anger.
+		- The killer wanted to make a point.
+			do Utils.register_dialogue_choice("vicenzo_opener_point", "The killer wanted to make a point.", "evidence,family", 0.0, 0.1, "opener", 0.7, 0.0, -0.1, 0.1)
+			Vicenzo: If making a point means leaving a bloodbath, then mission accomplished.
+	elif Utils.character.get_apprehension() >= 5
+		Vicenzo: Overkill, if you ask me.
+	else
+		Vicenzo: That's an up-close-and-personal way to hurt somebody.
+		- Personal because it was close?
+			do Utils.register_dialogue_choice("vicenzo_opener_close", "Personal because it was close?", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+			Vicenzo: Close, messy, and driven by serious anger.
+		- The killer wanted to make a point.
+			do Utils.register_dialogue_choice("vicenzo_opener_point", "The killer wanted to make a point.", "evidence,family", 0.0, 0.1, "opener", 0.7, 0.0, -0.1, 0.1)
+			Vicenzo: If making a point means leaving a bloodbath, then mission accomplished.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+Vicenzo: Fast cars, loud engines.
+Vicenzo: Keeps things exciting.
+- Running from something?
+	do Utils.register_dialogue_choice("vicenzo_costume_run", "Running from something?", "probe,flirt", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Vicenzo: Maybe toward something.
+	do Utils.character.increase_interest()
+- Feels like a mask for someone who hates standing still.
+	do Utils.register_dialogue_choice("vicenzo_costume_mask", "Feels like a mask for someone who hates standing still.", "probe", 0.2, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+	Vicenzo: You are getting annoyingly good at this.
+=> END
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+if Utils.character.get_interest() >= 5 or Utils.ctx["is_favorite"]
+	Vicenzo: Detective, huh?
+	Vicenzo: Hope you are better than the movies.
+	do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5
+	Vicenzo: You look like you are trying too hard.
+	do Utils.character.decrease_trust()
+else
+	Vicenzo: Suits the whole mystery thing.
+- I could solve you first, if you prefer.
+	do Utils.register_dialogue_choice("vicenzo_costume_solve", "I could solve you first, if you prefer.", "flirt,probe", 0.3, 0.0, "", 0.0, 0.0, 0.0, -0.1)
+	Vicenzo: Careful.
+	Vicenzo: That sounded dangerously close to chemistry.
+	do Utils.character.increase_joy()
+- Maybe I dressed for the role because I needed one.
+	do Utils.register_dialogue_choice("vicenzo_costume_role", "Maybe I dressed for the role because I needed one.", "reassure,self_incriminate", 0.1, 0.0, "", 0.0, 0.0, 0.1, 0.3)
+	if Utils.ctx["is_confused"]
+		Vicenzo: Yeah.
+		Vicenzo: I know the feeling.
+	else
+		Vicenzo: That might be the most honest thing you have said to me.
+		do Utils.character.increase_trust()
+=> END
+
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+if Utils.character.get_apprehension() >= 5 or Utils.ctx["family_focus"] >= 5
+	Vicenzo: Magician.
+	Vicenzo: Guess he pulled one last trick.
+	do Utils.character.increase_apprehension()
+else
+	Vicenzo: Dramatic choice.
+- You sound like you hated the performance.
+	do Utils.register_dialogue_choice("vicenzo_costume_performance", "You sound like you hated the performance.", "probe,family", 0.1, 0.2, "", 0.0, 0.0, 0.0, 0.1)
+	Vicenzo: I hated that everyone else already knew the act.
+- You envied it, more than you hated him.
+	do Utils.register_dialogue_choice("vicenzo_costume_envy", "You envied it, more than you hated him.", "pressure,family", -0.1, 0.3, "", 0.0, 0.1, 0.0, 0.2)
+	Vicenzo: Maybe both.
+=> END
+
+
+~ blamed
+if Utils.character.get_trust() >= 6 and Utils.character.get_joy() >= 1 and not Utils.ctx["is_suspicious"] and not Utils.ctx["is_pressured"]
+	Vicenzo: ...Wow.
+	Vicenzo: Okay. That one actually landed.
+	Vicenzo: I thought you were flirting with the truth.
+	Vicenzo: Turns out you were only flirting with me while building a case.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Vicenzo: There it is.
+	Vicenzo: Knew you were walking me toward this.
+	Vicenzo: You never really came back for me.
+	Vicenzo: You came back for the version of me that made your story work.
+elif Utils.ctx["family_focus"] >= 5 and Utils.ctx["blame"] >= 4
+	Vicenzo: Because I am the secret son.
+	Vicenzo: Because blood makes the room tidy for you.
+	Vicenzo: Convenient.
+elif Utils.ctx["is_self_incriminating"] and Utils.character.get_interest() >= 5
+	Vicenzo: You know what is almost funny?
+	Vicenzo: Half the time you sounded more afraid of yourself than of me.
+	Vicenzo: And still you picked me.
+elif Utils.ctx["is_stressed"] or Utils.ctx["is_confused"]
+	Vicenzo: You look like you do not even believe yourself.
+	Vicenzo: That is the cruel part.
+	Vicenzo: You are throwing me overboard just to make the noise in your head stop.
+else
+	Vicenzo: So that is the end of it?
+	Vicenzo: I get the blame, and you get to feel certain for one blessed second.
+	Vicenzo: Must be nice.
+=> END

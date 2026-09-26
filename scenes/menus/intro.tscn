@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://dfxaw7yd1isdj"]
+
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="1_1a7bk"]
+[ext_resource type="Script" uid="uid://cjs8tp25xppyl" path="res://scripts/menus/intro.gd" id="1_sh6lv"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="2_sh6lv"]
+
+[node name="Intro" type="Control" unique_id=803498311]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sh6lv")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=717502258]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+texture = ExtResource("1_1a7bk")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Message1" type="Control" parent="NinePatchRect" unique_id=209011178]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="NinePatchRect/Message1" unique_id=1186942706]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 100
+text = "During a masquerade party in an isolated mansion, the host was found dead. You take the role of Alwin Hilde, a novelist dressed as a detective in this masquerade, and coincidentely take on the task of finding out what happened."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="NinePatchRect/Message1" unique_id=744375805]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -67.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 80
+text = "Click Anywhere to Continue..."
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Message2" type="Control" parent="NinePatchRect" unique_id=1822831075]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="NinePatchRect/Message2" unique_id=1810631505]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 100
+text = "Search the mansion for clues and talk to characters to help you find the culprit. Each item also has a minigame that will allow you to uncover more information on it, but you can only try it once per item; if you fail, you won't be able to try again."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="NinePatchRect/Message2" unique_id=200115611]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -67.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 80
+text = "Click Anywhere to Continue..."
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Message3" type="Control" parent="NinePatchRect" unique_id=2130884703]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="NinePatchRect/Message3" unique_id=2071511291]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 100
+text = "Use [E] to interact with items and characters around the map, [Tab] to open your book containing the clues you found, characters you met and more information on the victim, and [esc] to pause the game. You can also take notes on the characters in the \"Suspects\" menu."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="NinePatchRect/Message3" unique_id=1628508524]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -67.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 80
+text = "Click Anywhere to Continue..."
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Message4" type="Control" parent="NinePatchRect" unique_id=1373277803]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="NinePatchRect/Message4" unique_id=2129905300]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 100
+text = "You'll have 25 minutes to choose your culprit. But be cautious on who you trust. Everyone here is a suspect, including yourself..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="NinePatchRect/Message4" unique_id=512991785]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -67.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_sh6lv")
+theme_override_font_sizes/font_size = 80
+text = "Click Anywhere to Start!"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="gui_input" from="NinePatchRect" to="." method="_on_nine_patch_rect_gui_input"]
+[connection signal="gui_input" from="NinePatchRect/Message1" to="." method="_on_message_1_gui_input"]

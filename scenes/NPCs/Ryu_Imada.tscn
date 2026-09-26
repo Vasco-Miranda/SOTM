@@ -1,0 +1,144 @@
+[gd_scene load_steps=26 format=3 uid="uid://c8qdjf64mh8hw"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_aloyx"]
+[ext_resource type="Texture2D" uid="uid://d2r2bh7aibchm" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/east/frame_000.png" id="2_7rao7"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_o42rn"]
+[ext_resource type="Texture2D" uid="uid://d218lni1ijvxf" path="res://assets/NPCs/Ryu_Imada/Ryu_Imada-portrait2.png" id="3_5l4n6"]
+[ext_resource type="Texture2D" uid="uid://bkawbllx8qp8l" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/east/frame_001.png" id="3_des7o"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="4_pmwv2"]
+[ext_resource type="Texture2D" uid="uid://b6ve0lkmthtoy" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/east/frame_002.png" id="4_y37x0"]
+[ext_resource type="Resource" uid="uid://dtvxkjg5djaxx" path="res://dialogue/ryu.dialogue" id="5_5l4n6"]
+[ext_resource type="Texture2D" uid="uid://co2bptcsnmd03" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/east/frame_003.png" id="5_wti84"]
+[ext_resource type="Texture2D" uid="uid://bgbf284haqgwk" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/west/frame_000.png" id="14_k44au"]
+[ext_resource type="Texture2D" uid="uid://cs20wa87c5egt" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/west/frame_001.png" id="15_moq86"]
+[ext_resource type="Texture2D" uid="uid://cp2sa2tahe015" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/west/frame_002.png" id="16_2v4ff"]
+[ext_resource type="Texture2D" uid="uid://cidtwfooxwpj2" path="res://assets/NPCs/Ryu_Imada/animations/breathing-idle/west/frame_003.png" id="17_v5qm5"]
+
+[sub_resource type="Resource" id="Resource_37c78"]
+script = ExtResource("2_o42rn")
+age = 52
+nationality = "Singaporean"
+blood_type = 3
+description = "Victim's friend, flamboyant and excentric business man. Victim's firm started making direct competition with his recently. "
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_ujrna"]
+script = ExtResource("4_pmwv2")
+name = "Ryu Amada"
+char_info = SubResource("Resource_37c78")
+portrait = ExtResource("3_5l4n6")
+dialogue = ExtResource("5_5l4n6")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jqpsw"]
+load_path = "res://.godot/imported/frame_000.png-c88f520b48c569f36ed838e95581d247.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mb7m6"]
+load_path = "res://.godot/imported/frame_001.png-3757727b6dfe1485cfe03922fb42dab6.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3p4gu"]
+load_path = "res://.godot/imported/frame_002.png-fc513466bb95bc2dec65551f8718cc0e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o42rn"]
+load_path = "res://.godot/imported/frame_003.png-be543acd7b696b330c6800eda5efd772.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5l4n6"]
+load_path = "res://.godot/imported/frame_000.png-40492e4ff9c468ed9181b8c5b8e26c8b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pmwv2"]
+load_path = "res://.godot/imported/frame_001.png-a794dc054bcc1d3098abbf5e1720818e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_37c78"]
+load_path = "res://.godot/imported/frame_002.png-74d3946972d50ad0349085984a4e6a19.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ujrna"]
+load_path = "res://.godot/imported/frame_003.png-eb7d52154bf0ada18db61578c662f642.ctex"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sk5qp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7rao7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_des7o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_y37x0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wti84")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_jqpsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_mb7m6")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_3p4gu")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_o42rn")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_5l4n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_pmwv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_37c78")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_ujrna")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_k44au")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_moq86")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_2v4ff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_v5qm5")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o42rn"]
+size = Vector2(8, 11)
+
+[node name="Ryu" instance=ExtResource("1_aloyx")]
+char_name = "Ryu Imada"
+char = SubResource("Resource_ujrna")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(0, 1.1920929e-07)
+scale = Vector2(1.45, 1.1111112)
+sprite_frames = SubResource("SpriteFrames_sk5qp")
+animation = &"idle_south"
+autoplay = "idle_south"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_o42rn")

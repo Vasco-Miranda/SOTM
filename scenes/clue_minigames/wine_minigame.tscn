@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm8lrowlpm5lv"]
+
+[ext_resource type="PackedScene" uid="uid://j82p4pi1ihni" path="res://minigames/base_minigame.tscn" id="1_mqwwa"]
+[ext_resource type="PackedScene" uid="uid://dtg7dmc7avjmm" path="res://minigames/sequence_minigame/knife/knife_sequence_minigame.tscn" id="2_as0ks"]
+
+[node name="Minigame" instance=ExtResource("1_mqwwa")]
+rules = "You must conduct a quimical analyisis of the wine. Follow and memorize the sequence of solutions. Replicate it to uncover something about this clue."
+minigame1_scene = ExtResource("2_as0ks")
+
+[node name="Timer_UI" parent="." index="1"]
+time = 60.0
+
+[connection signal="gui_input" from="Rules" to="." method="_on_rules_gui_input"]
+[connection signal="gui_input" from="Rules/Label" to="." method="_on_label_gui_input"]
+[connection signal="gui_input" from="Rules/StartLabel" to="." method="_on_start_label_gui_input"]

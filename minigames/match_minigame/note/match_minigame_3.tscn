@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://mmgypd8ukvys"]
+
+[ext_resource type="PackedScene" uid="uid://c3222yxfognu0" path="res://minigames/match_minigame/base_match_minigame.tscn" id="1_7tsha"]
+[ext_resource type="Texture2D" uid="uid://ca1msomkfgidc" path="res://assets/minigames/words/knows.png" id="2_xn148"]
+
+[node name="Match" instance=ExtResource("1_7tsha")]
+correct_word = "he knows"
+wrong_word_1 = "he shows"
+wrong_word_2 = "he throws"
+wrong_word_3 = "he loathes"
+
+[node name="HiddenTexture" parent="NinePatchRect/VBoxContainer/Header" index="1"]
+texture = ExtResource("2_xn148")

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cyvxnjjt1hy6i"]
+
+[ext_resource type="PackedScene" uid="uid://j82p4pi1ihni" path="res://minigames/base_minigame.tscn" id="1_rtaib"]
+[ext_resource type="PackedScene" uid="uid://bfwkfy0h1gfum" path="res://minigames/match_minigame/note/match_minigame_1.tscn" id="2_o6pcr"]
+[ext_resource type="PackedScene" uid="uid://daastf80jmwji" path="res://minigames/match_minigame/note/match_minigame_2.tscn" id="3_d8k2f"]
+[ext_resource type="PackedScene" uid="uid://mmgypd8ukvys" path="res://minigames/match_minigame/note/match_minigame_3.tscn" id="4_y0aqc"]
+
+[node name="NoteMinigame" unique_id=740416215 instance=ExtResource("1_rtaib")]
+rules = "Try to uncover the secret messege in this note. Match the encrypted note with the correct option."
+type = 0
+minigame1_scene = ExtResource("2_o6pcr")
+minigame2_scene = ExtResource("3_d8k2f")
+minigame3_scene = ExtResource("4_y0aqc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Timer_UI" parent="." index="1" unique_id=2080109331]
+time = 35.0

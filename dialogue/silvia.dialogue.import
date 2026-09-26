@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://dsmfhi2gpwrjj"
+path="res://.godot/imported/silvia.dialogue-6ed9c0a46874200d2e9424bc2f28ad3d.tres"
+
+[deps]
+
+source_file="res://dialogue/silvia.dialogue"
+dest_files=["res://.godot/imported/silvia.dialogue-6ed9c0a46874200d2e9424bc2f28ad3d.tres"]
+
+[params]
+
+defaults=true

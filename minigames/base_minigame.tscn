@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://j82p4pi1ihni"]
+
+[ext_resource type="Script" uid="uid://dkrtomdvupfi7" path="res://minigames/base_minigame.gd" id="1_8xej1"]
+[ext_resource type="PackedScene" uid="uid://dgtmhxi0b8tbx" path="res://scenes/ui/timer_ui.tscn" id="2_qtyly"]
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="3_5plur"]
+
+[node name="Minigame" type="Control" unique_id=1791781275]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_8xej1")
+
+[node name="CenterContainer" type="Control" parent="." unique_id=552523970]
+visible = false
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Timer_UI" parent="." unique_id=2080109331 instance=ExtResource("2_qtyly")]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -299.0
+offset_top = 9.0
+offset_right = -107.0
+offset_bottom = 73.0
+grow_horizontal = 0
+grow_vertical = 1
+scale = Vector2(1.5, 1.5)
+time = 190.0
+
+[node name="Rules" type="NinePatchRect" parent="." unique_id=1033991086]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_5plur")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Label" type="Label" parent="Rules" unique_id=98513140]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+text = "Teste"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StartLabel" type="Label" parent="Rules" unique_id=470086262]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "Click Anywhere to Start
+"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="timed_out" from="Timer_UI" to="." method="_on_timer_ui_timed_out"]

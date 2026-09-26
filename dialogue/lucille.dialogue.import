@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://bm042a3g02yau"
+path="res://.godot/imported/lucille.dialogue-c5dc41adb3085cb75ed795ee5f1584ae.tres"
+
+[deps]
+
+source_file="res://dialogue/lucille.dialogue"
+dest_files=["res://.godot/imported/lucille.dialogue-c5dc41adb3085cb75ed795ee5f1584ae.tres"]
+
+[params]
+
+defaults=true

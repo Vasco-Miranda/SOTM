@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=4 format=3 uid="uid://trgkatr02mp0"]
+
+[ext_resource type="Script" uid="uid://bvtithxgfgonm" path="res://inventory/inventory_item.gd" id="1_bowy2"]
+[ext_resource type="PackedScene" uid="uid://ejlcril7i2ah" path="res://scenes/clue_minigames/meds_minigame.tscn" id="1_db85u"]
+[ext_resource type="Texture2D" uid="uid://dhidejxub2vh0" path="res://assets/items/meds_bottle.png" id="2_db85u"]
+
+[resource]
+script = ExtResource("1_bowy2")
+name = "Medication bottle"
+texture = ExtResource("2_db85u")
+description = "Half-empty bottle of an unknown substance. The name and medicine on the prescription are scratched out."
+hidden_info = "Half-empty bottle of anti-depressants. The patient’s name has been deliberately removed and cannot be restored."
+minigame = ExtResource("1_db85u")
+metadata/_custom_type_script = "uid://bvtithxgfgonm"

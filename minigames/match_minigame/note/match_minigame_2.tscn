@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://daastf80jmwji"]
+
+[ext_resource type="PackedScene" uid="uid://c3222yxfognu0" path="res://minigames/match_minigame/base_match_minigame.tscn" id="1_ev4u7"]
+[ext_resource type="Texture2D" uid="uid://dfrn8wc2ecf0a" path="res://assets/minigames/words/truth.png" id="2_qn2ya"]
+
+[node name="Match" instance=ExtResource("1_ev4u7")]
+correct_word = "truth"
+wrong_word_1 = "trust"
+wrong_word_2 = "youth"
+wrong_word_3 = "lust"
+
+[node name="HiddenTexture" parent="NinePatchRect/VBoxContainer/Header" index="1"]
+texture = ExtResource("2_qn2ya")

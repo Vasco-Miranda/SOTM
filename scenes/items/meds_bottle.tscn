@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqhk8776ke6mq"]
+
+[ext_resource type="PackedScene" uid="uid://crxbeic5uasw2" path="res://scenes/items/collectable.tscn" id="1_81c4j"]
+[ext_resource type="Resource" uid="uid://trgkatr02mp0" path="res://inventory/items/meds_bottle.tres" id="2_81c4j"]
+[ext_resource type="Texture2D" uid="uid://dhidejxub2vh0" path="res://assets/items/meds_bottle.png" id="3_7anyc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i430b"]
+resource_local_to_scene = true
+radius = 18.0
+
+[node name="Collectable" instance=ExtResource("1_81c4j")]
+itemRes = ExtResource("2_81c4j")
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_i430b")
+
+[node name="Sprite2D" parent="." index="1"]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_7anyc")

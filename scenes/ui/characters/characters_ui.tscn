@@ -1,0 +1,268 @@
+[gd_scene format=3 uid="uid://bn5x5tvb3bhlk"]
+
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="1_s3krj"]
+[ext_resource type="Script" uid="uid://b5oqlvs0p5hms" path="res://scripts/ui/characters_ui.gd" id="1_sgsv1"]
+[ext_resource type="PackedScene" uid="uid://d311g3qon3a4p" path="res://scenes/ui/characters/character_ui_slot.tscn" id="2_i2ao8"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="3_b6soq"]
+[ext_resource type="PackedScene" uid="uid://dgppl3c6moirb" path="res://scenes/ui/inventory/inventory_ui_info_panel.tscn" id="4_cov1s"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="5_eup8a"]
+[ext_resource type="Texture2D" uid="uid://cik87t78fuobf" path="res://assets/inventory/add_note.png" id="7_ulbnv"]
+[ext_resource type="Texture2D" uid="uid://pv5841eb321l" path="res://assets/inventory/notepad.png" id="8_veyoi"]
+[ext_resource type="Texture2D" uid="uid://c2y4tjoows26j" path="res://assets/inventory/close_icon.jpg" id="9_exv80"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_guue5"]
+font = ExtResource("3_b6soq")
+font_size = 38
+
+[sub_resource type="LabelSettings" id="LabelSettings_42f4f"]
+line_spacing = -18.0
+font = ExtResource("3_b6soq")
+font_size = 38
+
+[sub_resource type="LabelSettings" id="LabelSettings_g3f8s"]
+line_spacing = -10.0
+font = ExtResource("3_b6soq")
+font_size = 19
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8k75"]
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_veyoi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dq2ar"]
+
+[node name="Characters_UI" type="Control" unique_id=1375087274]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1047.0
+offset_bottom = -538.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sgsv1")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1560334198]
+layout_mode = 0
+offset_right = 112.50001
+offset_bottom = 223.75002
+scale = Vector2(0.83843476, 0.79999995)
+texture = ExtResource("1_s3krj")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="GridContainer" type="GridContainer" parent="NinePatchRect" unique_id=449300280]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.515717
+offset_top = -89.37501
+offset_right = -7.693596
+offset_bottom = -12.513573
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.3472822, 2.3472822)
+columns = 2
+
+[node name="char1" parent="NinePatchRect/GridContainer" unique_id=564149315 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char2" parent="NinePatchRect/GridContainer" unique_id=492506622 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char3" parent="NinePatchRect/GridContainer" unique_id=2070735150 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char4" parent="NinePatchRect/GridContainer" unique_id=1886439459 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char5" parent="NinePatchRect/GridContainer" unique_id=1766296411 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char6" parent="NinePatchRect/GridContainer" unique_id=1656593405 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char7" parent="NinePatchRect/GridContainer" unique_id=1814487225 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="char8" parent="NinePatchRect/GridContainer" unique_id=2123857123 instance=ExtResource("2_i2ao8")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NinePatchRect" unique_id=1505334719]
+layout_mode = 0
+offset_left = 8.348891
+offset_right = 136.21574
+offset_bottom = 42.0
+scale = Vector2(0.76000017, 0.76000017)
+text = "Suspects"
+label_settings = SubResource("LabelSettings_guue5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InfoPanel" parent="NinePatchRect" unique_id=617602470 instance=ExtResource("4_cov1s")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.92700005
+offset_left = 5.9634933
+offset_top = -4.91626
+offset_right = -13.506012
+offset_bottom = -1.25
+grow_vertical = 0
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=1604120262]
+layout_mode = 0
+offset_left = 136.0
+offset_top = -1.0
+offset_right = 247.22218
+offset_bottom = 224.80396
+scale = Vector2(0.838, 0.8)
+texture = ExtResource("1_s3krj")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Label" type="Label" parent="NinePatchRect2" unique_id=1766606835]
+layout_mode = 0
+offset_left = 9.06432
+offset_top = 1.2010849
+offset_right = 135.49405
+offset_bottom = 67.20109
+scale = Vector2(0.75311935, 0.598991)
+text = "Character Details"
+label_settings = SubResource("LabelSettings_42f4f")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Display" type="CenterContainer" parent="NinePatchRect2" unique_id=679997624]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.324703
+offset_top = 32.5
+offset_right = 35.081047
+offset_bottom = 102.5
+grow_horizontal = 2
+
+[node name="Background" type="Sprite2D" parent="NinePatchRect2/Display" unique_id=1253863675]
+position = Vector2(35.75809, 35.02446)
+scale = Vector2(4.558649, 4.5281925)
+texture = ExtResource("5_eup8a")
+
+[node name="Container" type="CenterContainer" parent="NinePatchRect2/Display" unique_id=138100952]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect2/Display/Container" unique_id=52816278]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Details" type="Control" parent="NinePatchRect2" unique_id=1761354490]
+visible = false
+anchors_preset = 0
+offset_top = 92.5
+offset_right = 110.978516
+offset_bottom = 224.60287
+
+[node name="InfoPanel_name" parent="NinePatchRect2/Details" unique_id=482327919 instance=ExtResource("4_cov1s")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1.1933212
+offset_top = 11.249998
+offset_right = 109.785194
+offset_bottom = 26.249998
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="InfoPanel_description" type="Label" parent="NinePatchRect2/Details" unique_id=9418739]
+custom_minimum_size = Vector2(101, 101)
+layout_mode = 0
+offset_left = 3.5799599
+offset_top = 25.0
+offset_right = 127.1234
+offset_bottom = 148.52939
+scale = Vector2(0.85, 0.85)
+text = "Teste"
+label_settings = SubResource("LabelSettings_g3f8s")
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AddNoteButton" type="Button" parent="NinePatchRect2/Details" unique_id=142340226]
+layout_mode = 0
+offset_left = 93.07875
+offset_top = 11.250001
+offset_right = 113.762924
+offset_bottom = 34.583344
+scale = Vector2(0.75, 0.75)
+theme_override_styles/normal = SubResource("StyleBoxTexture_j8k75")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_veyoi")
+
+[node name="Background" type="Sprite2D" parent="NinePatchRect2/Details/AddNoteButton" unique_id=461854662]
+scale = Vector2(1.2927613, 1.3541663)
+texture = ExtResource("5_eup8a")
+centered = false
+
+[node name="CenterContainer" type="CenterContainer" parent="NinePatchRect2/Details/AddNoteButton" unique_id=1707727427]
+layout_mode = 0
+offset_left = 1.5910898
+offset_right = 19.093073
+offset_bottom = 21.666672
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect2/Details/AddNoteButton/CenterContainer" unique_id=1515994786]
+layout_mode = 2
+texture = ExtResource("7_ulbnv")
+
+[node name="Notepad" type="NinePatchRect" parent="." unique_id=663295409]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 218.0
+offset_bottom = 173.0
+texture = ExtResource("8_veyoi")
+region_rect = Rect2(0, 0.37661743, 48, 63.623383)
+
+[node name="CloseNotesButton" type="Button" parent="Notepad" unique_id=1477910007]
+layout_mode = 0
+offset_left = 197.0
+offset_top = -1.0
+offset_right = 314.0
+offset_bottom = 116.0
+scale = Vector2(0.15, 0.15)
+icon = ExtResource("9_exv80")
+
+[node name="TextEdit" type="TextEdit" parent="Notepad" unique_id=639203907]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 45.0
+offset_right = 179.0
+offset_bottom = 138.0
+theme_override_colors/caret_color = Color(0, 0, 0, 1)
+theme_override_colors/selection_color = Color(0.67058825, 0.67058825, 0.67058825, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_readonly_color = Color(0, 0, 0, 1)
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("3_b6soq")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dq2ar")
+placeholder_text = "Add notes"
+wrap_mode = 1
+scroll_smooth = true
+scroll_fit_content_width = true
+
+[connection signal="pressed" from="NinePatchRect2/Details/AddNoteButton" to="." method="_on_add_note_button_pressed"]
+[connection signal="pressed" from="Notepad/CloseNotesButton" to="." method="_on_close_notes_button_pressed"]

@@ -1,0 +1,16 @@
+[gd_scene load_steps=6 format=3 uid="uid://hhd6fi6177kv"]
+
+[ext_resource type="PackedScene" uid="uid://cw0nrsdgjmedj" path="res://minigames/memory_minigame/base_memory_memory.tscn" id="1_1mjms"]
+[ext_resource type="Texture2D" uid="uid://b6ntvc8b3f472" path="res://assets/minigames/candles/candle-holder-3.png" id="2_qmv5b"]
+[ext_resource type="Texture2D" uid="uid://dlg2n1ulf1huj" path="res://assets/minigames/candles/candle-holder-1.png" id="3_8vkp8"]
+[ext_resource type="Texture2D" uid="uid://din5do3e6qlhe" path="res://assets/minigames/candles/candle-holder-2.png" id="4_pkrim"]
+[ext_resource type="Texture2D" uid="uid://dfj4xv0k26021" path="res://assets/minigames/candles/candle-holder-4.png" id="5_07ik3"]
+
+[node name="Memory" instance=ExtResource("1_1mjms")]
+right_img = ExtResource("2_qmv5b")
+wrong_img_1 = ExtResource("3_8vkp8")
+wrong_img_2 = ExtResource("4_pkrim")
+wrong_img_3 = ExtResource("5_07ik3")
+
+[node name="HiddenTexture" parent="NinePatchRect/InitContainer/InitCard" index="1"]
+texture = ExtResource("2_qmv5b")

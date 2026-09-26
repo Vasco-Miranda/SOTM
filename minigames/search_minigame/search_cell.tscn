@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvi8p7nmulkhw"]
+
+[ext_resource type="Script" uid="uid://c7ighriv3ckpr" path="res://minigames/search_minigame/search_cell.gd" id="1_3d2er"]
+
+[node name="SearchCell" type="Control"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 3
+anchor_right = 0.125
+anchor_bottom = 0.22222222
+script = ExtResource("1_3d2er")
+metadata/_edit_use_anchors_ = true
+
+[node name="Cell" type="Button" parent="."]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="Cell" to="." method="_on_pressed"]

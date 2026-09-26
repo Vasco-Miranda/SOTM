@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://c2m722hj7dls0"]
+
+[ext_resource type="Script" uid="uid://djamqnt5v4o0h" path="res://scripts/menus/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="2_ovrgc"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="3_2o76q"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="4_6bivr"]
+
+[node name="MainMenu" type="Control" unique_id=92922549]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_l6cm7")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=263294358]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="NinePatchRect" parent="CenterContainer" unique_id=1819894329]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_ovrgc")
+region_rect = Rect2(6, 6, 6, 6)
+
+[node name="Start" type="Button" parent="CenterContainer/Control" unique_id=1655627151]
+custom_minimum_size = Vector2(300, 125)
+layout_mode = 0
+offset_left = 456.0
+offset_top = 24.0
+offset_right = 536.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 90
+text = "Start"
+
+[node name="Load" type="Button" parent="CenterContainer/Control" unique_id=648549814]
+custom_minimum_size = Vector2(300, 125)
+layout_mode = 0
+offset_left = 456.0
+offset_top = 200.0
+offset_right = 536.0
+offset_bottom = 235.0
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 90
+text = "Load"
+
+[node name="Options" type="Button" parent="CenterContainer/Control" unique_id=1135182101]
+custom_minimum_size = Vector2(300, 125)
+layout_mode = 0
+offset_left = 456.0
+offset_top = 376.0
+offset_right = 536.0
+offset_bottom = 411.0
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 90
+text = "Options"
+
+[node name="Quit" type="Button" parent="CenterContainer/Control" unique_id=1483574192]
+custom_minimum_size = Vector2(300, 125)
+layout_mode = 0
+offset_left = 456.0
+offset_top = 552.0
+offset_right = 536.0
+offset_bottom = 587.0
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 90
+text = "Quit"
+
+[node name="LoadSlot" type="TextEdit" parent="CenterContainer/Control" unique_id=184778862]
+custom_minimum_size = Vector2(200, 65)
+layout_mode = 0
+offset_left = 816.0
+offset_top = 228.0
+offset_right = 1016.0
+offset_bottom = 293.0
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 42
+placeholder_text = "Enter Load Slot"
+
+[node name="OptionsContainer" type="NinePatchRect" parent="CenterContainer" unique_id=394352492]
+visible = false
+custom_minimum_size = Vector2(750, 500)
+layout_mode = 2
+texture = ExtResource("4_6bivr")
+region_rect = Rect2(6, 6, 6, 6)
+
+[node name="ModelsButton" type="CheckButton" parent="CenterContainer/OptionsContainer" unique_id=1191730055]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.07333333
+anchor_top = 0.116
+anchor_right = 0.9266667
+anchor_bottom = 0.372
+offset_right = -320.0
+offset_bottom = -64.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 50
+button_pressed = true
+text = "AI Models  "
+metadata/_edit_use_anchors_ = true
+
+[node name="DoneButton" type="Button" parent="CenterContainer/OptionsContainer" unique_id=604074987]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.36133334
+anchor_top = 0.676
+anchor_right = 0.628
+anchor_bottom = 0.82
+theme_override_fonts/font = ExtResource("3_2o76q")
+theme_override_font_sizes/font_size = 50
+text = "Done"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="CenterContainer/Control/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CenterContainer/Control/Load" to="." method="_on_load_pressed"]
+[connection signal="pressed" from="CenterContainer/Control/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="CenterContainer/Control/Quit" to="." method="_on_quit_pressed"]
+[connection signal="toggled" from="CenterContainer/OptionsContainer/ModelsButton" to="." method="_on_models_button_toggled"]
+[connection signal="pressed" from="CenterContainer/OptionsContainer/DoneButton" to="." method="_on_done_button_pressed"]

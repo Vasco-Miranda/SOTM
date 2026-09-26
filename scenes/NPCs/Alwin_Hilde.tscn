@@ -1,0 +1,126 @@
+[gd_scene load_steps=25 format=3 uid="uid://bxbvchmg60dco"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_ck8ou"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_30r3c"]
+[ext_resource type="Texture2D" uid="uid://dq5b2hj07mo4q" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/east/frame_000.png" id="2_dkfxq"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="3_vpkvg"]
+[ext_resource type="Texture2D" uid="uid://4eglxqgyde36" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/east/frame_001.png" id="3_wjntn"]
+[ext_resource type="Texture2D" uid="uid://chrl7jvwpk4b5" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/east/frame_002.png" id="4_b28v1"]
+[ext_resource type="Texture2D" uid="uid://bgmepp0ry1frh" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/east/frame_003.png" id="5_ang4b"]
+[ext_resource type="Texture2D" uid="uid://cg6q6ydacy84s" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/north/frame_000.png" id="6_aha1p"]
+[ext_resource type="Texture2D" uid="uid://b5drw15taga7n" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/north/frame_001.png" id="7_6g1f3"]
+[ext_resource type="Texture2D" uid="uid://bh86jwqm1cvi3" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/north/frame_002.png" id="8_eayid"]
+[ext_resource type="Texture2D" uid="uid://dtrdl7xo2hwge" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/north/frame_003.png" id="9_ffeca"]
+[ext_resource type="Texture2D" uid="uid://cim2ejowxvsxi" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/south/frame_000.png" id="10_8blwb"]
+[ext_resource type="Texture2D" uid="uid://bsfg8sjp4pq7g" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/south/frame_001.png" id="11_kas0p"]
+[ext_resource type="Texture2D" uid="uid://dc4uwaxr7ppsq" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/south/frame_002.png" id="12_xhgn7"]
+[ext_resource type="Texture2D" uid="uid://g8mmr5xux1tt" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/south/frame_003.png" id="13_3ksfy"]
+[ext_resource type="Texture2D" uid="uid://de7shpoi7kmac" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/west/frame_000.png" id="14_5cwq5"]
+[ext_resource type="Texture2D" uid="uid://bo8srjdbb0q6n" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/west/frame_001.png" id="15_mvbxk"]
+[ext_resource type="Texture2D" uid="uid://cidb1uqh6043d" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/west/frame_002.png" id="16_4hp4y"]
+[ext_resource type="Texture2D" uid="uid://ds5rmh4c14yyw" path="res://assets/NPCs/Alwin_Hilde/animations/breathing-idle/west/frame_003.png" id="17_t7l5c"]
+[ext_resource type="Texture2D" uid="uid://bhajkgejrp24d" path="res://assets/NPCs/Alwin_Hilde/Alwin_Hilde-portrait3.png" id="18_wjntn"]
+
+[sub_resource type="Resource" id="Resource_kcv0t"]
+script = ExtResource("2_30r3c")
+age = 38
+nationality = "Dutch"
+description = "A crime novelist, working on a new book about a murder mistery, happening in a mansion, must like the party he's at."
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_vpkvg"]
+script = ExtResource("3_vpkvg")
+name = "Alwin Hilde"
+char_info = SubResource("Resource_kcv0t")
+portrait = ExtResource("18_wjntn")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y3r1w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_dkfxq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wjntn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_b28v1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ang4b")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_aha1p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_6g1f3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eayid")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ffeca")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_8blwb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_kas0p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_xhgn7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_3ksfy")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_5cwq5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_mvbxk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_4hp4y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_t7l5c")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wjntn"]
+size = Vector2(8, 12)
+
+[node name="CharacterBody2D" instance=ExtResource("1_ck8ou")]
+char_name = "Alwin Hilde"
+char = SubResource("Resource_vpkvg")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_y3r1w")
+animation = &"idle_south"
+autoplay = "idle_south"
+frame = 3
+frame_progress = 0.61839616
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_wjntn")

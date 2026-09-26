@@ -1,0 +1,538 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Edgar: I believe we have exhausted the limits of my professional courtesy, sir. I shall not assist you further.
+	Edgar: You are no longer investigating. You are merely insisting.
+	=> END
+else
+	if Utils.ctx["evidence_focus"] >= 9 and (Utils.ctx["pressure_focus"] / 2) <= Utils.ctx["comfort_focus"]
+		Edgar: You look at what is actually there, rather than what you wish to find. A rare habit in this household.
+	elif Utils.ctx["is_self_incriminating"]
+		Edgar: You have a troubling habit of standing too close to the edge of your own accusations, sir.
+	elif Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Edgar: You return to me with a heavier tread each time. 
+		Edgar: Certainty often feels like progress right before it turns into a mistake.
+	elif Utils.ctx["is_stressed"]
+		Edgar: Your breath is shallow, sir. 
+		Edgar: If I may suggest, a panicked eye tends to mistake shadows for architecture.
+	elif Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 2
+		Edgar: Back again, sir.
+		Edgar: I assume the rest of the drawing room proved too loud for productive thought.
+	elif Utils.ctx["is_suspicious"]
+		Edgar: You are arranging people into conclusions rather quickly.
+	elif Utils.ctx["is_aggressive"]
+		Edgar: Raising your voice will not alter the acoustics of this house, sir. 
+		Edgar: Nor my memory of the evening.
+	else
+		Edgar: How else may I assist you, sir?
+
+	
+	- Who are the guests here? [if not Utils.character.has_talked("guests")] => guests
+	- Where were you earlier tonight? [if not Utils.character.has_talked("alibi")] => alibi
+	- Tell me about this house. [if not Utils.character.has_talked("house")] => house
+	- What do you think about me? [if not Utils.character.has_talked("suspicion")] => suspicion
+	- You know more than you are saying. [if not Utils.character.has_talked("secrets")] => secrets
+	- You sound loyal, but not fond. [if Utils.character.has_talked("house") and not Utils.character.has_talked("loyalty")] => loyalty
+	- Am I starting to look rattled to you? [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+
+	# Clue-based options
+	- Ask about the knife. [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Ask about the wine glass. [if Utils.is_clue_surface_ready("wine")] => wine
+	- Ask about the residue in the wine glass. [if Utils.is_clue_hidden_ready("wine")] => wine
+	- Revisit the wine glass with what you uncovered. [if Utils.is_clue_revisit_ready("wine")] => wine
+	- Ask about the stained glove. [if Utils.is_clue_surface_ready("glove")] => glove
+	- Ask about the hidden traces on the glove. [if Utils.is_clue_hidden_ready("glove")] => glove
+	- Revisit the glove with what you uncovered. [if Utils.is_clue_revisit_ready("glove")] => glove
+	- Ask about the letter opener. [if Utils.is_clue_surface_ready("opener")] => opener
+	- Ask about the cleaned letter opener. [if Utils.is_clue_hidden_ready("opener")] => opener
+	- Revisit the letter opener with what you uncovered. [if Utils.is_clue_revisit_ready("opener")] => opener
+	- Ask about the cryptic note. [if Utils.is_clue_surface_ready("note")] => note
+	- Ask about the distorted note. [if Utils.is_clue_hidden_ready("note")] => note
+	- Revisit the note with what you uncovered. [if Utils.is_clue_revisit_ready("note")] => note
+
+	# Costume-related options
+	- What are you dressed as? [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- Ask about the victim's costume. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+
+	- I will manage on my own. Thank you.
+		Edgar: As you wish, sir. I shall remain here.
+		=> END
+
+~ meet
+do Utils.character.meet()
+Edgar: Good evening, sir.
+Edgar: I am Edgar Voss. If you require refreshment or direction, I am at your disposal.
+- You work here, I assume?
+	do Utils.register_dialogue_choice("edgar_meet_work", "You work here, I assume?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: For nearly thirty years, sir. Long enough to blend into the wainscoting.
+	do Utils.character.increase_trust()
+- You seem very composed.
+	do Utils.register_dialogue_choice("edgar_meet_composed", "You seem very composed.", "reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Edgar: Panic is a luxury reserved for the guests, sir. Service requires steadiness.
+	do Utils.character.increase_interest()
+- You do not seem surprised by what happened.
+	do Utils.register_dialogue_choice("edgar_meet_surprised", "You do not seem surprised by what happened.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: When you tend to a house built on private grievances, sir, you cease to be surprised by sudden noise.
+	do Utils.character.decrease_trust()
+
+Edgar: How may I assist your understanding of the evening?
+- Who are the guests here? => guests
+- Where were you earlier tonight? => alibi
+- I will manage on my own.
+	Edgar: As you wish, sir.
+	=> END
+
+
+~ guests
+do Utils.character.talked("guests")
+Edgar: I know their names, their preferences, and which doors they prefer to keep locked. 
+Edgar: But discretion is the primary requirement of my profession.
+- Even in a murder investigation?
+	do Utils.register_dialogue_choice("edgar_guests_investigation", "Even in a murder investigation?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: Particularly then, sir. 
+	Edgar: The police will ask for facts. Guests usually ask for gossip.
+	do Utils.character.decrease_trust(2)
+- You are protecting someone.
+	do Utils.register_dialogue_choice("edgar_guests_protecting", "You are protecting someone.", "pressure,accusation", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: I am protecting the stability of this house. 
+	Edgar: Or, at least, what remains of it.
+	do Utils.character.increase_apprehension()
+- Secrets always surface eventually.
+	do Utils.register_dialogue_choice("edgar_guests_secrets", "Secrets always surface eventually.", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: Indeed.
+	Edgar: Usually in the worst possible manner.
+	do Utils.character.increase_interest()
+=> END
+
+
+~ alibi
+do Utils.character.talked("alibi")
+Edgar: I was performing my duties.
+Edgar: Glasses do not fill themselves, nor do candles burn indefinitely.
+- That does not answer anything.
+	do Utils.register_dialogue_choice("edgar_alibi_answer", "That does not answer anything.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: It answers what is necessary.
+	Edgar: If you require a minute-by-minute log, I am afraid my duties are rarely choreographed so neatly.
+	do Utils.character.decrease_trust(2)
+- Can anyone confirm that?
+	do Utils.register_dialogue_choice("edgar_alibi_confirm", "Can anyone confirm that?", "probe", 0.1, 0.1, "", 0.0, 0.0, -0.1, 0.0)
+	Edgar: The staff moves quietly by design, sir. We do not keep watch over one another like prison guards.
+	do Utils.character.increase_apprehension(2)
+- Convenient.
+	do Utils.register_dialogue_choice("edgar_alibi_convenient", "Convenient.", "pressure,accusation", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: A good butler is always where he is needed, sir. 
+	Edgar: That often looks like invisibility to those unfamiliar with labor.
+	do Utils.character.decrease_trust()
+=> END
+
+
+~ house
+do Utils.character.talked("house")
+if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+	Edgar: Floorboards creak in consistent patterns, sir. You learn quickly whose footsteps carry hesitation and whose carry haste.
+	- What do you mean?
+		do Utils.register_dialogue_choice("edgar_house_mean", "What do you mean?", "probe", 0.1, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+		Edgar: Only that tonight’s tragedy did not begin at nine o'clock. 
+		Edgar: The tension has been humming in these walls all week.
+		do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Edgar: The architecture is late Georgian, sir. If you are looking for hidden passages, I suggest consulting a Gothic novel instead.
+	do Utils.character.decrease_trust()
+elif Utils.character.get_interest() >= 5
+	Edgar: There are dozens of rooms in this estate. 
+	Edgar: Remarkably few of them offer genuine privacy.
+	do Utils.character.increase_apprehension()
+else
+	Edgar: It is an old house, sir. Cold in the winter, difficult to heat.
+	Edgar: That is all.
+=> END
+
+
+~ suspicion
+do Utils.character.talked("suspicion")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_favorite"]
+	Edgar: You move with a strange economy, sir. 
+	Edgar: You do not wander the corridors like a grieving guest. You inspect them like an architect.
+	do Utils.character.increase_apprehension()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Edgar: You interrogate the staff with the rehearsed intensity of a man who has already drafted his conclusion.
+	do Utils.character.decrease_trust()
+elif Utils.character.get_interest() >= 5
+	Edgar: You notice dust on a table edge and hesitation in a voice. 
+	Edgar: That is rarely accidental.
+	Edgar: Most gentlemen of your station only notice when their glass is empty.
+	do Utils.character.increase_interest(2)
+elif Utils.ctx["is_stressed"]
+	Edgar: Your posture is polite, sir, but your fingers betray you. You are winding yourself tight.
+else
+	Edgar: You are unusually composed.
+
+- I write murder for a living. Maybe that's why.
+	do Utils.register_dialogue_choice("edgar_suspicion_writer", "I write murder for a living. Maybe that's why.", "self_incriminate,deflect", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Edgar: Ah. Professional detachment. 
+	Edgar: A shield that functions admirably right up until the blood ruins your own shoes.
+	do Utils.character.increase_interest(2)
+	do Utils.character.increase_apprehension(2)
+- Are you saying I seem guilty?
+	do Utils.register_dialogue_choice("edgar_suspicion_guilty", "Are you saying I seem guilty?", "self_incriminate,pressure", 0.0, 0.0, "", 0.0, 0.1, 0.1, 0.2)
+	Edgar: I am saying you seem prepared.
+	do Utils.character.increase_interest(1)
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+Edgar: Slightly, sir. 
+Edgar: You have begun asking your next question before I have placed the period on my previous answer.
+- And that makes me careless.
+	do Utils.register_dialogue_choice("edgar_stress_careless", "And that makes me careless.", "reassure", 0.2, 0.0, "", 0.0, -0.2, -0.1, 0.0)
+	Edgar: It makes you vulnerable to misdirection.
+	Edgar: Haste is the easiest vulnerability to exploit.
+- Then what would you advise?
+	do Utils.register_dialogue_choice("edgar_stress_advise", "Then what would you advise?", "reassure", 0.2, 0.0, "", 0.0, -0.2, 0.0, 0.0)
+	Edgar: Take a breath, sir. A quiet room reveals more than an interrogation.
+	Edgar: Finish one line of inquiry before opening three more.
+=> END
+
+
+~ secrets
+do Utils.character.talked("secrets")
+Edgar: Of course I do.
+Edgar: So do you, I suspect.
+- What I know is barely relevant.
+	do Utils.register_dialogue_choice("edgar_secrets_relevant", "Mine are not relevant.", "deflect,self_incriminate", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.1)
+	Edgar: That is what everyone says.
+	do Utils.character.decrease_trust()
+	do Utils.character.increase_apprehension()
+- Your secrets seem way more relevant.
+	do Utils.register_dialogue_choice("edgar_secrets_might", "Yours might be.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: They might be.
+	Edgar: Which is why I do not spend them carelessly.
+=> END
+
+
+~ loyalty
+do Utils.character.talked("loyalty")
+Edgar: Fondness dies when people reveal their natures, sir. 
+Edgar: Duty, however, is a matter of personal discipline.
+- So yours did.
+	do Utils.register_dialogue_choice("edgar_loyalty_did", "So yours did.", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: My contract was with the estate, sir. The estate remains standing.
+- That sounds like resentment.
+	do Utils.register_dialogue_choice("edgar_loyalty_resentment", "That sounds like resentment.", "pressure", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: It sounds like thirty years of emploiment, sir. Do not confuse weariness with malice.
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Edgar: Typed blood, yet no clear donor among the guests. 
+		Edgar: A prop designed to keep our eyes glued to the floor.
+	else
+		Edgar: More detail does not make it more honest.
+	- So the point was distraction.
+		do Utils.register_dialogue_choice("edgar_knife_revisit_distraction", "So the point was distraction.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Edgar: That is my impression.
+	- Access still matters more than the blood.
+		do Utils.register_dialogue_choice("edgar_knife_revisit_access", "Access still matters more than the blood.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Who carried it across the threshold matters infinitely more than what stained the steel.
+
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.ctx["is_pressured"]
+		Edgar: You present the new analysis as if it settles the matter.
+		Edgar: The new details remain inconclusive.
+	else
+		Edgar: If the blood is uncertain, the placement becomes the stronger fact.
+	- Meaning someone brought it intentionally.
+		do Utils.register_dialogue_choice("edgar_knife_hidden_brought", "Meaning someone brought it intentionally.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Edgar: And placed it where even the most unobservant guest would stumble upon it.
+	- Someone intended us to notice it.
+		do Utils.register_dialogue_choice("edgar_knife_hidden_notice", "Someone intended us to notice it.", "evidence", 0.0, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Most likely.
+		Edgar: A performance requires an audience, sir.
+
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Edgar: I keep a strict inventory of the kitchen cutlery, sir. 
+		Edgar: That piece was introduced to the house tonight.
+		- Meaning?
+			do Utils.register_dialogue_choice("edgar_knife_meaning", "Meaning?", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Edgar: It was brought there.
+	elif Utils.character.get_trust() <= -5 or Utils.ctx["is_pressured"]
+		Edgar: Brandishing kitchenware does not elevate your interrogation, sir.
+		do Utils.character.decrease_trust()
+	else
+		Edgar: It is unusual.
+		Edgar: A misplaced object creates unnecessary questions.
+=> END
+
+
+~ wine
+if Utils.is_clue_revisit_ready("wine")
+	do Utils.mark_clue_topic("wine", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Edgar: Chemical residue mixed with vintage Bordeaux. 
+		Edgar: The glass was contaminated long before it reached the table.
+	else
+		Edgar: So service itself became the delivery method.
+	- Which means procedure was used as cover.
+		do Utils.register_dialogue_choice("edgar_wine_revisit_cover", "Which means procedure was used as cover.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Edgar: No one questions a hand holding a tray.
+	- And access mattered more than force.
+		do Utils.register_dialogue_choice("edgar_wine_revisit_force", "And access mattered more than force.", "evidence", 0.0, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Elegance is rarely violent, sir. But it is frequently fatal.
+
+elif Utils.is_clue_hidden_ready("wine")
+	do Utils.mark_clue_topic("wine", "hidden")
+	if Utils.character.get_interest() >= 5
+		Edgar: A foreign residue beneath the wine.
+		Edgar: Someone understood the master's drinking habits intimately.
+	else
+		Edgar: The glass contained more than wine.
+		Edgar: That simplifies matters.
+	- It rules out accident.
+		do Utils.register_dialogue_choice("edgar_wine_hidden_accident", "It rules out accident.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Entirely. Vintage wine does not curdle itself.
+	- It points back to whoever served it.
+		do Utils.register_dialogue_choice("edgar_wine_hidden_served", "It points back to whoever served it.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Or whoever leaned over the tray while the servant was distracted.
+
+else
+	do Utils.character.talked("wine")
+	do Utils.mark_clue_topic("wine", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Edgar: The cellar was not accessed tonight.
+		Edgar: Officially.
+		do Utils.character.increase_apprehension()
+		- Officially?
+			do Utils.register_dialogue_choice("edgar_wine_officially", "Officially?", "pressure,evidence", -0.1, 0.2, "wine", 0.7, 0.0, 0.0, 0.0)
+			Edgar: Guests frequently treat boundaries as suggestions, sir.
+		- So someone bypassed procedure.
+			do Utils.register_dialogue_choice("edgar_wine_procedure", "So someone bypassed procedure.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+			Edgar: That would be the diplomatic phrasing, yes.
+	elif Utils.character.get_interest() >= 5
+		Edgar: The master never left a glass half-empty unless the taste offended him.
+		do Utils.character.increase_interest()
+	else
+		Edgar: A spilled crystal goblet. Hardly uncommon at high-spirited gatherings.
+=> END
+
+
+~ glove
+if Utils.is_clue_revisit_ready("glove")
+	do Utils.mark_clue_topic("glove", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Edgar: Wax traces, a second substance, and an uncertain owner.
+		Edgar: The glove traveled.
+	else
+		Edgar: It may not belong to the victim.
+		Edgar: That is materially important.
+	- Because it points to another wearer.
+		do Utils.register_dialogue_choice("edgar_glove_revisit_wearer", "Because it points to another wearer.", "evidence", 0.1, 0.1, "glove", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Yes.
+	- Because it points to movement between rooms.
+		do Utils.register_dialogue_choice("edgar_glove_revisit_between", "Because it points to movement between rooms.", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Edgar: A silent transit while the toast was being given.
+elif Utils.is_clue_hidden_ready("glove")
+	do Utils.mark_clue_topic("glove", "hidden")
+	if Utils.character.get_trust() <= -5
+		Edgar: Presenting fabric fibers does not compel me to speculate on guests' wardrobes, sir.
+	else
+		Edgar: Wax beneath the visible stain.
+		Edgar: The glove was involved in more than one place.
+	- Then the stain was only the first story.
+		do Utils.register_dialogue_choice("edgar_glove_hidden_story", "Then the stain was only the first story.", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Edgar: A superficial mark designed to cover an earlier indiscretion.
+	- Sounds like a distraction.
+		do Utils.register_dialogue_choice("edgar_glove_hidden_distraction", "Sounds like a distraction.", "evidence", 0.1, 0.1, "glove", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Everything in this house is currently competing for our attention, sir.
+else
+	do Utils.character.talked("glove")
+	do Utils.mark_clue_topic("glove", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Edgar: The stitching is Italian silk. None of the domestic staff could afford such craftsmanship.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_trust() <= -5
+		Edgar: Laundry items are hardly my primary concern during an investigation.
+		do Utils.character.decrease_trust()
+	else
+		Edgar: It appears out of place.
+	- Out of place where?
+		do Utils.register_dialogue_choice("edgar_glove_where", "Out of place where?", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Edgar: On a servant, perhaps not.
+		Edgar: In that location, yes.
+		Edgar: Hardly an accidental drop.
+	- So it was staged.
+		do Utils.register_dialogue_choice("edgar_glove_staged", "So it was staged.", "evidence", 0.1, 0.1, "glove", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Or hastily discarded by hands that suddenly needed to be bare.
+=> END
+
+
+~ opener
+if Utils.is_clue_revisit_ready("opener")
+	do Utils.mark_clue_topic("opener", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Edgar: Polished clean with a linen napkin within the hour. 
+		Edgar: Someone cared deeply about fingerprints.
+	else
+		Edgar: The absence of evidence upon the metal is the most meaningful trait it possesses.
+	- Meaning someone recognized its importance afterward.
+		do Utils.register_dialogue_choice("edgar_opener_revisit_afterward", "Meaning someone recognized its importance afterward.", "evidence", 0.1, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+		Edgar: That would be my interpretation.
+	- Someone recognized their own exposure.
+		do Utils.register_dialogue_choice("edgar_opener_revisit_exposure", "Someone recognized their own exposure.", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Panic leaves streaks on brass, sir.
+elif Utils.is_clue_hidden_ready("opener")
+	do Utils.mark_clue_topic("opener", "hidden")
+	if Utils.character.get_interest() >= 5
+		Edgar: A recently cleaned blade suggests urgency.
+	else
+		Edgar: It was wiped down. Whoever held it understood what it could prove.
+- Then it mattered after the act.
+	do Utils.register_dialogue_choice("edgar_opener_hidden_after", "Then it mattered after the act.", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+	Edgar: Indeed.
+- So it implicated the wrong owner.
+	do Utils.register_dialogue_choice("edgar_opener_hidden_owner", "So it implicated the wrong owner.", "evidence", 0.1, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+	Edgar: Or precisely the right one.
+else
+	do Utils.character.talked("opener")
+	do Utils.mark_clue_topic("opener", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Edgar: That belongs in the master's private desk.
+		Edgar: It was not there earlier.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_interest() >= 5
+		Edgar: Heavy brass, sharply pointed. Desk tools often double as weapons of convenience.
+		Edgar: Objects like that rarely travel alone.
+		do Utils.character.increase_interest()
+	else
+		Edgar: A simple stationary implement.
+	- Who would notice it missing?
+		do Utils.register_dialogue_choice("edgar_opener_notice", "Who would notice it missing?", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+		Edgar: The master, sir. He was obsessive regarding his desk arrangement.
+=> END
+
+
+~ note
+if Utils.is_clue_revisit_ready("note")
+	do Utils.mark_clue_topic("note", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Edgar: Fragmented content and deliberate distortion.
+		Edgar: The phrasing is calculated to induce paranoia.
+	else
+		Edgar: So the note was masked as carefully as any guest here.
+		Edgar: A carefully constructed piece of psychological warfare, sir.
+- Anonymity was the point.
+	do Utils.register_dialogue_choice("edgar_note_revisit_anonymity", "Then anonymity was the point.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+	Edgar: A shadow has no face to strike back against.
+- Interpretation was left to us.
+	do Utils.register_dialogue_choice("edgar_note_revisit_us", "Interpretation was left to us.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+	Edgar: Convenient, is it not?
+	Edgar: Nothing breeds suspicion faster than a blank space waiting for a name.
+elif Utils.is_clue_hidden_ready("note")
+	do Utils.mark_clue_topic("note", "hidden")
+	if Utils.ctx["is_suspicious"]
+		Edgar: "He knows" narrows the emotional purpose, not the author.
+	else
+		Edgar: Distorted handwriting indicates forethought.
+		Edgar: The phrases indicate pressure.
+	- Pressure on a specific man.
+		do Utils.register_dialogue_choice("edgar_note_hidden_man", "Pressure on a specific man.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Or a specific secret.
+	- On everyone who feared being recognized.
+		do Utils.register_dialogue_choice("edgar_note_hidden_everyone", "On everyone who feared being recognized.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Edgar: Guilt is a remarkably wide net, sir.
+else
+	do Utils.character.talked("note")
+	do Utils.mark_clue_topic("note", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Edgar: It appears intentionally vague.
+	elif Utils.character.get_trust() <= -5
+		Edgar: A note without context is merely paper.
+	else
+		Edgar: Hastily scrawled. Hard to discern intent.
+	- So you distrust it.
+		do Utils.register_dialogue_choice("edgar_note_distrust", "So you distrust it.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Edgar: I distrust any declaration that lacks a signature.
+	- Because it may have been planted.
+		do Utils.register_dialogue_choice("edgar_note_planted", "Because it may have been planted.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Edgar: To sow discord? Undoubtedly.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+Edgar: This is not a costume.
+Edgar: It is my uniform.
+- You never step out of it?
+	do Utils.register_dialogue_choice("edgar_costume_step", "You never step out of it?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: There is no need to.
+	Edgar: To step out of role in this house, sir, is to become a target. I prefer my anonymity.
+	do Utils.character.increase_interest()
+=> END
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_favorite"]
+	Edgar: A detective.
+	Edgar: Then I assume you intend to resolve this.
+	do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Edgar: A trench coat and magnifying glass.
+	Edgar: One wonders if life is imitating art, or if you simply dressed for the occasion you intended to create.
+	do Utils.character.decrease_trust()
+else
+	Edgar: Your costume feels increasingly theatrical, sir. As if you are playing for the balcony while the house burns.
+- I am also a novelist.
+	do Utils.register_dialogue_choice("edgar_costume_novelist", "I am also a novelist.", "self_incriminate,deflect", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Edgar: So I gathered. Authors have a habit of looking at tragedies as raw material rather than human loss.
+- Does that trouble you?
+	do Utils.register_dialogue_choice("edgar_costume_trouble", "Does that trouble you?", "self_incriminate,pressure", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.1)
+	Edgar: It makes me wonder whether you are observing the crime or courting it.
+=> END
+
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+if Utils.character.get_trust() >= 5 or Utils.ctx["family_focus"] >= 3
+	Edgar: A magician’s cape and hat. He reveled in misdirection right until the final curtain.
+	Edgar: The master enjoyed spectacle.
+	do Utils.character.increase_apprehension()
+else
+	Edgar: He dressed to command attention, sir. As was his custom.
+	Edgar: It was fitting.
+- Because he liked misdirection.
+	do Utils.register_dialogue_choice("edgar_costume_misdirection", "Because he liked misdirection.", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Edgar: Because he preferred illusion to truth. It made him feel powerful over those who could not see the sleight of hand.
+=> END
+
+
+~ blamed
+if Utils.character.get_trust() >= 6 and Utils.character.get_interest() >= 2 and not Utils.ctx["is_suspicious"] and not Utils.ctx["is_pressured"]
+	Edgar: How profoundly disappointing, sir. I had mistaken your systematic questioning for intellect.
+	Edgar: It appears you simply required a culprit whose absence wouldn't disturb the social registry.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Edgar: Of course. The servant holding the keys. Classic, clean, and entirely devoid of imagination.
+	Edgar: I wonder if your readers will find such an obvious conclusion satisfying, sir.
+elif Utils.ctx["evidence_focus"] >= 9 and Utils.ctx["blame"] < 3
+	Edgar: Fascinating. You gathered the threads with the precision of a surgeon, yet knotted them like a butcher.
+	Edgar: Did the actual truth prove too complicated for your narrative?
+elif Utils.ctx["is_self_incriminating"] and Utils.character.get_apprehension() >= 4
+	Edgar: You circled your own guilt all evening, sir. Pointing at me feels like a desperate attempt to wash your hands before the ink dries.
+elif Utils.ctx["is_stressed"] or Utils.ctx["is_confused"]
+	Edgar: You are trembling, sir. 
+	Edgar: This is not an accusation born of logic. It is the lash of a panicked mind desperate to close the inquiry.
+	Edgar: Under strain, people often choose a culprit before they choose the truth.
+else
+	Edgar: Very well, sir. If placing the noose around my neck restores your peace of mind, let us see if the facts agree with your fiction.
+=> END

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ejlcril7i2ah"]
+
+[ext_resource type="PackedScene" uid="uid://j82p4pi1ihni" path="res://minigames/base_minigame.tscn" id="1_oh7xv"]
+[ext_resource type="PackedScene" uid="uid://c3hc558ckaqve" path="res://minigames/match_minigame/meds/match_minigame_4.tscn" id="2_50uec"]
+[ext_resource type="PackedScene" uid="uid://31rtikqvusy0" path="res://minigames/match_minigame/meds/match_minigame_5.tscn" id="3_6mgme"]
+
+[node name="Minigame" unique_id=1360301876 instance=ExtResource("1_oh7xv")]
+rules = "Try to uncover the scratched prescription label on the medication bottle. Match the scratched words with the correct option."
+type = 0
+minigame1_scene = ExtResource("2_50uec")
+minigame2_scene = ExtResource("3_6mgme")
+
+[node name="Timer_UI" parent="." index="1" unique_id=2080109331]
+time = 25.0

@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://wxfpr5xo507v"
+path="res://.godot/imported/vicenzo.dialogue-9daee0df1665bf5b33afcd28271319fe.tres"
+
+[deps]
+
+source_file="res://dialogue/vicenzo.dialogue"
+dest_files=["res://.godot/imported/vicenzo.dialogue-9daee0df1665bf5b33afcd28271319fe.tres"]
+
+[params]
+
+defaults=true

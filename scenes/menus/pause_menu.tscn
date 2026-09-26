@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://4o55ulkk3wvn"]
+
+[ext_resource type="Script" uid="uid://cc6ydeekad04o" path="res://scripts/menus/pause_menu.gd" id="1_n87rw"]
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="2_myx47"]
+
+[node name="PauseMenu" type="Control" unique_id=274990916]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_n87rw")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1950665997]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_myx47")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="CenterContainer" type="VBoxContainer" parent="NinePatchRect" unique_id=721633958]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Resume" type="Button" parent="NinePatchRect/CenterContainer" unique_id=505683187]
+custom_minimum_size = Vector2(400, 175)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 75
+text = "Resume"
+
+[node name="Control" type="Control" parent="NinePatchRect/CenterContainer" unique_id=655168816]
+custom_minimum_size = Vector2(400, 175)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Save" type="Button" parent="NinePatchRect/CenterContainer/Control" unique_id=1872202979]
+custom_minimum_size = Vector2(400, 175)
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 175.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 75
+text = "Save"
+
+[node name="SaveSlot" type="TextEdit" parent="NinePatchRect/CenterContainer/Control" unique_id=1850141922]
+custom_minimum_size = Vector2(150, 75)
+layout_mode = 0
+offset_left = 432.0
+offset_top = 48.0
+offset_right = 582.0
+offset_bottom = 123.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+placeholder_text = "Enter Save Slot"
+
+[node name="Quit" type="Button" parent="NinePatchRect/CenterContainer" unique_id=1173487924]
+custom_minimum_size = Vector2(400, 175)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 75
+text = "Quit"
+
+[connection signal="pressed" from="NinePatchRect/CenterContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="NinePatchRect/CenterContainer/Control/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="NinePatchRect/CenterContainer/Quit" to="." method="_on_quit_pressed"]

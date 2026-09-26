@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://crxbeic5uasw2"]
+
+[ext_resource type="Script" uid="uid://bydjj8kkco1rk" path="res://scripts/collectable.gd" id="1_3fg77"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="2_yj8xs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r53uo"]
+resource_local_to_scene = true
+radius = 25.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_l8ck5"]
+font = ExtResource("2_yj8xs")
+font_size = 19
+
+[node name="Collectable" type="Area2D"]
+script = ExtResource("1_3fg77")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_r53uo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Interact" type="Label" parent="."]
+visible = false
+offset_right = 21.0
+offset_bottom = 23.0
+scale = Vector2(0.5, 0.5)
+text = "[E]"
+label_settings = SubResource("LabelSettings_l8ck5")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

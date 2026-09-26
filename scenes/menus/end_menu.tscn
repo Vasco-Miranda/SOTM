@@ -1,0 +1,275 @@
+[gd_scene format=3 uid="uid://kyg2dvy5gldo"]
+
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="1_c01dn"]
+[ext_resource type="Script" uid="uid://d0bsb2h1jub4a" path="res://scripts/menus/end_menu.gd" id="1_pwu44"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="3_wqo5a"]
+[ext_resource type="PackedScene" uid="uid://d311g3qon3a4p" path="res://scenes/ui/characters/character_ui_slot.tscn" id="4_nsqeq"]
+[ext_resource type="PackedScene" uid="uid://dgppl3c6moirb" path="res://scenes/ui/inventory/inventory_ui_info_panel.tscn" id="5_lnecb"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="6_f4hmx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_x5d8p"]
+font = ExtResource("3_wqo5a")
+font_size = 98
+
+[sub_resource type="LabelSettings" id="LabelSettings_pwu44"]
+line_spacing = -18.0
+font = ExtResource("3_wqo5a")
+font_size = 132
+
+[sub_resource type="LabelSettings" id="LabelSettings_wqo5a"]
+line_spacing = -30.0
+font = ExtResource("3_wqo5a")
+font_size = 85
+
+[sub_resource type="LabelSettings" id="LabelSettings_nsqeq"]
+line_spacing = 0.0
+font = ExtResource("3_wqo5a")
+font_size = 57
+
+[node name="EndMenu" type="Control" unique_id=1626269430]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_pwu44")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1091338048]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_c01dn")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+
+[node name="Suspects" type="Control" parent="NinePatchRect" unique_id=1254656174]
+layout_mode = 1
+anchor_right = 0.2875
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="NinePatchRect/Suspects" unique_id=988420190]
+layout_mode = 0
+anchor_left = 0.10869565
+anchor_right = 0.9528563
+anchor_bottom = 0.11505558
+offset_right = 98.10025
+offset_bottom = 26.15998
+scale = Vector2(0.76000017, 0.76000017)
+text = "Suspects"
+label_settings = SubResource("LabelSettings_x5d8p")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="GridContainer" type="GridContainer" parent="NinePatchRect/Suspects" unique_id=1612970087]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.19565217
+anchor_top = 0.11111111
+anchor_right = 0.92934793
+anchor_bottom = 0.9222225
+offset_right = -234.00003
+offset_bottom = -506.13348
+grow_vertical = 2
+scale = Vector2(10, 10)
+columns = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="char1" parent="NinePatchRect/Suspects/GridContainer" unique_id=1818949259 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char2" parent="NinePatchRect/Suspects/GridContainer" unique_id=658926355 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char3" parent="NinePatchRect/Suspects/GridContainer" unique_id=129925555 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char4" parent="NinePatchRect/Suspects/GridContainer" unique_id=1658169440 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char5" parent="NinePatchRect/Suspects/GridContainer" unique_id=2095901484 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char6" parent="NinePatchRect/Suspects/GridContainer" unique_id=24067884 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char7" parent="NinePatchRect/Suspects/GridContainer" unique_id=2065034334 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="char8" parent="NinePatchRect/Suspects/GridContainer" unique_id=1828128681 instance=ExtResource("4_nsqeq")]
+layout_mode = 2
+
+[node name="InfoPanel" parent="NinePatchRect/Suspects" unique_id=1413332859 instance=ExtResource("5_lnecb")]
+visible = false
+custom_minimum_size = Vector2(120, 22)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15592533
+anchor_top = 0.8888889
+anchor_right = 1.3766835
+anchor_bottom = 0.9942681
+offset_left = 14.619476
+offset_right = -314.61948
+offset_bottom = -53.873047
+grow_vertical = 0
+scale = Vector2(3.5, 3.5)
+metadata/_edit_use_anchors_ = true
+
+[node name="Separator" type="NinePatchRect" parent="NinePatchRect" unique_id=1297821912]
+layout_mode = 0
+anchor_left = 0.3125
+anchor_top = 0.044444446
+anchor_right = 0.3375
+anchor_bottom = 0.95555556
+texture = ExtResource("6_f4hmx")
+region_rect = Rect2(0, 0, 16, 16)
+patch_margin_left = 1
+patch_margin_top = 1
+patch_margin_right = 1
+patch_margin_bottom = 1
+
+[node name="Character" type="Control" parent="NinePatchRect" unique_id=362470269]
+custom_minimum_size = Vector2(800, 680)
+layout_mode = 1
+anchor_left = 0.35625
+anchor_top = 0.022222223
+anchor_right = 0.98125
+anchor_bottom = 0.96666664
+
+[node name="Label" type="Label" parent="NinePatchRect/Character" unique_id=1857734600]
+layout_mode = 0
+anchor_left = 0.14999998
+anchor_top = -0.011764704
+anchor_right = 0.84
+anchor_bottom = 0.11772305
+offset_right = 180.95154
+offset_bottom = 58.948326
+scale = Vector2(0.75311935, 0.598991)
+text = "Character Details"
+label_settings = SubResource("LabelSettings_pwu44")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Display" type="CenterContainer" parent="NinePatchRect/Character" unique_id=1346994980]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.11
+anchor_top = -0.023529412
+anchor_right = 0.16375
+anchor_bottom = 0.29852942
+offset_right = -146.0
+offset_bottom = -146.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="NinePatchRect/Character/Display" unique_id=1840626327]
+custom_minimum_size = Vector2(73, 73)
+layout_mode = 2
+texture = ExtResource("6_f4hmx")
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect/Character/Display" unique_id=1269200698]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Details" type="Control" parent="NinePatchRect/Character" unique_id=1623865982]
+visible = false
+anchors_preset = 0
+anchor_left = 0.36
+anchor_top = 0.14117648
+anchor_right = 0.72
+anchor_bottom = 0.4117647
+metadata/_edit_use_anchors_ = true
+
+[node name="InfoPanel_name" parent="NinePatchRect/Character/Details" unique_id=638594859 instance=ExtResource("5_lnecb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.013888968
+anchor_top = -0.08695656
+anchor_right = 1.5233363
+anchor_bottom = 0.2391304
+offset_right = -326.04062
+offset_bottom = -45.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(4, 4)
+metadata/_edit_use_anchors_ = true
+
+[node name="CharNotes" type="Label" parent="NinePatchRect/Character/Details" unique_id=804015092]
+custom_minimum_size = Vector2(101, 101)
+layout_mode = 0
+anchor_left = 0.012430416
+anchor_top = 0.13586956
+anchor_right = 1.7222224
+anchor_bottom = 1.2065219
+offset_right = 86.897644
+offset_bottom = 34.76468
+scale = Vector2(0.85, 0.85)
+text = "Teste"
+label_settings = SubResource("LabelSettings_wqo5a")
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CharDescription" type="Label" parent="NinePatchRect/Character/Details" unique_id=1716225421]
+custom_minimum_size = Vector2(101, 101)
+layout_mode = 0
+anchor_left = -0.8124999
+anchor_top = 1.3043479
+anchor_right = 1.6319448
+anchor_bottom = 2.652174
+offset_top = -1.5258789e-05
+offset_right = 124.23526
+offset_bottom = 43.76471
+scale = Vector2(0.85, 0.85)
+text = "Teste"
+label_settings = SubResource("LabelSettings_wqo5a")
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="NinePatchRect/Character/Details" unique_id=257888370]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.1388889
+anchor_top = 2.7826087
+anchor_right = 0.8611111
+anchor_bottom = 3.2391305
+offset_right = -96.0
+offset_bottom = -28.0
+scale = Vector2(1.5, 1.5)
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="TextureRect" parent="NinePatchRect/Character/Details/Button" unique_id=1187107095]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+scale = Vector2(12.125, 3.5)
+texture = ExtResource("6_f4hmx")
+
+[node name="Label" type="Label" parent="NinePatchRect/Character/Details/Button" unique_id=1071579245]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 194.0
+offset_bottom = 63.0
+text = "Blame"
+label_settings = SubResource("LabelSettings_nsqeq")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="NinePatchRect/Character/Details/Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://eakv3fvy6gxo"]
+
+[ext_resource type="PackedScene" uid="uid://bknl06fvl2obl" path="res://minigames/search_minigame/base_search_minigame.tscn" id="1_ffcuy"]
+[ext_resource type="Texture2D" uid="uid://cawsitsxtpth3" path="res://assets/minigames/searches/scratch.png" id="2_f1hef"]
+
+[node name="Search" instance=ExtResource("1_ffcuy")]
+hidden_texture = ExtResource("2_f1hef")

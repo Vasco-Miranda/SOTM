@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfwkfy0h1gfum"]
+
+[ext_resource type="PackedScene" uid="uid://c3222yxfognu0" path="res://minigames/match_minigame/base_match_minigame.tscn" id="1_awpnd"]
+[ext_resource type="Texture2D" uid="uid://d1e5kxd7kguq4" path="res://assets/minigames/words/tonight.png" id="2_myk0e"]
+
+[node name="Match" instance=ExtResource("1_awpnd")]
+correct_word = "tonight"
+wrong_word_1 = "tomorrow"
+wrong_word_2 = "fortinght"
+wrong_word_3 = "today"
+
+[node name="HiddenTexture" parent="NinePatchRect/VBoxContainer/Header" index="1"]
+texture = ExtResource("2_myk0e")

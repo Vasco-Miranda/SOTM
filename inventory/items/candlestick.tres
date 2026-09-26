@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=4 format=3 uid="uid://c55jajllm3nbi"]
+
+[ext_resource type="PackedScene" uid="uid://ccvdue2618udh" path="res://scenes/clue_minigames/candlestick_minigame.tscn" id="1_ivnxn"]
+[ext_resource type="Script" uid="uid://bvtithxgfgonm" path="res://inventory/inventory_item.gd" id="1_outvf"]
+[ext_resource type="Texture2D" uid="uid://dductdtdogyc6" path="res://assets/items/candlestick.png" id="2_ivnxn"]
+
+[resource]
+script = ExtResource("1_outvf")
+name = "Candlestick"
+texture = ExtResource("2_ivnxn")
+description = "A heavy candlestick, slightly worn at the base. It feels older than the rest of the decor."
+hidden_info = "A heavy candlestick with faint dents near its base. There are traces of wax inconsistent with the candles used in the room it was found in."
+minigame = ExtResource("1_ivnxn")
+metadata/_custom_type_script = "uid://bvtithxgfgonm"

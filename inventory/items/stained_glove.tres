@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=4 format=3 uid="uid://dg0s0ig1u1ep0"]
+
+[ext_resource type="Script" uid="uid://bvtithxgfgonm" path="res://inventory/inventory_item.gd" id="1_7n1a2"]
+[ext_resource type="PackedScene" uid="uid://bojp4ept62irg" path="res://scenes/clue_minigames/glove_minigame.tscn" id="1_8c1rg"]
+[ext_resource type="Texture2D" uid="uid://1g3u58wmksuq" path="res://assets/items/glove.png" id="2_8c1rg"]
+
+[resource]
+script = ExtResource("1_7n1a2")
+name = "Stained glove"
+texture = ExtResource("2_8c1rg")
+description = "A red-stained glove. The material is expensive, but the stain is difficult to identify."
+hidden_info = "A red-stained glove with traces of both wax and a darker substance beneath. The size suggests it may not belong to the victim."
+minigame = ExtResource("1_8c1rg")
+metadata/_custom_type_script = "uid://bvtithxgfgonm"

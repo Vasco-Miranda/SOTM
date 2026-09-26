@@ -1,0 +1,591 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Emilie: Please, I simply cannot do this right now.
+	Emilie: You aren't truly listening to me anymore. You're just hunting for a place to bury your suspicions.
+	=> END
+else
+	if Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2) and Utils.ctx["is_confused"]
+		Emilie: It feels as though the entire room is spinning, doesn't it?
+		Emilie: When you're lost in grief, every single answer just looks like another locked door.
+	elif Utils.ctx["is_self_incriminating"]
+		Emilie: Sometimes you speak as if you are afraid of recognizing the killer.
+		Emilie: Not seeing him. Recognizing him.
+	elif Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Emilie: Your words have a sharp edge to them tonight, Mr. Hilde.
+		Emilie: Tell me honestly, are you looking for the actual truth, or just something soft enough to cut?
+	elif Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 2
+		Emilie: You returned.
+		Emilie: To be completely honest, I'm never quite sure whether I should be grateful or worried when you walk back in.
+	elif Utils.ctx["is_stressed"]
+		Emilie: Take a breath, Mr. Hilde. You look as if this terrible house is suffocating you.
+		Emilie: Let us look at just one question at a time.
+	elif Utils.ctx["is_aggressive"]
+		Emilie: Please don't mistake a cruel tone for courage.
+		Emilie: I have spent years living with sharp words, and they rarely reveal the truth.
+	elif Utils.ctx["is_suspicious"]
+		Emilie: You keep looking at my sadness as if it should have fingerprints.
+	else
+		Emilie: You are quieter than most people here.
+		Emilie: I cannot decide whether that comforts me.
+
+	- How were things with your husband? [if not Utils.character.has_talked("affair")] => affair
+	- What do you know about the victim? [if not Utils.character.has_talked("victim")] => victim
+	- Tell me about masks. [if not Utils.character.has_talked("masks")] => masks
+	- What do you mean by truth? [if not Utils.character.has_talked("truth")] => truth
+	- You seem like you were grieving him long before he died. [if Utils.character.has_talked("affair") and not Utils.character.has_talked("grief")] => grief
+	- You speak as if I scare you a little. [if not Utils.character.has_talked("player")] => player
+	- I do not think I am holding myself together very well. [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+
+	# Clue-based options
+	- Ask about the knife. [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Ask about the meds bottle. [if Utils.is_clue_surface_ready("meds")] => meds
+	- Ask about the scratched prescription. [if Utils.is_clue_hidden_ready("meds")] => meds
+	- Revisit the medication bottle with what you uncovered. [if Utils.is_clue_revisit_ready("meds")] => meds
+	- Ask about the wine glass. [if Utils.is_clue_surface_ready("wine")] => wine
+	- Ask about the residue in the wine glass. [if Utils.is_clue_hidden_ready("wine")] => wine
+	- Revisit the wine glass with what you uncovered. [if Utils.is_clue_revisit_ready("wine")] => wine
+	- Ask about the letter opener. [if Utils.is_clue_surface_ready("opener")] => opener
+	- Ask about the cleaned letter opener. [if Utils.is_clue_hidden_ready("opener")] => opener
+	- Revisit the letter opener with what you uncovered. [if Utils.is_clue_revisit_ready("opener")] => opener
+	- Ask about the cryptic note. [if Utils.is_clue_surface_ready("note")] => note
+	- Ask about the distorted note. [if Utils.is_clue_hidden_ready("note")] => note
+	- Revisit the note with what you uncovered. [if Utils.is_clue_revisit_ready("note")] => note
+
+	# Costume-related options
+	
+	- Are you... a bride? [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- I heard your husband was dressed as a magician. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+
+	- I will leave you be.
+		Emilie: Thank you.
+		Emilie: Loneliness can be comforting sometimes.
+		=> END
+
+
+~ meet
+do Utils.character.meet()
+Emilie: ...Oh. Forgive me, I did not hear you approach.
+Emilie: Emilie Vale.
+- You seem distressed.
+	do Utils.register_dialogue_choice("emilie_meet_distressed", "You seem distressed.", "reassure,empathetic", 0.3, 0.0, "", 0.0, -0.2, 0.0, 0.0)
+	Emilie: That is kind of you to say plainly.
+	Emilie: Everyone else has been staring and pretending not to.
+	do Utils.character.increase_interest()
+- Were you close to the victim?
+	do Utils.register_dialogue_choice("emilie_meet_close", "Were you close to the victim?", "pressure,family", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Emilie: Close enough to know the version he saved for empty rooms.
+	do Utils.character.decrease_trust()
+	- You knew him well, then.
+		do Utils.register_dialogue_choice("emilie_meet_well", "You knew him well, then.", "probe,family", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.1)
+		Emilie: Better than was healthy for either of us, if I am being completely honest.
+		do Utils.character.increase_apprehension()
+
+Emilie: Tell me, do you think people can hide who they are forever?
+- Everyone hides something. => masks
+- Not forever.
+	Emilie: No. Eventually the weight of the lie becomes too much, and the mask slips.
+	do Utils.character.increase_interest()
+	=> truth
+- I do not concern myself with that.
+	do Utils.register_dialogue_choice("emilie_meet_concern", "I do not concern myself with that.", "deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.0)
+	Emilie: Perhaps that is why people make you nervous.
+=> END
+
+
+~ victim
+do Utils.character.talked("victim")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Emilie: He could be entirely mesmerizing when he thought it would serve him.
+	Emilie: People always mistook that sudden charm for genuine tenderness.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Emilie: He had a gift for making you feel completely chosen.
+	Emilie: And then he would make you feel utterly foolish for ever believing it.
+else
+	Emilie: He shifted his personality depending on who he needed affection from.
+	Emilie: It is a very lonely, efficient way to live.
+- And to you?
+	do Utils.register_dialogue_choice("emilie_victim_toyou", "And to you?", "probe,family", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.1)
+	Emilie: A sacred promise I stubbornly kept, long after he stopped doing anything to deserve it.
+- You sound angry.
+	do Utils.register_dialogue_choice("emilie_victim_angry", "You sound angry.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Emilie: Anger is less humiliating than sorrow.
+- You sound relieved.
+	do Utils.register_dialogue_choice("emilie_victim_relieved", "You sound relieved.", "pressure,family", -0.1, 0.3, "", 0.0, 0.1, 0.0, 0.1)
+	Emilie: That is a cruel thing to ask a wife to answer.
+=> END
+
+
+~ masks
+do Utils.character.talked("masks")
+Emilie: Masks can be a mercy, don't you think?
+Emilie: They let us choose a beautiful lie and rest inside it for a little while.
+- And you?
+	do Utils.register_dialogue_choice("emilie_masks_you", "And you?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Emilie: I tried to wear one tonight. I suppose I was never a very good actress.
+	do Utils.character.decrease_trust()
+- Sounds like someone hurt you.
+	do Utils.register_dialogue_choice("emilie_masks_hurt", "Sounds like someone hurt you.", "reassure,empathetic", 0.4, 0.0, "", 0.0, -0.2, 0.0, 0.1)
+	Emilie: Loss is such a small, sterile word for a mess like this.
+	do Utils.character.increase_apprehension()
+- You are speaking about the victim, are you not?
+	do Utils.register_dialogue_choice("emilie_masks_victim", "You are speaking about the victim, are you not?", "pressure,family", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Emilie: In this house? Everything circles back to him eventually, yes.
+	do Utils.character.increase_interest()
+=> END
+
+
+~ truth
+do Utils.character.talked("truth")
+Emilie: The truth is rarely clean or simple when it finally arrives.
+Emilie: It always drags a heavy history along behind it.
+- That sounds personal.
+	do Utils.register_dialogue_choice("emilie_truth_personal", "That sounds personal.", "reassure,probe", 0.3, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Emilie: Far more personal than I care to admit.
+	do Utils.character.increase_apprehension()
+- So someone was lying?
+	do Utils.register_dialogue_choice("emilie_truth_lying", "So someone was lying?", "evidence", 0.1, 0.1, "", 0.0, 0.0, -0.1, 0.0)
+	Emilie: We all twist things a little to survive here.
+	Emilie: What matters is what the lie is desperately trying to protect.
+	do Utils.character.increase_interest()
+- And your husband?
+	do Utils.register_dialogue_choice("emilie_truth_husband", "And your husband?", "pressure,family", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.0)
+	Emilie: ...I would ask you to step very carefully around that subject.
+	do Utils.character.decrease_trust()
+=> END
+
+
+~ affair
+do Utils.character.talked("affair")
+Emilie: Loyalty can become a room with no windows.
+Emilie: You stay because once, long ago, it was warm.
+- You found out something?
+	do Utils.register_dialogue_choice("emilie_affair_found", "You found out something?", "probe,family", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.1)
+	Emilie: Enough to make me realize I was merely a spectator in my own life.
+	do Utils.character.increase_apprehension()
+- And what did you do?
+	do Utils.register_dialogue_choice("emilie_affair_did", "And what did you do?", "pressure,family", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.1)
+	Emilie: I smiled at breakfast. I dressed for dinner. I learned to be quiet.
+- Which means?
+	do Utils.register_dialogue_choice("emilie_affair_which", "Which means?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Emilie: That depends on how much ugliness you think a polite woman can hold.
+	do Utils.character.decrease_trust()
+=> END
+
+
+~ grief
+do Utils.character.talked("grief")
+if Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Emilie: That may be the first kind sentence I have heard tonight.
+else
+	Emilie: Grief is not punctual.
+	Emilie: Sometimes it moves in while the person is still alive.
+- So by tonight there was nothing left to lose.
+	do Utils.register_dialogue_choice("emilie_grief_lose", "So by tonight there was nothing left to lose.", "pressure,family", -0.1, 0.4, "", 0.0, 0.1, 0.0, 0.1)
+	Emilie: There is always something left to protect. My remaining dignity, if nothing else.
+- You still something left to love.
+	do Utils.register_dialogue_choice("emilie_grief_love", "You still something left to love.", "empathetic,reassure", 0.5, 0.0, "", 0.0, -0.2, 0.0, -0.1)
+	Emilie: ...Yes. That is the unforgivable part.
+	do Utils.character.increase_trust()
+=> END
+
+
+~ player
+do Utils.character.talked("player")
+if Utils.ctx["is_suspicious"]
+	Emilie: A little, yes.
+	Emilie: You look at my pain with a strange sort of detachment... as if you're already deciding how you will write about it later.
+elif Utils.ctx["is_stressed"]
+	Emilie: You are clearly terrified, but you are trying to force it into a logical puzzle.
+	Emilie: That must be incredibly exhausting.
+else
+	Emilie: Not frightened, exactly.
+	Emilie: Just... profoundly unsettled by you.
+- Because I am a writer?
+	do Utils.register_dialogue_choice("emilie_player_writer", "Because I am a writer?", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Emilie: Because you don't just stand back and watch us.
+	Emilie: You project yourself directly into our tragedies.
+- That is unfair.
+	do Utils.register_dialogue_choice("emilie_player_unfair", "That is unfair.", "self_incriminate,deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.1)
+	Emilie: Yes.
+	Emilie: But then, most true things in this life are unfair.
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+Emilie: No.
+Emilie: I do not think you are.
+- Then tell me how it looks.
+	do Utils.register_dialogue_choice("emilie_stress_looks", "Then tell me how it looks.", "probe,reassure", 0.3, 0.0, "", 0.0, -0.3, -0.1, 0.0)
+	Emilie: Like you are afraid that if you stop moving, your thoughts will catch you.
+	do Utils.character.increase_trust()
+- I am afraid if I stop, I will feel it all at once.
+	do Utils.register_dialogue_choice("emilie_stress_stop", "I am afraid if I stop, I will feel it all at once.", "self_incriminate,empathetic", 0.2, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Emilie: Then let us not stop all at once.
+	Emilie: Even grief can be approached gently.
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Emilie: A positive match, and yet we are no closer to an answer.
+		Emilie: Even the weapon seems to refuse to give us a straight response.
+	else
+		Emilie: The more pieces you find, the less sense any of it makes.
+	- So the knife was meant to imitate passion.
+		do Utils.register_dialogue_choice("emilie_knife_revisit_passion", "So the knife was meant to imitate passion.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Yes.
+		Emilie: A desperate act disguised as sudden fury.
+	- The uncertainty protects someone.
+		do Utils.register_dialogue_choice("emilie_knife_revisit_protects", "The uncertainty protects someone.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Emilie: It always does, doesn't it? Silence is a very protective thing.
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Emilie: So even the blood cannot confess cleanly.
+	else
+		Emilie: Inconclusive.
+		Emilie: How fitting.
+		- Fitting because someone wanted theater.
+			do Utils.register_dialogue_choice("emilie_knife_hidden_theater", "Fitting because someone wanted theater.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Theater is kinder than truth, sometimes.
+		- Someone wanted us to blame feeling first.
+			do Utils.register_dialogue_choice("emilie_knife_hidden_feeling", "Someone wanted us to blame feeling first.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+			Emilie: That sounds like a trick he would have understood completely.
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Emilie: Please, put that away.
+		Emilie: Seeing it makes it feel far too deliberate.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Emilie: He loathed physical confrontation.
+		Emilie: If this is truly how he died, it had to be deeply personal.
+		do Utils.character.increase_interest()
+		- Personal because of hate?
+			do Utils.register_dialogue_choice("emilie_knife_hate", "Personal because of hate?", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Hate.
+			Emilie: Or hurt dressed as hate.
+		- Someone wanted it to look passionate.
+			do Utils.register_dialogue_choice("emilie_knife_passion", "Someone wanted it to look passionate.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Emilie: You understand performance more than most.
+	elif Utils.character.get_trust() <= -5
+		Emilie: Why are you showing this to me? Do you enjoy forcing me to look at it?
+		do Utils.character.decrease_trust()
+	else
+		Emilie: It is just a cold piece of metal.
+=> END
+
+
+~ meds
+if Utils.is_clue_revisit_ready("meds")
+	do Utils.mark_clue_topic("meds", "revisit")
+	if Utils.character.has_talked("about-meds")
+		Emilie: I assume you believe that means something.
+		Emilie: I wouldn't be so sure.
+		- You're sure these weren't his?
+			do Utils.register_dialogue_choice("emilie_meds_hidden_sure", "You're sure these weren't his?", "probe,pressure", 0.0 , 0.2, "meds", 0.8, 0.0, 0.1, 0.0)
+			Emilie: What reason do you have to doubt me?
+			Emilie: He didn't take those. You'll just have to take my word for it.
+			do Utils.character.decrease_trust()
+		- But why would they be lying around then?
+			do Utils.register_dialogue_choice("emilie_meds_hidden_around" , "But why would they be lying around then?", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, 0.2, 0.0)
+			Emilie: Maybe staged. Maybe lost.
+			Emilie: Maybe used for something darker.
+	else
+		if Utils.ctx["evidence_focus"] >= 8
+			Emilie: Anti-depressants, and the patient erased.
+			Emilie: Someone wanted the suffering to remain entirely anonymous.
+		else
+			Emilie: The bottle tells a story of deep sadness, but those frantic scratches speak of pure terror.
+		- Fear of exposure.
+			do Utils.register_dialogue_choice("emilie_meds_revisit_exposure", "Fear of exposure.", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Yes. Fear can make people do terrible things.
+		- Fear of pity.
+			do Utils.register_dialogue_choice("emilie_meds_revisit_pity", "Fear of pity.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Some people are terrified of being perceived as "weak"
+			Emilie: Sounds familiar, I suppose.
+elif Utils.is_clue_hidden_ready("meds")
+	do Utils.mark_clue_topic("meds", "hidden")
+	if Utils.ctx["family_focus"] >= 4
+		Emilie: Anti-depressants.
+		Emilie: Some grief predates tonight.
+		- The missing owner matters more than the bottle.
+			do Utils.register_dialogue_choice("emilie_meds_hidden_owner", "The missing owner matters more than the bottle.", "evidence", 0.0, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: It usually does.
+		- What if the bottle itself was meant to wound.
+			do Utils.register_dialogue_choice("emilie_meds_hidden_wound", "What if the bottle itself was meant to wound.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: That would be a remarkably cruel way to hurt someone.
+	else
+		Emilie: So the medicine is finally named.
+		- The missing owner matters more than the bottle.
+			do Utils.register_dialogue_choice("emilie_meds_hidden_owner", "The missing owner matters more than the bottle.", "evidence", 0.0, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: It usually does.
+		- What if the bottle itself was meant to wound.
+			do Utils.register_dialogue_choice("emilie_meds_hidden_wound", "What if the bottle itself was meant to wound.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: That would be a remarkably cruel way to hurt someone.
+else
+	do Utils.character.talked("meds")
+	do Utils.mark_clue_topic("meds", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["family_focus"] >= 4
+		Emilie: He was not supposed to need those anymore.
+		do Utils.character.increase_apprehension()
+		do Utils.character.talked("about-meds")
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Emilie: That prescription is not his current one.
+		Emilie: I would know.
+		do Utils.character.increase_interest()
+		do Utils.character.talked("about-meds")
+	else
+		Emilie: I fail to see how that is relevant right now.
+		- Not to me.
+			do Utils.register_dialogue_choice("emilie_meds_notme", "Not to me.", "evidence", 0.0, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Then you are already further inside this than you should be.
+		- Whose was it?
+			do Utils.register_dialogue_choice("emilie_meds_whose", "Whose was it?", "pressure,evidence", -0.1, 0.3, "meds", 0.8, 0.0, 0.0, 0.1)
+			Emilie: If I knew the answer to that, Mr. Hilde, I certainly wouldn't whisper it to a stranger.
+=> END
+
+
+~ wine
+if Utils.is_clue_revisit_ready("wine")
+	do Utils.mark_clue_topic("wine", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Emilie: So there was bitterness beneath the sweetness after all.
+		Emilie: That sounds familiar.
+	else
+		Emilie: That glass was holding something far heavier than vintage wine.
+	- Then consent was part of the method.
+		do Utils.register_dialogue_choice("emilie_wine_revisit_consent", "Then consent was part of the method.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Yes. A terrible method that required absolute trust to work.
+	- Appearance helped hide it.
+		do Utils.register_dialogue_choice("emilie_wine_revisit_appearance", "Appearance helped hide it.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Emilie: A beautiful appearance can mask almost any poison.
+elif Utils.is_clue_hidden_ready("wine")
+	do Utils.mark_clue_topic("wine", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Emilie: A bitter powder settled at the bottom of a drink...
+		Emilie: It's frightening how intimate that kind of cruelty is.
+	else
+		Emilie: The glass offered an invitation.
+		Emilie: Then betrayed him.
+	- Invited because he trusted the ritual.
+		do Utils.register_dialogue_choice("emilie_wine_hidden_ritual", "Invited because he trusted the ritual.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Emilie:  Naturally. He was a creature of habit. He trusted the evening ritual.
+	- Betrayed because someone understood his habits.
+		do Utils.register_dialogue_choice("emilie_wine_hidden_habits", "Betrayed because someone understood his habits.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Perhaps someone who made it their business to study those habits.
+else
+	do Utils.character.talked("wine")
+	do Utils.mark_clue_topic("wine", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Emilie: He always poured a glass when he wanted to project an aura of effortless sophistication.
+	elif Utils.character.get_apprehension() >= 5
+		Emilie: Wine has a wonderful way of masking an unpleasant truth, if only for a few moments.
+	else
+		Emilie: People poison things they want others to accept willingly.
+	- You think the glass mattered.
+		do Utils.register_dialogue_choice("emilie_wine_mattered", "You think the glass mattered.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Emilie: You brought it to me. Certainly it matters to you too.
+	- You think it could be poison?
+		do Utils.register_dialogue_choice("emilie_wine_killer", "To him, or to the killer?", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		if Utils.character.get_trust() >= 5
+			Emilie: Poisoning is always such a theatrical way to kill someone. 
+			Emilie: Fits into the theme.
+			Emilie: But I also would't put it past some people to use some things... Recreationally.
+		else
+			Emilie: I think that, at this point, anything could be possible in this house.
+			Emilie: But I still wouldn't discard it.
+=> END
+
+
+~ opener
+if Utils.is_clue_revisit_ready("opener")
+	do Utils.mark_clue_topic("opener", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Emilie: Wiped clean in a frantic hurry.
+		Emilie: Guilt always leaves behind a pair of shaking hands.
+	else
+		Emilie: Someone desperately tried to erase their own touch, even if they couldn't undo the deed itself.
+	- Undoing touch is still confession.
+		do Utils.register_dialogue_choice("emilie_opener_revisit_confession", "Undoing touch is still confession.", "evidence", 0.1, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+		Emilie: A quiet admission of guilt, isn't it?
+	- Looks like fear. Or regret.
+		do Utils.register_dialogue_choice("emilie_opener_revisit_fear", "Looks like fear. Or regret.", "evidence", 0.0, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Panic and confession are very close neighbors.
+elif Utils.is_clue_hidden_ready("opener")
+	do Utils.mark_clue_topic("opener", "hidden")
+	if Utils.ctx["family_focus"] >= 4
+		Emilie: He kept that on his desk for years.
+		Emilie: To think someone else laid hands on it in a moment of pure panic...
+	else
+		Emilie: It has been scrubbed completely clean.
+		Emilie: Someone refused to leave the evidence alone with what it witnessed.
+	- Then someone recognized its importance afterward.
+		do Utils.register_dialogue_choice("emilie_opener_hidden_afterward", "Then someone recognized its importance afterward.", "evidence", 0.1, 0.0, "opener", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Yes, they panicked after the fact.
+	- Someone feared what it could say.
+		do Utils.register_dialogue_choice("emilie_opener_hidden_say", "Someone feared what it could say.", "evidence", 0.1, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Exactly. They realized too late what it might reveal.
+else
+	do Utils.character.talked("opener")
+	do Utils.mark_clue_topic("opener", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Emilie: A simple everyday tool can become something monstrous depending entirely on who holds it.
+		do Utils.character.increase_interest()
+		- So this was chosen.
+			do Utils.register_dialogue_choice("emilie_opener_chosen", "So this was chosen.", "evidence", 0.1, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Or perhaps they simply grabbed the nearest conveniant object in the room.
+	else
+		Emilie: He touched that object every single day.
+		Emilie: You are grasping at objects instead of meaning.
+		- Objects carry meaning.
+			do Utils.register_dialogue_choice("emilie_opener_objects", "Objects carry meaning.", "evidence", 0.0, 0.1, "opener", 0.8, 0.0, -0.1, 0.0)
+			Emilie: Yes.
+			Emilie: That is why people choose them carefully.
+=> END
+
+
+~ note
+if Utils.is_clue_revisit_ready("note")
+	do Utils.mark_clue_topic("note", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Emilie: "Tonight", "truth", "he knows."
+		Emilie: It's terrifying how someone managed to make fear sound so poetic.
+	else
+		Emilie: The handwriting is completely forced.
+		Emilie: Even this message had to wear a disguise tonight.
+	- Then the note was not written for honesty.
+		do Utils.register_dialogue_choice("emilie_note_revisit_honesty", "Then the note was not written for honesty.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Very few things in this grand house are born out of honesty.
+	- It was written for consequence.
+		do Utils.register_dialogue_choice("emilie_note_revisit_consequence", "It was written for consequence.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Yes. It was written to force someone's hand.
+elif Utils.is_clue_hidden_ready("note")
+	do Utils.mark_clue_topic("note", "hidden")
+	if Utils.ctx["family_focus"] >= 4
+		Emilie: "He knows."
+		Emilie: Entire families can rot from the inside out because of a single sentence like that.
+	else
+		Emilie: A distorted hand.
+		Emilie: A desperate attempt to keep the truth masked.
+	- So someone feared being recognized.
+		do Utils.register_dialogue_choice("emilie_note_hidden_recognized", "So someone feared being recognized.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Or perhaps they desperately wanted us to suspect the wrong person entirely.
+	- "Truth" was meant like a threat.
+		do Utils.register_dialogue_choice("emilie_note_hidden_threat", "Truth was meant like a threat.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Emilie: The truth is often used as a weapon here.
+else
+	do Utils.character.talked("note")
+	do Utils.mark_clue_topic("note", "surface")
+	if Utils.character.get_apprehension() >= 5
+		Emilie: Even a few frantic words can be weighed with heavy intention.
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Emilie: Messages like this aren't about sharing information, Mr. Hilde.
+		Emilie: They are entirely about timing.
+	else
+		Emilie: It feels frightened.
+		Emilie: Or wants to feel frightened.
+	- So it was meant to be found.
+		do Utils.register_dialogue_choice("emilie_note_found", "So it was meant to be found.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Yes. It was left in a place where it couldn't be ignored.
+	- So it was meant to wound.
+		do Utils.register_dialogue_choice("emilie_note_wound", "So it was meant to wound.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Emilie: Perhaps. Or perhaps it was the only piece of absolute honesty left in the room.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+if Utils.character.get_trust() >= 5 or Utils.ctx["family_focus"] >= 4
+	Emilie: Yes.
+	Emilie: A bit tragic, isn't it?
+	- Of love?
+		do Utils.register_dialogue_choice("emilie_costume_love", "Of love?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+		Emilie: Of promises.
+		Emilie: And what happens when they break.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_apprehension() >= 5
+	Emilie: It felt like the only choice that made sense at the time.
+	Emilie: Though looking around now, it feels almost mocking.
+	do Utils.character.increase_apprehension()
+else
+	Emilie: Just a costume.
+	Emilie: A bit of silk and lace. Nothing more.
+=> END
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+if Utils.character.get_interest() >= 5 or Utils.ctx["is_favorite"]
+	Emilie: A detective.
+	Emilie: Or someone who wants to feel like one.
+	Emilie: Be careful what you uncover.
+	- What do you mean?
+		do Utils.register_dialogue_choice("emilie_costume_mean", "What do you mean?", "probe,reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+		Emilie: Some people don't actually want the truth, Mr. Hilde.
+		Emilie: They just want to rehearse a version of it that comforts them.
+	do Utils.character.increase_apprehension()
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_suspicious"]
+	Emilie: You seem remarkably invested in playing this part.
+	Emilie: Far more than any ordinary guest should be.
+elif Utils.character.get_trust() <= -5
+	Emilie: You wear that coat as if it grants you some sort of real authority.
+	Emilie: But you aren't investigating us...
+	Emilie: You're just collecting us.
+else
+	Emilie: It fits you quite well.
+	Emilie: Perhaps a bit too naturally.
+- I write murders. I wanted to feel convincing.
+	do Utils.register_dialogue_choice("emilie_costume_write", "I write murders. I wanted to feel convincing.", "self_incriminate", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.3)
+	Emilie: That is the sort of honesty that should worry you.
+- Maybe I am looking for the feeling behind it.
+	do Utils.register_dialogue_choice("emilie_costume_feeling", "Maybe I am looking for the feeling behind it.", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Emilie: Then I sincerely hope for your sake that you never find it.
+=> END
+
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+if Utils.character.get_trust() >= 5 or Utils.ctx["family_focus"] >= 4
+	Emilie: He was always a master of illusions. Keeping secrets was his truest talent.
+	do Utils.character.increase_interest()
+elif Utils.character.get_apprehension() >= 5
+	Emilie: Illusions.
+	Emilie: That is all he ever was.
+	do Utils.character.increase_apprehension()
+else
+	Emilie: It's a fitting choice, I suppose. A man who vanished inside his own lies.
+=> END
+
+
+~ blamed
+if Utils.character.get_trust() >= 6 and Utils.character.get_joy() >= 0 and not Utils.ctx["is_suspicious"] and not Utils.ctx["is_pressured"]
+	Emilie: I see.
+	Emilie: So all your gentle words were just a path to lead me here.
+	Emilie: I truly thought you were trying to understand my grief... but you were just figuring out where to hang the blame.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Emilie: No.
+	Emilie: I cannot pretend this surprises me.
+	Emilie: You have been weighing my grief like a weapon since you arrived.
+elif Utils.ctx["family_focus"] >= 4 and (Utils.ctx["pressure_focus"] / 2 )>= Utils.ctx["comfort_focus"]
+	Emilie: The unfaithful husband. The broken wife.
+	Emilie: It's almost too neat a story for an author to resist, isn't it?
+elif Utils.ctx["is_self_incriminating"]
+	Emilie: Strange.
+	Emilie: You kept circling your own darkness, then decided mine was easier to name.
+elif Utils.ctx["is_stressed"] or Utils.ctx["is_confused"]
+	Emilie: You are tired.
+	Emilie: Tired people often mistake an answer for mercy.
+else
+	Emilie: Then say it without dressing it as pity.
+	Emilie: If you are going to accuse me of murder, at least don't expect me to comfort you while you do it.
+=> END

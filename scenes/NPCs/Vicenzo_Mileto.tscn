@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://diwgxwk7kc82q"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_gd7xu"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_6t6kh"]
+[ext_resource type="Texture2D" uid="uid://d018lmn6avo23" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/east/frame_000.png" id="2_at7gx"]
+[ext_resource type="Texture2D" uid="uid://jt7jwvtvj50p" path="res://assets/NPCs/Vincenzo_Mileto/Vicenzo_Mileto-portrait.png" id="3_6t6kh"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="3_ci0ka"]
+[ext_resource type="Texture2D" uid="uid://c4yec8iiqgvwj" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/east/frame_001.png" id="3_j2wdu"]
+[ext_resource type="Texture2D" uid="uid://bd558tbs1hfqq" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/east/frame_002.png" id="4_qtcpv"]
+[ext_resource type="Texture2D" uid="uid://biem3votil5j6" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/east/frame_003.png" id="5_6t6kh"]
+[ext_resource type="Resource" uid="uid://wxfpr5xo507v" path="res://dialogue/vicenzo.dialogue" id="5_ci0ka"]
+[ext_resource type="Texture2D" uid="uid://u4imj7u33m1k" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/north/frame_000.png" id="6_ci0ka"]
+[ext_resource type="Texture2D" uid="uid://xjkx6awy03xq" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/north/frame_001.png" id="7_3w1in"]
+[ext_resource type="Texture2D" uid="uid://b66wejtw1wnit" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/north/frame_002.png" id="8_ajq5o"]
+[ext_resource type="Texture2D" uid="uid://be3f6kfdqnvpj" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/north/frame_003.png" id="9_j1hwj"]
+[ext_resource type="Texture2D" uid="uid://dutcnhj681bxd" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/south/frame_000.png" id="10_v5yqv"]
+[ext_resource type="Texture2D" uid="uid://hbtj7euve5f0" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/south/frame_001.png" id="11_swlvc"]
+[ext_resource type="Texture2D" uid="uid://bumxa1ns00bpb" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/south/frame_002.png" id="12_xepeg"]
+[ext_resource type="Texture2D" uid="uid://exs0vdcfqxtk" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/south/frame_003.png" id="13_x8tva"]
+[ext_resource type="Texture2D" uid="uid://dg4aj8ds5xpcf" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/west/frame_000.png" id="14_hq8am"]
+[ext_resource type="Texture2D" uid="uid://bcfljt4y465y2" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/west/frame_001.png" id="15_j4agq"]
+[ext_resource type="Texture2D" uid="uid://bh8rxxystwkf2" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/west/frame_002.png" id="16_n5nww"]
+[ext_resource type="Texture2D" uid="uid://cdggebd746t77" path="res://assets/NPCs/Vincenzo_Mileto/animations/breathing-idle/west/frame_003.png" id="17_2k5kj"]
+
+[sub_resource type="Resource" id="Resource_ajq5o"]
+script = ExtResource("2_6t6kh")
+age = 28
+nationality = "Italian"
+description = "A young adult with secret ties to this family, hiding hurt and insecurity behind a mask of humour and flirt. Lived alone with his mother."
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_j1hwj"]
+script = ExtResource("3_ci0ka")
+name = "Vicenzo Miletto"
+char_info = SubResource("Resource_ajq5o")
+portrait = ExtResource("3_6t6kh")
+dialogue = ExtResource("5_ci0ka")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tainx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_at7gx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_j2wdu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_qtcpv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6t6kh")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ci0ka")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_3w1in")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ajq5o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_j1hwj")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_v5yqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_swlvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_xepeg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_x8tva")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_hq8am")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_j4agq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_n5nww")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_2k5kj")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_at7gx"]
+size = Vector2(7, 11)
+
+[node name="Vicenzo" unique_id=1651612433 instance=ExtResource("1_gd7xu")]
+char_name = "Vicenzo Miletto"
+char = SubResource("Resource_j1hwj")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_tainx")
+animation = &"idle_south"
+autoplay = "idle_south"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0.5, 3.5)
+shape = SubResource("RectangleShape2D_at7gx")

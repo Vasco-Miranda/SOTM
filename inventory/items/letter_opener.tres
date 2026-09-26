@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=4 format=3 uid="uid://can8ia8icbl3f"]
+
+[ext_resource type="Script" uid="uid://bvtithxgfgonm" path="res://inventory/inventory_item.gd" id="1_l3dnb"]
+[ext_resource type="PackedScene" uid="uid://cav0fmbyfes4d" path="res://scenes/clue_minigames/letter_opener_minigame.tscn" id="1_w254b"]
+[ext_resource type="Texture2D" uid="uid://dsjyp5j672hkc" path="res://assets/items/letter_opener.png" id="2_w254b"]
+
+[resource]
+script = ExtResource("1_l3dnb")
+name = "Letter opener"
+texture = ExtResource("2_w254b")
+description = "A decorative letter opener. Sharp enough to cut paper, though barely worn out."
+hidden_info = "A decorative letter opener with a recently cleaned blade. Faint streaks suggest it may have been wiped in a hurry."
+minigame = ExtResource("1_w254b")
+metadata/_custom_type_script = "uid://bvtithxgfgonm"

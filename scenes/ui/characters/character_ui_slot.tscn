@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://d311g3qon3a4p"]
+
+[ext_resource type="Script" uid="uid://d3kvratq68jbs" path="res://scripts/ui/character_ui_slot.gd" id="1_1or1l"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="1_gynn0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yyxuq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_glkyx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nofvo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2y20b"]
+
+[node name="Control" type="Button"]
+custom_minimum_size = Vector2(16, 16)
+anchors_preset = -1
+anchor_right = 0.05
+anchor_bottom = 0.089
+offset_right = -48.0
+offset_bottom = -48.08
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yyxuq")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_glkyx")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nofvo")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2y20b")
+flat = true
+script = ExtResource("1_1or1l")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_gynn0")
+centered = false
+
+[node name="CenterContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 15.0
+offset_bottom = 15.0
+
+[node name="Portrait" type="TextureRect" parent="CenterContainer"]
+layout_mode = 2
+expand_mode = 3
+stretch_mode = 6
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

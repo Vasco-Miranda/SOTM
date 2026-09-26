@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3ctmsb68dor4"]
+
+[ext_resource type="PackedScene" uid="uid://j82p4pi1ihni" path="res://minigames/base_minigame.tscn" id="1_44sni"]
+[ext_resource type="PackedScene" uid="uid://dtg7dmc7avjmm" path="res://minigames/sequence_minigame/knife/knife_sequence_minigame.tscn" id="2_7pfkf"]
+
+[node name="Minigame" instance=ExtResource("1_44sni")]
+rules = "Analyse the blood in the knife through quimical evaluations. Memorize the sequences of different solutions, and correctly replay them."
+minigame1_scene = ExtResource("2_7pfkf")
+
+[node name="Timer_UI" parent="." index="1"]
+time = 60.0

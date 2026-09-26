@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ccvdue2618udh"]
+
+[ext_resource type="PackedScene" uid="uid://j82p4pi1ihni" path="res://minigames/base_minigame.tscn" id="1_8pnbl"]
+[ext_resource type="PackedScene" uid="uid://b8exy48j4occu" path="res://minigames/memory_minigame/candlestick/memory_minigame_1.tscn" id="2_8bafb"]
+[ext_resource type="PackedScene" uid="uid://hhd6fi6177kv" path="res://minigames/memory_minigame/candlestick/memory_minigame_2.tscn" id="3_8bafb"]
+[ext_resource type="PackedScene" uid="uid://c6sgs1ukmj0u3" path="res://minigames/memory_minigame/candlestick/memory_minigame_3.tscn" id="4_htmdu"]
+
+[node name="CandlestickMinigame" unique_id=1113863740 instance=ExtResource("1_8pnbl")]
+rules = "Analyse the candlestick and try to find out more information about it. Memorize the image and select the correct option."
+type = 0
+minigame1_scene = ExtResource("2_8bafb")
+minigame2_scene = ExtResource("3_8bafb")
+minigame3_scene = ExtResource("4_htmdu")
+
+[node name="Timer_UI" parent="." index="1" unique_id=2080109331]
+time = 20.0

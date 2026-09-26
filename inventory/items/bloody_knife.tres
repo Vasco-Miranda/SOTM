@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=4 format=3 uid="uid://5kvriv7p8gil"]
+
+[ext_resource type="Script" uid="uid://bvtithxgfgonm" path="res://inventory/inventory_item.gd" id="1_63imn"]
+[ext_resource type="PackedScene" uid="uid://b3ctmsb68dor4" path="res://scenes/clue_minigames/knife_minigame.tscn" id="1_lwcx6"]
+[ext_resource type="Texture2D" uid="uid://duvdcfw28wamf" path="res://assets/items/bloody-knife.png" id="2_63imn"]
+
+[resource]
+script = ExtResource("1_63imn")
+name = "Bloody knife"
+texture = ExtResource("2_63imn")
+description = "A stained knife with what appears to be dry blood."
+hidden_info = "A knife with A type dry blood. Inconclusive if the blood belonged to a human."
+minigame = ExtResource("1_lwcx6")
+metadata/_custom_type_script = "uid://bvtithxgfgonm"

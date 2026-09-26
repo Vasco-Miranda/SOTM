@@ -1,0 +1,571 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Silvia: This interview is terminated.
+	Silvia: You have moved from logical deduction into obsessive fixation, and I do not indulge hysteria.
+	=> END
+else
+	if Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Silvia: You circle back to me whenever your primary hypothesis fails. 
+		Silvia: Desperation is a poor substitute for evidence.
+	elif Utils.ctx["is_self_incriminating"]
+		Silvia: You have an odd habit of placing yourself inside the suspect pool.
+		Silvia: I cannot decide if that is clinical guilt or literary narcissism.
+	elif Utils.ctx["evidence_focus"] >= 8 and Utils.ctx["comfort_focus"] <= Utils.ctx["pressure_focus"]
+		Silvia: You have been collecting fragments.
+		Silvia: Try assembling them before accusing anyone.
+	elif Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 3
+		Silvia: You return. 
+		Silvia: I assume you seek rational discourse rather than the emotional theatrics happening in the parlor.
+	elif Utils.ctx["is_stressed"]
+		Silvia: Your pulse is elevated and your respiration is erratic. 
+		Silvia: Do not allow your autonomic nervous system to cloud your deductive reasoning.
+	elif Utils.ctx["is_confused"]
+		Silvia: You are overcomplicating this.
+		Silvia: Strip away sentiment and look at incentive.
+	elif Utils.ctx["is_aggressive"]
+		Silvia: Your approach lacks subtlety.
+		Silvia: It limits what people are willing to tell you.
+	else
+		Silvia: You are still difficult to categorize.
+
+	- Tell me about your uncle. [if not Utils.character.has_talked("victim")] => victim
+	- Do you trust the people here? [if not Utils.character.has_talked("trust")] => trust
+	- Ask about the inheritance. [if Utils.character.has_talked("victim") and not Utils.character.has_talked("inheritance")] => inheritance
+	- You seem like you have something to tell me. [if Utils.character.has_talked("trust") and not Utils.character.has_talked("suspicion")] => suspicion
+	- You keep treating this like a diagnosis. [if Utils.ctx["evidence_focus"] >= 8 and not Utils.character.has_talked("diagnosis")] => diagnosis
+	- You found out about Vicenzo recently, didn't you? [if Utils.character.has_talked("inheritance") and not Utils.character.has_talked("cousin")] => cousin
+	- If I start rushing this, stop me. [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+
+	# Clues
+	- Ask about the knife. [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Ask about the wine glass. [if Utils.is_clue_surface_ready("wine")] => wine
+	- Ask about the residue in the wine glass. [if Utils.is_clue_hidden_ready("wine")] => wine
+	- Revisit the wine glass with what you uncovered. [if Utils.is_clue_revisit_ready("wine")] => wine
+	- Ask about the meds bottle. [if Utils.is_clue_surface_ready("meds")] => meds
+	- Ask about the scratched prescription. [if Utils.is_clue_hidden_ready("meds")] => meds
+	- Revisit the medication bottle with what you uncovered. [if Utils.is_clue_revisit_ready("meds")] => meds
+	- Ask about the candlestick. [if Utils.is_clue_surface_ready("candlestick")] => candlestick
+	- Ask about the dents and strange wax on the candlestick. [if Utils.is_clue_hidden_ready("candlestick")] => candlestick
+	- Revisit the candlestick with what you uncovered. [if Utils.is_clue_revisit_ready("candlestick")] => candlestick
+
+	# Costume-related options
+	- And you are... [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- Ask about the victim's costume. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+
+	- I won't take more of your time.
+		Silvia: Ensure that you do not.
+		=> END
+
+~ meet
+do Utils.character.meet()
+Silvia: ...You clearly lack the posture of domestic staff.
+Silvia: Silvia Netti.
+- Straight to the point.
+	do Utils.register_dialogue_choice("silvia_meet_point", "Straight to the point.", "reassure", 0.3, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Silvia: Efficiency is rarely appreciated, yet always necessary.
+	do Utils.character.increase_trust()
+- You seem very calm.
+	do Utils.register_dialogue_choice("silvia_meet_calm", "You seem very calm.", "evidence", 0.2, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+	Silvia: Panic clouds judgment.
+	Silvia: I prefer clarity.
+	do Utils.character.increase_interest()
+- You were close to the victim?
+	do Utils.register_dialogue_choice("silvia_meet_close", "You were close to the victim?", "pressure,family", -0.1, 0.4, "", 0.0, 0.1, 0.0, 0.1)
+	Silvia: Biological kinship is not synonymous with emotional intimacy. 
+	Silvia: He was my uncle.
+	do Utils.character.increase_apprehension()
+Silvia: If you are here to ask questions, make them worthwhile.
+- Tell me about your uncle. => victim
+- Do you trust the people here? => trust
+- I'll leave you to it.
+	Silvia: A wise decision.
+	=> END
+
+
+~ victim
+do Utils.character.talked("victim")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_supportive"]
+	Silvia: He viewed human relationships as anatomical systems to be manipulated for optimal output.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Silvia: He made enemies.
+	Silvia: That was inevitable.
+else
+	Silvia: He was a man of control.
+	Silvia: Everything in his life was calculated.
+- And you admired that?
+	do Utils.register_dialogue_choice("silvia_victim_admired", "And you admired that?", "family", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.1)
+	Silvia: I recognized the clinical efficiency of it.
+	do Utils.character.increase_interest()
+- Sounds exhausting.
+	do Utils.register_dialogue_choice("silvia_victim_exhausting", "Sounds exhausting.", "reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Silvia: High performance is always taxing to those lacking internal discipline.
+	do Utils.character.decrease_trust()
+- You make him sound like a system, not a person.
+	do Utils.register_dialogue_choice("silvia_victim_system", "You make him sound like a system, not a person.", "probe,family", 0.2, 0.1, "", 0.0, 0.0, 0.0, 0.2)
+	if Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+		Silvia: Because he treated his familial lineage as an asset portfolio rather than flesh and blood.
+	else
+		Silvia: Sentimentality is merely chemical interference when assessing a man's legacy.
+=> END
+
+
+~ trust
+do Utils.character.talked("trust")
+if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+	Silvia: Trust is a tool.
+	Silvia: Not a sentiment.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Silvia: Trusting individuals in a closed system under acute stress is clinical negligence.
+else
+	Silvia: Trust is irrelevant.
+	Silvia: People act according to their interests.
+	- Including you?
+		do Utils.register_dialogue_choice("silvia_trust_including", "Including you?", "pressure", -0.1, 0.3, "", 0.0, 0.1, 0.0, -0.1)
+		Silvia: Above all myself. Self-preservation is the primary directive.
+		do Utils.character.increase_apprehension()
+	- Including me?
+		do Utils.register_dialogue_choice("silvia_trust_me", "Including me?", "self_incriminate", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+		if Utils.ctx["is_suspicious"]
+			Silvia: Indubitably. Your performative detachment masks a highly acute personal interest.
+		else
+			Silvia: I see no empirical reason to exempt you from basic human behaviour.
+=> END
+
+
+~ inheritance
+do Utils.character.talked("inheritance")
+if Utils.character.get_trust() >= 5 or Utils.ctx["family_focus"] >= 3
+	Silvia: You are perceptive.
+	Silvia: Yes, his death changes certain arrangements.
+	- And that benefits you.
+		do Utils.register_dialogue_choice("silvia_inheritance_benefits", "And that benefits you.", "pressure,accusation,family", -0.3, 0.9, "", 0.0, 0.2, 0.0, -0.1)
+		Silvia: It excise sudden, malignant uncertainties regarding the lineage.
+		do Utils.character.increase_apprehension()
+	- And that threatens others.
+		do Utils.register_dialogue_choice("silvia_inheritance_threatens", "And that threatens others.", "family,evidence", 0.1, 0.2, "", 0.0, 0.0, -0.1, 0.1)
+		Silvia: Any sudden reallocation of resources causes systemic shock to parasites.
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Silvia: I assume you are implying something.
+	- I am considering possibilities.
+		do Utils.register_dialogue_choice("silvia_inheritance_possibilities", "I am considering possibilities.", "pressure,deflect", -0.1, 0.3, "", 0.0, 0.0, 0.0, -0.1)
+		Silvia: Conduct your differential diagnosis internally without vocalizing speculation.
+		do Utils.character.decrease_trust()
+elif Utils.character.get_interest() >= 5
+	Silvia: Capital concentration acts as a powerful behavioral attractant.
+	- Does it bother you?
+		do Utils.register_dialogue_choice("silvia_inheritance_bother", "Does it bother you?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+		Silvia: Not particularly.
+		do Utils.character.increase_interest()
+else
+	Silvia: The legal executors will manage the fiscal remains. 
+	Silvia: That is all you need to know.
+=> END
+
+
+~ suspicion
+do Utils.character.talked("suspicion")
+if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+	Silvia: Your methodology exhibits structure. 
+	Silvia: You are isolating behavioral anomalies rather than relying on intuition.
+	do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Silvia: You are not searching for truth.
+	Silvia: You are validating assumptions.
+	do Utils.character.decrease_trust()
+elif Utils.character.get_apprehension() >= 5
+	Silvia: You anticipated certain answers.
+	Silvia: That implies prior knowledge.
+	do Utils.character.increase_apprehension()
+else
+	Silvia: You dissect the room with systematic, highly rehearsed detachment.
+
+- People here sometimes seem wary of me. Like they do not trust me.
+	do Utils.register_dialogue_choice("silvia_suspicion_wary", "People here sometimes seem wary of me.", "self_incriminate", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	if Utils.character.get_trust() <= 0
+		Silvia: I do not trust you.
+		- Direct.
+			do Utils.register_dialogue_choice("silvia_suspicion_direct", "Direct.", "reassure", 0.1, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+			Silvia: Ambiguity wastes oxygen.
+	else
+		Silvia: No one trusts anyone here.
+		Silvia: Someone died.
+- Is it the detective costume, or the novelist behind it?
+	do Utils.register_dialogue_choice("silvia_suspicion_novelist", "Is it the detective costume, or the novelist behind it?", "self_incriminate,evidence", 0.0, 0.1, "", 0.0, 0.0, 0.1, 0.2)
+	Silvia: It is the way you observe people like drafts.
+	Silvia: As though motive interests you more than grief.
+if Utils.ctx["is_stressed"]
+	Silvia: Your composure is slipping.
+	Silvia: Useful, in a way. Stress reveals method.
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+Silvia: Correct. Self-reporting cognitive fatigue is the first step in mitigating diagnostic error.
+- Then give me the clinical version.
+	do Utils.register_dialogue_choice("silvia_stress_clinical", "Then give me the clinical version.", "evidence", 0.2, 0.0, "", 0.0, -0.2, -0.1, 0.0)
+	Silvia: Narrow your scope.
+	Silvia: One person, one motive, one contradiction at a time.
+- You make that sound easy.
+	do Utils.register_dialogue_choice("silvia_stress_easy", "You make that sound easy.", "reassure", 0.1, 0.0, "", 0.0, -0.1, 0.0, 0.1)
+	Silvia: It requires rigorous emotional compartmentalization. 
+	Silvia: A skill you currently lack.
+=> END
+
+
+~ diagnosis
+do Utils.character.talked("diagnosis")
+Silvia: I am not the one romanticizing this.
+Silvia: You keep looking for hidden feelings when incentives are simpler.
+- Simpler does not mean cleaner.
+	do Utils.register_dialogue_choice("silvia_diagnosis_cleaner", "Simpler does not mean cleaner.", "evidence", 0.2, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+	Silvia: No.
+	Silvia: But it is usually closer to correct.
+- So your diagnosis is greed?
+	do Utils.register_dialogue_choice("silvia_diagnosis_greed", "So your diagnosis is greed?", "pressure,evidence,family", 0.0, 0.2, "", 0.0, 0.1, 0.0, 0.1)
+	Silvia: Acute financial desperation, status anxiety, or narcisstic injury. Pick your preferred pathogen.
+=> END
+
+
+~ cousin
+do Utils.character.talked("cousin")
+if Utils.ctx["family_focus"] >= 3
+	Silvia: The diagnostic biopsy of our family tree revealed an unexpected, unverified growth recently, yes.
+else
+	Silvia: Your investigative extraction is rapid. 
+	Silvia: Yes. I learned of him recently.
+- Did it change how you saw your uncle?
+	do Utils.register_dialogue_choice("silvia_cousin_uncle", "Did it change how you saw your uncle?", "probe,family", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.1)
+	Silvia: It confirmed things I already suspected.
+- Do you feel like it puts your place in the family at risk?
+	do Utils.register_dialogue_choice("silvia_cousin_place", "Or your place in the family?", "pressure,family", -0.1, 0.3, "", 0.0, 0.1, 0.0, 0.2)
+	Silvia: My position within this familial hierarchy is anchored by intellectual merit, not fragile sentiment.
+	do Utils.character.increase_apprehension()
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Silvia: A positive blood sample lacking human antigen markers.
+		Silvia: A surgical decoy introduced to induce analytical confusion.
+	else
+		Silvia: Granular analysis confirms the initial diagnosis.
+		Silvia: An artifact designed for visual impact rather than lethality.
+	- Intentional as a false lead.
+		do Utils.register_dialogue_choice("silvia_knife_revisit_false", "Intentional as a false lead.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Precisely. A placebo introduced to misdirect our cognitive attention.
+	- Intentional because the killer expected shallow scrutiny.
+		do Utils.register_dialogue_choice("silvia_knife_revisit_shallow", "Intentional because the killer expected shallow scrutiny.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Relying on the hysteria of amateurs to substitute for forensic verification.
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.ctx["is_pressured"]
+		Silvia: The blood type is still inconclusive.
+		Silvia: I would avoid treating that as triumph.
+	else
+		Silvia: A positive, but not verifiably human.
+		Silvia: That distinction matters.
+	- So the scene remains contaminated by uncertainty.
+		do Utils.register_dialogue_choice("silvia_knife_hidden_uncertain", "So the scene remains contaminated by uncertainty.", "evidence", 0.0, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Silvia: And positioned it precisely along the primary visual trajectory of the foyer.
+	- Unless someone wanted uncertainty preserved.
+		do Utils.register_dialogue_choice("silvia_knife_hidden_preserved", "Unless someone wanted uncertainty preserved.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Silvia: A symptom manufactured specifically to draw diagnostic focus.
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Silvia: That does not belong to the main collection.
+		Silvia: It is from the service area.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() <= -5 or Utils.ctx["is_pressured"]
+		Silvia: You are presenting it as evidence.
+		Silvia: That is premature.
+		do Utils.character.decrease_trust()
+	elif Utils.character.get_apprehension() >= 5
+		Silvia: Too obvious.
+		Silvia: It invites suspicion.
+	else
+		Silvia: Blood alone proves nothing.
+	- So someone wanted it found.
+		do Utils.register_dialogue_choice("silvia_knife_found", "So someone wanted it found.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Precisely.
+	- So someone panicked.
+		do Utils.register_dialogue_choice("silvia_knife_panic", "So someone panicked.", "pressure,evidence", -0.1, 0.2, "knife", 0.7, 0.0, 0.0, 0.0)
+		Silvia: Panic leaves different kinds of mess.
+=> END
+
+
+~ wine
+if Utils.is_clue_revisit_ready("wine")
+	do Utils.mark_clue_topic("wine", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Silvia: Residue inconsistent with wine confirms adulteration.
+		Silvia: The glass itself becomes procedure, not accident.
+	else
+		Silvia: Oral ingestion remains the most efficient vector when physical altercation is medically unadvisable.
+	- Then someone overrode precautions deliberately.
+		do Utils.register_dialogue_choice("silvia_wine_revisit_override", "Then someone overrode precautions deliberately.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Yes.
+	- Serving would look ordinary.
+		do Utils.register_dialogue_choice("silvia_wine_revisit_ordinary", "And expected the serving to look ordinary.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Silvia: That is the strength of familiar rituals.
+elif Utils.is_clue_hidden_ready("wine")
+	do Utils.mark_clue_topic("wine", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Silvia: Precipitation at the bottom of the goblet. An amateurish dissolution rate.
+	else
+		Silvia: Toxicological contamination confirmed. 
+		Silvia: We may dismiss systemic organ failure due to natural causes.
+	- So the killer relied on access, not force.
+		do Utils.register_dialogue_choice("silvia_wine_hidden_access", "So the killer relied on access, not force.", "evidence", 0.1, 0.0, "wine", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Completely. Spontaneous synthesis of barbiturates in Bordeaux does not occur medically
+	- Points back to whoever served it.
+		do Utils.register_dialogue_choice("silvia_wine_hidden_served", "Points back to whoever served it.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Or whoever had unobserved physical proximity during decanting.
+else
+	do Utils.character.talked("wine")
+	do Utils.mark_clue_topic("wine", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Silvia: He did not drink wine tonight.
+		Silvia: I made sure of it.
+		- You made sure of it?
+			do Utils.register_dialogue_choice("silvia_wine_sure", "You made sure of it?", "pressure,evidence", -0.1, 0.3, "wine", 0.8, 0.0, 0.0, 0.1)
+			Silvia: His stomach had been poor lately.
+			Silvia: I was being practical.
+		- So whoever gave him wine knew your routine.
+			do Utils.register_dialogue_choice("silvia_wine_routine", "So whoever gave him wine knew your routine.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+			Silvia: A protocol breach with fatal efficacy.
+	elif Utils.character.get_apprehension() >= 5
+		Silvia: My uncle exhibited extreme selectivity regarding his beverage intake. 
+		Silvia: He trusted the source.
+		- Officially?
+			do Utils.register_dialogue_choice("silvia_wine_officially", "Officially?", "pressure,evidence", -0.1, 0.2, "wine", 0.7, 0.0, 0.0, 0.0)
+			Silvia: Guests frequently violate sterile boundaries during social mixing.
+		- So someone bypassed procedure.
+			do Utils.register_dialogue_choice("silvia_wine_procedure", "So someone bypassed procedure.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+			Silvia: A protocol breach with fatal efficacy.
+	else
+		Silvia: Spilled glassware. Commonplace at intoxicated gatherings.
+		- Officially?
+			do Utils.register_dialogue_choice("silvia_wine_officially", "Officially?", "pressure,evidence", -0.1, 0.2, "wine", 0.7, 0.0, 0.0, 0.0)
+			Silvia: Guests frequently violate sterile boundaries during social mixing.
+		- So someone bypassed procedure.
+			do Utils.register_dialogue_choice("silvia_wine_procedure", "So someone bypassed procedure.", "evidence", 0.1, 0.1, "wine", 0.8, 0.0, -0.1, 0.0)
+			Silvia: A protocol breach with fatal efficacy.
+=> END
+
+
+~ meds
+if Utils.is_clue_revisit_ready("meds")
+	do Utils.mark_clue_topic("meds", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Silvia: Anti-depressants, with the patient intentionally erased.
+		Silvia: That indicates an acute desire to conceal psychiatric history.
+	else
+		Silvia: Pharmacology utilized as psychological leverage.
+	- So shame was part of the concealment.
+		do Utils.register_dialogue_choice("silvia_meds_revisit_shame", "So shame was part of the concealment.", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Shame, leverage, or privacy.
+	- So somebody was protecting an identity.
+		do Utils.register_dialogue_choice("silvia_meds_revisit_identity", "So somebody was protecting an identity.", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Diagnostic concealment is rampant among patrician families terrified of social perceived defect.
+	- So someone was saving it for leverage later.
+		do Utils.register_dialogue_choice("silvia_meds_revisit_later", "So someone was saving it for leverage later.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Medical records make exceptionally potent extortion material.
+
+elif Utils.is_clue_hidden_ready("meds")
+	do Utils.mark_clue_topic("meds", "hidden")
+	if Utils.character.get_trust() >= 5
+		Silvia: Anti-depressants.
+		Silvia: Exposure of such a regimen would induce severe status necrosis in our social circle.
+		Silvia: The scratched name is now even more telling.
+	else
+		Silvia: The substance is identified.
+		Silvia: The owner remains intentionally absent.
+	- A reason tied to shame.
+		do Utils.register_dialogue_choice("silvia_meds_hidden_shame", "A reason tied to shame.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Social pathology frequently treats clinical depression as moral failure.
+	- With ties to someone powerful enough to protect.
+		do Utils.register_dialogue_choice("silvia_meds_hidden_powerful", "With ties to someone powerful enough to protect.", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Or violent enough to silence the pharmacist.
+
+else
+	do Utils.character.talked("meds")
+	do Utils.mark_clue_topic("meds", "surface")
+	if Utils.character.get_interest() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Silvia: Scratched names imply intent to conceal identity.
+		Silvia: That is deliberate.
+	elif Utils.character.get_trust() >= 5
+		Silvia: That does not belong to him.
+		Silvia: He avoided anything that suggested weakness.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() <= -5 or Utils.character.get_apprehension() >= 5
+		Silvia: Prescription drugs are medically ubiquitous. Cease your amateur diagnostics.
+	else
+		Silvia: Irrelevant, unless you can connect it to someone.
+	- As a doctor, what would you make of it?
+		do Utils.register_dialogue_choice("silvia_meds_doctor", "As a doctor, what do you make of it?", "evidence", 0.2, 0.0, "meds", 0.5, 0.0, 0.2, 0.0)
+		Silvia: This is just a costume, Hilde. You seem to forget that sometimes.
+		Silvia: But I'd say that someone wanted the medication without the patient attached.
+	- You sound confident.
+		do Utils.register_dialogue_choice("silvia_meds_confident", "You sound confident.", "pressure,evidence", -0.1, 0.2, "meds", 0.6, 0.0, 0.0, 0.0)
+		Silvia: Confidence is not the same as guilt, Mr. Hilde.
+=> END
+
+
+~ candlestick
+if Utils.is_clue_revisit_ready("candlestick")
+	do Utils.mark_clue_topic("candlestick", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Silvia: High-density brass showing structural deformation. 
+		Silvia: Force applied at an acute angle, consistent with cranium impact.
+	else
+		Silvia: Blunt force trauma instrument identified via physical deformation.
+	- Which means someone committed to using it.
+		do Utils.register_dialogue_choice("silvia_candle_revisit_commit", "Which means someone committed to using it.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Kinetic energy transfer of that magnitude requires absolute psychological commitment.
+	- And the wrong wax means a staged location.
+		do Utils.register_dialogue_choice("silvia_candle_revisit_staged", "And the wrong wax means a staged location.", "evidence", 0.1, 0.0, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Post-trauma relocation to confuse spatial analysis.
+
+elif Utils.is_clue_hidden_ready("candlestick")
+	do Utils.mark_clue_topic("candlestick", "hidden")
+	if Utils.ctx["is_suspicious"]
+		Silvia: Hidden dents and inconsistent wax make it useful evidence.
+		Silvia: They do not make it proof.
+	if Utils.character.get_trust() <= -5
+		Silvia: Metal deformation does not constitute empirical proof of my personal involvement.
+	else
+		Silvia: Faint dents near the base and wax from elsewhere.
+		Silvia: That is no longer mere decor.
+	- Then it was handled with purpose.
+		do Utils.register_dialogue_choice("silvia_candle_hidden_purpose", "Then it was handled with purpose.", "evidence", 0.1, 0.0, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Silvia: That is the cleaner interpretation.
+	- So it was repurposed in the moment.
+		do Utils.register_dialogue_choice("silvia_candle_hidden_moment", "So it was repurposed in the moment.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Less elegant, but possible.
+	- Selected because it looked harmless first.
+		do Utils.register_dialogue_choice("silvia_candle_hidden_harmless", "Selected because it looked harmless first.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Silvia: Domestic objects bypass primitive threat receptors effectively.
+
+else
+	do Utils.character.talked("candlestick")
+	do Utils.mark_clue_topic("candlestick", "surface")
+	if Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+		Silvia: Presenting heavy furniture items reflects severely degraded diagnostic focus.
+		Silvia: You are reaching.
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Silvia: Decorative objects are often overlooked.
+		Silvia: That makes them useful.
+	elif Utils.character.get_apprehension() >= 5
+		Silvia: Blunt force is inelegant.
+	else
+		Silvia: It is part of the decor.
+		Silvia: Nothing more, unless proven otherwise.
+	- Useful for someone methodical?
+		do Utils.register_dialogue_choice("silvia_candle_methodical", "Useful for someone methodical?", "pressure,evidence", -0.1, 0.3, "candlestick", 0.7, 0.0, 0.0, 0.1)
+		Silvia: Useful for someone opportunistic.
+	- Useful for someone who knew the room.
+		do Utils.register_dialogue_choice("silvia_candle_room", "Useful for someone who knew the room.", "evidence", 0.1, 0.1, "candlestick", 0.7, 0.0, -0.1, 0.0)
+		Silvia: Everyone here knew enough of it to be dangerous.
+	- You say that like you measured it.
+		do Utils.register_dialogue_choice("silvia_candle_measured", "You say that like you measured it.", "pressure,evidence", -0.1, 0.3, "candlestick", 0.7, 0.0, 0.0, 0.0)
+		Silvia: I understand anatomical structural tolerances. Bone yields to specific joules of force.
+	- Quiet appeals to you?
+		do Utils.register_dialogue_choice("silvia_candle_quiet", "Quiet appeals to you?", "pressure", -0.1, 0.2, "candlestick", 0.6, 0.0, 0.0, 0.0)
+		Silvia: Acoustic minimization prevents unnecessary external interference during delicate procedures.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+Silvia: I am attired as a surgeon.
+Silvia: It represents surgical discipline and emotional antisepsis.
+- To save people?
+	do Utils.register_dialogue_choice("silvia_costume_save", "To save people?", "reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Silvia: Or to decide who cannot be saved.
+	do Utils.character.increase_apprehension()
+- That sounds like triage, not mercy.
+	do Utils.register_dialogue_choice("silvia_costume_triage", "That sounds like triage, not mercy.", "probe", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.1)
+	Silvia: Accuracy is kinder than false hope.
+=> END
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_favorite"]
+	Silvia: The investigative trench coat. 
+	Silvia: A curious manifestation of your desire to impose external order on chaotic human pathology.
+	do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Silvia: Your sartorial cosplay borders on clinical megalomania, Hilde. 
+	Silvia: You are a writer, not a medical examiner.
+	do Utils.character.decrease_trust()
+else
+	Silvia: Standard investigative archetype attire.
+- I write mysteries. It helps.
+	do Utils.register_dialogue_choice("silvia_costume_write", "I write mysteries. It helps.", "self_incriminate,reassure", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Silvia: That explains the distance.
+	Silvia: You study people as if they are already fictional.
+- I am a novelist. I study structure.
+	do Utils.register_dialogue_choice("silvia_costume_novelist", "I am a novelist. I study structure.", "self_incriminate,evidence", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Silvia: Human biological termination does not obey your three-act dramatic paradigms.
+- You think I wanted this.
+	do Utils.register_dialogue_choice("silvia_costume_wanted", "You think I wanted this.", "self_incriminate,pressure", 0.0, 0.0, "", 0.0, 0.1, 0.1, 0.2)
+	Silvia: I think part of you understands it too easily.
+- It helps me think.
+	do Utils.register_dialogue_choice("silvia_costume_think", "It helps me think.", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.1)
+	Silvia: A psychological prosthesis to reinforce a fragile sense of cognitive authority.
+=> END
+
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+if Utils.character.get_trust() >= 5 or Utils.ctx["family_focus"] >= 3
+	Silvia: Illusionist.
+	Silvia: That aligns with his nature.
+	do Utils.character.increase_apprehension()
+else
+	Silvia: Theatrical stage attire. Symptomatic of deep-seated narcissistic exhibitionism.
+- Because he liked spectacle?
+	do Utils.register_dialogue_choice("silvia_costume_spectacle", "Because he liked spectacle?", "probe,family", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Silvia: Because he liked control over what others saw.
+- So you saw him as a fraud.
+	do Utils.register_dialogue_choice("silvia_costume_fraud", "So you saw him as a fraud.", "pressure", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Silvia: I saw him as a master of psychological camouflage whose primary pathology was manipulation.
+=> END
+
+
+~ blamed
+if Utils.character.get_trust() >= 6 and Utils.character.get_interest() >= 2 and not Utils.ctx["is_suspicious"]
+	Silvia: I see.
+	Silvia: So all that careful questioning was merely theatre.
+	Silvia: Your diagnostic conclusion represents catastrophic intellectual failure.
+	Silvia: I provided empirical transparency, yet you defaulted to prosecuting cold composure because emotional suspects make you nervous.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Silvia: Predictable.
+	Silvia: You have been leaning toward me for some time.
+	Silvia: I cannot say your conclusion is well-supported, but it is at least consistent.
+elif Utils.ctx["family_focus"] >= 3
+	Silvia: Of course.
+	Silvia: Inheritance. Bloodline. Resentment.
+	Silvia: You prefer motives that arrange themselves neatly.
+elif Utils.ctx["evidence_focus"] >= 9 and Utils.ctx["blame"] < 3
+	Silvia: That surprises me.
+	Silvia: Your evidence was better than this conclusion.
+	Silvia: Somewhere, you abandoned your own method.
+elif Utils.ctx["is_stressed"] or Utils.ctx["is_confused"]
+	Silvia: You are exhausted.
+	Silvia: This is what exhaustion does. It mistakes closure for proof.
+else
+	Silvia: Then say it plainly.
+	Silvia: If you are going to accuse me, at least do me the courtesy of not dressing impulse as reason.
+=> END

@@ -1,0 +1,492 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Lucille: Honestly? I'm done talking to you.
+	Lucille: You're ruining my vibe and acting like a budget prosecutor. Bye.
+	=> END
+else
+	if Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Lucille: Okay, why are you hyper-focusing on me right now? 
+		Lucille: It’s giving obsession, and I don't like it.
+	elif Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 2
+		Lucille: Oh, look who’s back! 
+		Lucille: Finally, someone who isn't dragging down the mood of this whole disaster.
+	elif Utils.ctx["is_suspicious"]
+		Lucille: You’re giving me that weird squint again. 
+		Lucille: Stop trying to psychoanalyze my facial expressions.
+	elif Utils.ctx["is_stressed"]
+		Lucille: Whoa, take a breath, detective. 
+		Lucille: You look like you’re about to have a full-on meltdown right on the marble flooring.
+	elif Utils.ctx["is_confused"]
+		Lucille: You literally look so lost right now.
+		Lucille: Like you need either water or a better theory.
+	elif Utils.ctx["is_manipulative"]
+		Lucille: You keep doing this thing.
+		Lucille: I answer one question and suddenly it feels like I've confessed to something.
+		Lucille: I really don't like that.
+	else
+		Lucille: What's up now? Keep it quick, this lighting is terrible for my headache.
+
+	- And how did you end up at this party? [if not Utils.character.has_talked("party")] => party
+	- About your friend Silvia... [if Utils.character.has_talked("party") and not Utils.character.has_talked("bff")] => bff
+	- What did you think of the victim? [if Utils.character.has_talked("party") and not Utils.character.has_talked("host")] => host
+	- You keep deflecting with charm. [if not Utils.character.has_talked("deflect")] => deflect
+	- Why are you so quick to blame everyone else? [if Utils.character.has_talked("deflect") and not Utils.character.has_talked("blame")] => blame
+	- How much of this is an act for you? [if Utils.character.has_talked("deflect") and not Utils.character.has_talked("image")] => image
+	- I think I am starting to crack a little. [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+
+	# Clues
+	- What do you know about this knife? [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Have you seen this glove before? [if Utils.is_clue_surface_ready("glove")] => glove
+	- Ask about the hidden traces on the glove. [if Utils.is_clue_hidden_ready("glove")] => glove
+	- Revisit the glove with what you uncovered. [if Utils.is_clue_revisit_ready("glove")] => glove
+	- Ask about the cryptic note [if Utils.is_clue_surface_ready("note")]. => note
+	- Ask about the distorted note. [if Utils.is_clue_hidden_ready("note")] => note
+	- Revisit the note with what you uncovered. [if Utils.is_clue_revisit_ready("note")] => note
+
+	# Costumes
+	
+	- Honestly, I thought you were working here. Your outfit is really convincing. [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- Ask about the victim's costume. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+	
+	- I will see you around.
+		Lucille: Don't be a stranger! Or do. Whichever.
+		=> END
+
+
+~ meet
+do Utils.character.meet()
+Lucille: Oh, hey!
+Lucille: I don't think we've met. I'm Lucille. You probably follow my page, "La Fleur de ma Vie"?
+- I cannot say I am familiar with that name.
+	do Utils.register_dialogue_choice("lucille_meet_name", "I cannot say I am familiar with that name.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, -0.1)
+	Lucille: Seriously? Wow, you must live under an absolute rock. I have half a million daily impressions.
+	do Utils.character.decrease_joy()
+- You are a... blogger, right?
+	do Utils.register_dialogue_choice("lucille_meet_blogger", "You are a blogger, right?", "pressure", -0.2, 0.3, "", 0.0, 0.0, 0.0, -0.1)
+	Lucille: Eww, blogger? What is this, 2012? 
+	Lucille: I’m a lifestyle curator and digital brand architect.
+- That is a lot of confidence.
+	do Utils.register_dialogue_choice("lucille_meet_confidence", "That is a lot of confidence.", "reassure,flirt", 0.3, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Lucille: Confidence is literally just good branding, honey. Thanks for noticing!
+
+Lucille: Anyway, you should definitely tag me if you take any aesthetic photos tonight. 
+Lucille: Minus the crime scene, obviously.
+- And how did you end up at this party? => party
+- Honestly, I thought you were working here. Your outfit is really convincing. => costume_self
+- I will think about it.
+	Lucille: Wow. Super awkward. But okay.
+	do Utils.character.decrease_trust()
+	=> END
+
+
+~ party
+do Utils.character.talked("party")
+
+Lucille: Silvia brought me! She’s the host’s niece. 
+Lucille: You’ve probably seen her glaring at people in the corner like a brooding Victorian ghost.
+- Could you tell me more about her? => bff
+- And you got an invitation just because of that?
+	do Utils.register_dialogue_choice("lucille_party_invite", "And you got an invitation just because of that?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Lucille: Um, yes? Being pretty and well-connected is a full-time job. Try it sometime.
+	do Utils.character.increase_apprehension()
+- So you came for the party, not the people.
+	do Utils.register_dialogue_choice("lucille_party_people", "So you came for the party, not the people.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.1, 0.0)
+	Lucille: Parties *are* content. People just get in the way of good lighting.
+=> END
+
+
+~ bff
+do Utils.character.talked("bff")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Lucille: Silvia is literally my rock. She acts all frosty and hyper-logical, but she’d bury a body for the people she loves. Figuratively! Obviously!
+	
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Lucille: Why are you fishing for gossip about my best friend? That is super gross and weird.
+	do Utils.character.decrease_trust()
+	- That sound evasive.
+		do Utils.register_dialogue_choice("lucille_bff_defensive", "You sound defensive.", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+		Lucille: I’m protective! There’s a difference. Stop trying to read between lines that aren't there.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_interest() >= 5
+	Lucille: Silvia keeps her circle tiny because most people are fake. Being the exception is kind of a VIP pass.
+	do Utils.character.increase_interest()
+else
+	Lucille: She’s brilliant, she’s rich, and she doesn't take anyone's nonsense. 
+	Lucille: What else do you need to know?
+	- That sound evasive.
+		do Utils.register_dialogue_choice("lucille_bff_defensive", "You sound defensive.", "pressure", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+		Lucille: I’m protective! There’s a difference. Stop trying to read between lines that aren't there.
+		do Utils.character.increase_apprehension()
+=> END
+
+
+~ host
+do Utils.character.talked("host")
+if Utils.character.get_trust() >= 5
+	Lucille: Look, he was one of those old-school billionaires who thought paying for champagne meant he owned the room. Exhausting energy.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Lucille: Am I supposed to pretend I cry myself to sleep over a guy I met twice? Be serious.
+else
+	Lucille: The hors d'oeuvres were ten out of ten. The host? Solid two.
+- So you did not like him.
+	do Utils.register_dialogue_choice("lucille_host_like", "So you did not like him.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Lucille: I didn't say that! Don't quote me. 
+	Lucille: I just prefer people who don't talk down to everyone under thirty.
+- That sounds like someone who disappointed people.
+	do Utils.register_dialogue_choice("lucille_host_disappoint", "That sounds like someone who disappointed people.", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.1)
+	Lucille: Oh, he definitely stepped on toes. Big, heavy, expensive shoes stepping on lots of toes.
+=> END
+
+
+~ deflect
+do Utils.character.talked("deflect")
+Lucille: Excuse me?
+Lucille: Calling me charming isn't going to distract from how intense and creepy you're acting right now.
+- You seem to always redirect when things get uncomfortable.
+	do Utils.register_dialogue_choice("lucille_deflect_redirect", "You seem to always redirect when things get uncomfortable.", "pressure,probe", -0.1, 0.2, "", 0.0, 0.1, 0.0, 0.0)
+	Lucille: Because awkward conversations cause wrinkles, and I have a skincare routine to uphold.
+- You always redirect when you are scared.
+	do Utils.register_dialogue_choice("lucille_deflect_scared", "Or you redirect when you are scared.", "reassure,probe", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.1)
+	Lucille: ...Someone literally got murdered down the hall. Being scared is the only normal reaction here, genius.
+	do Utils.character.increase_apprehension()
+=> END
+
+
+~ image
+do Utils.character.talked("image")
+if Utils.ctx["is_manipulative"]
+	Lucille: Enough of an act to keep weirdos like you from finding out anything real about me.
+elif Utils.character.get_trust() >= 5
+	Lucille: Look, if you show people your real face, they criticize it. 
+	Lucille:If you show them a brand, they worship it. 
+	Lucille: Easy math.
+else
+	Lucille: Everyone in this mansion is wearing a mask. 
+	Lucille: Mine just has better lighting.
+if Utils.ctx["is_stressed"]
+	Lucille: And honestly? You should try acting calm, because your shaking hands are ruining the vibe.
+- So the performance protects you.
+	do Utils.register_dialogue_choice("lucille_image_protects", "So the performance protects you.", "probe,reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.1)
+	Lucille: Armor made of chiffon and lip gloss. Works every time.
+- This theatre keeps others from noticing when you are serious.
+	do Utils.register_dialogue_choice("lucille_image_serious", "Or keeps people from noticing when you are serious.", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.1)
+	Lucille: If people think you're shallow, they never see you coming.
+=> END
+
+
+~ blame
+do Utils.character.talked("blame")
+if Utils.ctx["is_pressured"]
+	Lucille: Because if I don't point out the obvious sketchiness around here, you're going to try and pin it on the girl with the most followers!
+else
+	Lucille: Because literally everyone else in this room has a shady financial motive or a secret vendetta! I’m just here for the free canapés!
+- Including Silvia?
+	do Utils.register_dialogue_choice("lucille_blame_silvia", "Including Silvia?", "pressure,accusation", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Lucille: Don't twist my words! Silvia is innocent. Go bother the knight or the butler.
+- Including me?
+	do Utils.register_dialogue_choice("lucille_blame_me", "Including me?", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Lucille: Oh, *especially* you. Who wears a literal detective trench coat to a high-society ball unless they were planning on playing cop all night?
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+Lucille: Okay, yes, I can see that.
+Lucille: You have a very specific "I have not blinked in five minutes" energy.
+- You noticed that fast.
+	do Utils.register_dialogue_choice("lucille_stress_noticed", "You noticed that fast.", "pressure", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.1)
+	Lucille: Please. I survive by noticing panic early.
+- So what do people like you do with panic?
+	do Utils.register_dialogue_choice("lucille_stress_panic", "So what do people like you do with panic?", "probe,reassure", 0.2, 0.0, "", 0.0, -0.2, 0.0, 0.0)
+	Lucille: Lip gloss. Lying. Leaving the room before anyone sees too much.
+=> END
+
+
+~ neg
+do Utils.character.talked("neg")
+do Utils.character.decrease_trust()
+Lucille: Excuse me? You just met me!
+- And you still have not asked me my name.
+	do Utils.register_dialogue_choice("lucille_neg_name", "And you still have not asked me my name.", "pressure", -0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Lucille: Because I don't follow accounts with zero clout. But go ahead, enlighten me.
+	- Alwin Hilde.
+		do Utils.register_dialogue_choice("lucille_neg_alwin", "Alwin Hilde.", "probe", -0.2, 0, "", 0, 0, 0, 0)
+		do Utils.character.talked("Alwin")
+		Lucille: Well, Alwin... it was not a pleasure.
+	- (Lie) I am Chris.
+		do Utils.character.talked("Chris")
+		do Utils.register_dialogue_choice("lucille_neg_chris", "(Lie) I am Chris.", "deflect", -0.4, 0, "", 0, 0, 0.1, 0)
+		Lucille: Chris. Wow. Most basic name in the English language. Congrats.
+		Lucille: It was not a pleasure.
+	do Utils.character.decrease_trust()
+	do Utils.character.increase_apprehension()
+- My apologies, I may have overstepped.
+	do Utils.register_dialogue_choice("lucille_neg_apology", "My apologies, I may have overstepped.", "reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Lucille: Apology accepted, but your aura is still firmly on thin ice.
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["is_manipulative"]
+		Lucille: Oh joy, we’re talking about the rusty prop blade again.
+		Lucille: Did it suddenly grow a confession tag?
+	else
+		Lucille: A positive and not even clearly human?
+		Lucille: That is either useless or terrifying.
+		Lucille: I’m leaving a one-star review on Yelp.
+	- Useless if someone wanted spectacle.
+		do Utils.register_dialogue_choice("lucille_knife_revisit_spectacle", "Useless if someone wanted spectacle.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Exactly! Pure drama. Someone wanted us screaming and pointing fingers.
+	- Terrifying if it was meant to muddy the room.
+		do Utils.register_dialogue_choice("lucille_knife_revisit_muddy", "Terrifying if it was meant to muddy the room.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Mission accomplished, because everyone in here is acting completely unhinged.
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.ctx["is_pressured"]
+		Lucille: Great, more gross knife facts while you stare at me. I’m calling my lawyer if my phone gets signal.
+	else
+		Lucille: Fake blood? Or animal blood? That is literally so unsanitary and twisted.
+		Lucille: I'm starting to hate this place.
+	- Somebody wanted the shock first.
+		do Utils.register_dialogue_choice("lucille_knife_hidden_shock", "Somebody wanted the shock first.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Yes! Shock creates engagement. Classic clickbait strategy, applied to homicide.
+	- Someone wanted everyone accusing blindly.
+		do Utils.register_dialogue_choice("lucille_knife_hidden_blindly", "Someone wanted everyone accusing blindly.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Lucille: And look at you, taking the bait like a champ!
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Lucille: Get that disgusting thing out of my face! Do you want to get blood on my lace?!
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Lucille: That is disgusting.
+		Lucille: Why would someone leave it like that?
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() <= -5
+		Lucille: Why are you waving a murder weapon at me? Are you literally insane?
+		do Utils.character.increase_apprehension()
+		- You tell me.
+			do Utils.register_dialogue_choice("lucille_knife_tell", "You tell me.", "pressure,evidence,accusation", -0.1, 0.3, "knife", 0.7, 0.0, 0.0, 0.0)
+			Lucille: I tell you that you're a creep!
+		- It is almost too obvious. Why would someone just leave it around...
+			do Utils.register_dialogue_choice("lucille_knife_obvious", "It is almost too obvious.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Lucille: Right? It’s like a prop placed right in the center of the frame. Sloppy.
+	else
+		Lucille: Is that real?
+		- You tell me.
+			do Utils.register_dialogue_choice("lucille_knife_tell", "You tell me.", "pressure,evidence,accusation", -0.1, 0.3, "knife", 0.7, 0.0, 0.0, 0.0)
+			Lucille: I tell you that you're a creep!
+		- It is almost too obvious. Why would someone just leave it around...
+			do Utils.register_dialogue_choice("lucille_knife_obvious", "It is almost too obvious.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+			Lucille: Right? It’s like a prop placed right in the center of the frame. Sloppy.
+=> END
+
+
+~ glove
+if Utils.is_clue_revisit_ready("glove")
+	do Utils.mark_clue_topic("glove", "revisit")
+	if Utils.ctx["is_manipulative"]
+		Lucille: Wax, red wine, wrong size... this glove probably has more plot twists than your crime novels.
+	else
+		Lucille: So it doesn't even fit the old man? Thank God, my fashion intuition is never wrong.
+	- Then someone else left it.
+		do Utils.register_dialogue_choice("lucille_glove_revisit_left", "Then someone else left it.", "evidence", 0.1, 0.1, "glove", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Someone with bulky hands and terrible taste in accessories.
+	- The wax means it traveled.
+		do Utils.register_dialogue_choice("lucille_glove_revisit_traveled", "The wax means it traveled.", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Lucille: From the candlelit rooms. Like a library or an office where all the boring people hang out!
+		Lucille: Which means it is finally interesting.
+elif Utils.is_clue_hidden_ready("glove")
+	do Utils.mark_clue_topic("glove", "hidden")
+	if Utils.ctx["is_pressured"]
+		Lucille: Hidden trace analysis? You are enjoying this WAY too much, weirdo.
+	else
+		Lucille: Wax underneath the stain? That means someone tried to ruin a perfectly good silk glove on purpose.
+	- So the red stain was a distraction.
+		do Utils.register_dialogue_choice("lucille_glove_hidden_distraction", "So the red stain was a distraction.", "evidence", 0.1, 0.0, "glove", 0.8, 0.0, -0.1, 0.0)
+		Lucille: A fake pop of color to hide the real dirt underneath. Classic cover-up.
+	- Someone was clumsy in more than one room.
+		do Utils.register_dialogue_choice("lucille_glove_hidden_clumsy", "Someone was clumsy in more than one room.", "pressure,evidence", -0.1, 0.2, "glove", 0.7, 0.0, 0.0, 0.0)
+		Lucille: Clumsy people shouldn't commit major felonies.
+else
+	do Utils.character.talked("glove")
+	do Utils.mark_clue_topic("glove", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Lucille: Literally half the party is wearing gloves! 
+		Lucille: Stop trying to Cinderella-slipper me into a murder charge!
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Lucille: That color wash is atrocious. 
+		Lucille: Whoever dropped that deserved to go to jail just for Crimes Against Fashion.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() <= -5
+		Lucille: You are reaching so hard right now you’re gonna pull a hamstring.
+	else
+		Lucille: Just a dirty silk glove. What's the hype?
+- So you want it to stay anonymous.
+	do Utils.register_dialogue_choice("lucille_glove_anonymous", "So you want it to stay anonymous.", "pressure,evidence", -0.1, 0.3, "glove", 0.7, 0.0, 0.0, 0.0)
+	Lucille: I want you to stop treating dirty laundry like the Holy Grail!
+- You know exactly whose it is.
+	do Utils.register_dialogue_choice("lucille_glove_know", "You know exactly whose it is.", "pressure,evidence,accusation", -0.1, 0.4, "glove", 0.8, 0.1, 0.0, 0.0)
+	Lucille: If I knew who bought that tacky fabric, I would have roasted them on my story hours ago!
+=> END
+
+
+~ note
+if Utils.is_clue_revisit_ready("note")
+	do Utils.mark_clue_topic("note", "revisit")
+	if Utils.ctx["is_manipulative"]
+		Lucille: 'He knows.' Wow. Whoever wrote that definitely took Creative Writing 101 and failed.
+	else
+		Lucille: Distorted handwriting? So it's basically anonymous cyberbullying on expensive paper.
+	- So the note wanted panic, not clarity.
+		do Utils.register_dialogue_choice("lucille_note_revisit_panic", "So the note wanted panic, not clarity.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Panic makes people talk! Look at us right now.
+	- Looks like it wanted everyone to invent their own meaning.
+		do Utils.register_dialogue_choice("lucille_note_revisit_invent", "Looks like it wanted everyone to invent their own meaning.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Interactive storytelling. Super manipulative. I kind of respect the hustle, not gonna lie.
+elif Utils.is_clue_hidden_ready("note")
+	do Utils.mark_clue_topic("note", "hidden")
+	if Utils.ctx["is_pressured"]
+		Lucille: Of course it’s disguised handwriting! Nobody signs their name to a death threat, Sherlock!
+	else
+		Lucille: 'Tonight. Truth. He knows.' Sounds like the trailer for a really bad teen drama.
+	- Halfway because they needed an audience.
+		do Utils.register_dialogue_choice("lucille_note_hidden_audience", "Halfway because they needed an audience.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Toxic people ALWAYS need an audience. They can't even commit crime without leaving clues for attention.
+	- Maybe because they were scared?
+		do Utils.register_dialogue_choice("lucille_note_hidden_scared", "Maybe because they were scared?", "probe,reassure,evidence", 0.2, 0.0, "note", 0.8, -0.1, 0.2, 0.1)
+		Lucille: Scared people write messy notes. Calculated people write cryptic ones. Know the difference.
+else
+	do Utils.character.talked("note")
+	do Utils.mark_clue_topic("note", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Lucille: Get that creepy stalker note away from me! Good vibes only!
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Lucille: That handwriting is trying WAY too hard to look scary. Edgelord energy.
+	else
+		Lucille: Ugh, cursive? Why do Boomers insist on unreadable fonts?
+	- So you think it was staged.
+		do Utils.register_dialogue_choice("lucille_note_staged", "So you think it was staged.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Literally everything at this party is staged! Have you seen the ice sculptures?
+	- You believe it was rushed by someone panicking.
+		do Utils.register_dialogue_choice("lucille_note_panicking", "You believe it was rushed by someone panicking.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Lucille: Panic creates bad penmanship. That’s just science.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+Lucille: Oh, God no. Me? Manual labor? I’m dressed as a *French Chambermaid*. It’s irony, darling. Look up the concept.
+do Utils.character.increase_joy()
+- Why did you choose this outfit then?
+	do Utils.register_dialogue_choice("lucille_costume_choose", "Why did you choose this outfit then?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Lucille: Because the silhouette hits waist-high and the apron emphasizes the fit! 
+	Lucille: I already took twenty photos. Want to help me pick filters?
+	- I think I will have to pass this time.
+		do Utils.register_dialogue_choice("lucille_costume_pass", "I think I will have to pass this time.", "reassure", 0.1, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+		Lucille: Your loss. You probably have terrible eye for contrast anyway.
+		do Utils.character.decrease_apprehension()
+	- Is that really all?
+		do Utils.register_dialogue_choice("lucille_costume_all", "Is that really all?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+		do Utils.character.decrease_trust()
+		do Utils.character.increase_interest()
+		Lucille: It’s a costume party! 
+		Lucille: What, did you think I wore an apron so I could secretly mop up blood in the scullery? Be for real.
+		- You like being underestimated.
+			do Utils.register_dialogue_choice("lucille_costume_under", "You like being underestimated.", "probe", 0.2, 0.0, "", 0.0, 0.0, 0.0, 0.1)
+			Lucille: ...If people think you're just pretty, they talk openly around you. Their mistake.
+		- You seem a bit self-centered. => neg
+=> END
+
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+Lucille: You're literally roleplaying right now.
+Lucille: You dressed up as a 1940s detective... to a house party.
+if Utils.character.get_interest() >= 5 or Utils.ctx["is_favorite"]
+	Lucille: Honestly? Camp. Very noir aesthetic. 
+	Lucille: If you weren't accusing everyone of murder, we could do a cool photoshoot.
+	do Utils.character.increase_interest()
+elif Utils.character.get_apprehension() >= 5 or Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Lucille: It was cute an hour ago. Now it’s giving true-crime weirdo who manifested a tragedy just to cosplay.
+	if Utils.character.has_talked("Alwin")
+		Lucille: You are taking the theme way too seriously, Alwin.
+	if Utils.character.has_talked("Chris")
+		Lucille: You are taking the theme way too seriously, Chris.
+	else:
+		Lucille: You are taking the theme way too seriously.
+	- Weird how?
+		do Utils.register_dialogue_choice("lucille_costume_weird", "Weird how?", "defelct,self_incriminate", 0, 0, "", 0, 0.1, 0.1, 0.2)
+		Lucille: Because you look like you brought handcuffs and a notepad before anyone even dropped dead!
+	do Utils.character.increase_apprehension()
+elif Utils.character.get_trust() >= 5
+	Lucille: You really think you're going to solve this before the police get here, don't you? Main character syndrome much?
+	do Utils.character.increase_trust()
+else
+	Lucille: Bold choice. A bit heavy on the wool for indoor heating, but go off.
+
+- I like being prepared.
+	do Utils.register_dialogue_choice("lucille_costume_prepared", "I like being prepared.", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Lucille: Prepared for what? A homicide? That sounds like a confession, buddy.
+	do Utils.character.increase_apprehension()
+- Just a coincidence.
+	do Utils.register_dialogue_choice("lucille_costume_coincidence", "Just a coincidence.", "deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.2)
+	Lucille: There are no coincidences in fashion or crime. 
+	Lucille: You wanted to play cop tonight.
+	do Utils.character.decrease_trust()
+	do Utils.character.increase_apprehension()
+- I write criminal thrillers. Maybe I overprepared.
+	do Utils.register_dialogue_choice("lucille_costume_writer", "I write criminal thrillers. Maybe I overprepared.", "self_incriminate,reassure", 0.1, 0.0, "", 0.0, 0.0, 0.1, 0.3)
+	Lucille: So you write murder for a living, wear a trench coat, and someone dies? That’s literally the plot of a Brodway musical.
+=> END
+
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+if Utils.character.get_apprehension() >= 5 or Utils.ctx["family_focus"] >= 3
+	Lucille: He was doing card tricks earlier and trying to make coins disappear. Total creepy uncle vibes.
+	do Utils.character.increase_apprehension()
+else
+	Lucille: A magician. Boomer men always think they're mysterious when they're just exhausting.
+- Did you like him?
+	do Utils.register_dialogue_choice("lucille_costume_like", "Did you like him?", "probe", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.1)
+	Lucille: I liked his open bar. Him? Not so much.
+=> END
+
+
+
+~ blamed
+if Utils.character.get_trust() >= 6 and Utils.character.get_joy() >= 1 and not Utils.ctx["is_suspicious"] and not Utils.ctx["is_pressured"]
+	Lucille: Wait.
+	Lucille: Me?
+	Lucille: Are you serious right now?
+	Lucille: I thought you were intense, not ridiculous.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Lucille: Oh, please.
+	Lucille: You have been setting me up for this all night.
+	Lucille: You wanted someone loud enough to blame and easy enough to resent.
+elif Utils.character.get_apprehension() >= 5 and Utils.ctx["is_stressed"]
+	Lucille: Wow.
+	Lucille: You are sweating, shaking, and literally pointing fingers at random.
+	Lucille: Don't project your absolute panic attack onto me just to close your little notebook!.
+elif Utils.ctx["is_self_incriminating"]
+	Lucille: You know what really gets me?
+	Lucille: You spent the entire night dropping dark hints about your own novel, and now you’re throwing me under the bus. 
+	Lucille: Projection!
+elif Utils.ctx["is_manipulative"] or (Utils.ctx["pressure_focus"] / 2) > Utils.ctx["comfort_focus"]
+	Lucille: This is because you kept twisting everything I said!
+	Lucille: You were never listening! You were styling an accusation.
+else
+	Lucille: That is honestly pathetic.
+	Lucille: Not because I care about your opinion, but because choosing me proves you have zero analytical skills.
+=> END

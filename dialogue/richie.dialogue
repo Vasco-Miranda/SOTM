@@ -1,0 +1,517 @@
+~ start
+if not Utils.character.char_info.has_met
+	=> meet
+elif Utils.ctx["should_refuse_dialogue"]
+	Richie: Step back, Hilde.
+	Richie: You already decided I'm your monster. Go write your fiction somewhere else before I lose my temper.
+	=> END
+else
+	if Utils.ctx["is_pressured"] or Utils.ctx["blame"] > 5
+		Richie: Still circling me? 
+		Richie: Either slap cuffs on me or get out of my face. You’re testing my patience.
+	elif Utils.ctx["is_self_incriminating"]
+		Richie: You talk like a man who knows what it feels like to hold the knife. Don't play moral superior with me.
+	elif Utils.ctx["is_favorite"] and Utils.ctx["affinity"] > 2
+		Richie: You again. Make it quick. 
+		Richie: My drink is empty and my tolerance for conversation is running low.
+	elif Utils.ctx["is_stressed"]
+		Richie: Look at your hands. You’re shaking. 
+		Richie: Get your heart rate down before you start making dangerous accusations.
+	elif Utils.ctx["is_confused"]
+		Richie: You’re drowning in details, detective. Stop guessing and look at the foundation.
+	elif Utils.ctx["is_aggressive"]
+		Richie: Finally showing some teeth. Better than that polite writer routine you were pulling earlier.
+	elif Utils.ctx["is_suspicious"]
+		Richie: I know that stare. 
+		Richie: You already wrote me into your version of this, did you not?
+	else
+		Richie: What now?
+	
+	- Business partner? [if not Utils.character.has_talked("business")] => business
+	- Where were you earlier? [if not Utils.character.has_talked("alibi")] => alibi
+	- Tell me about your conflict. [if Utils.character.has_talked("business") and not Utils.character.has_talked("conflict")] => conflict
+	- I feel like you are looking at me strangely. [if not Utils.character.has_talked("suspicion")] => suspicion
+	- You sound more betrayed than angry. [if Utils.character.has_talked("conflict") and not Utils.character.has_talked("betrayal")] => betrayal
+	- Tell me when I start spiraling. [if Utils.ctx["is_stressed"] and not Utils.character.has_talked("stress")] => stress
+	- You keep talking like this was war. [if not Utils.character.has_talked("war")] => war
+
+	# Clues
+	- Ask about the knife. [if Utils.is_clue_surface_ready("knife")] => knife
+	- Ask about the blood on the knife. [if Utils.is_clue_hidden_ready("knife")] => knife
+	- Revisit the knife with what you uncovered. [if Utils.is_clue_revisit_ready("knife")] => knife
+	- Ask about the meds bottle. [if Utils.is_clue_surface_ready("meds")] => meds
+	- Ask about the scratched prescription. [if Utils.is_clue_hidden_ready("meds")] => meds
+	- Revisit the medication bottle with what you uncovered. [if Utils.is_clue_revisit_ready("meds")] => meds
+	- Ask about the candlestick. [if Utils.is_clue_surface_ready("candlestick")] => candlestick
+	- Ask about the dents and strange wax on the candlestick. [if Utils.is_clue_hidden_ready("candlestick")] => candlestick
+	- Revisit the candlestick with what you uncovered. [if Utils.is_clue_revisit_ready("candlestick")] => candlestick
+	- Ask about the cryptic note [if Utils.is_clue_surface_ready("note")]. => note
+	- Ask about the distorted note. [if Utils.is_clue_hidden_ready("note")] => note
+	- Revisit the note with what you uncovered. [if Utils.is_clue_revisit_ready("note")] => note
+
+	# Costume-related options
+	- What are you supposed to be? [if not Utils.character.has_talked("costume_self")] => costume_self
+	- Ask about my costume. [if not Utils.character.has_talked("costume_player")] => costume_player
+	- Ask about the victim's costume. [if not Utils.character.has_talked("costume_victim")] => costume_victim
+
+	- Nothing for now.
+		Richie: Then do not waste my time.
+		=> END
+
+
+~ meet
+do Utils.character.meet()
+Richie: You are not security.
+Richie: Name's Richie Thorne.
+- Should I be?
+	do Utils.register_dialogue_choice("richie_meet_security", "Should I be?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: Depends on whether you're here to ask questions or start fights.
+	do Utils.character.increase_apprehension()
+- You seem on edge.
+	do Utils.register_dialogue_choice("richie_meet_edge", "You seem on edge.", "probe,reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.0)
+	Richie: I hate locked rooms and surprises. We've got both tonight.
+	do Utils.character.increase_interest()
+- You knew the victim well?
+	do Utils.register_dialogue_choice("richie_meet_knew", "You knew the victim well?", "probe,family", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: Long enough to know what his handshakes were worth. Nothing.
+	do Utils.character.decrease_trust()
+
+Richie: If you have got something to say, say it.
+- Business partner? => business
+- Where were you earlier? => alibi
+- Nothing for now.
+	Richie: Then clear the space. I'll be here.
+	=> END
+
+
+~ business
+do Utils.character.talked("business")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_supportive"]
+	Richie: We built real enterprises together. Steel and shipping. 
+	Richie: Not the paper-shuffling garbage these high-society parasites do. crowd.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Richie: We had a contract. 
+	Richie: He decided his signature was written in disappearing ink.
+else
+	Richie: We had an understanding.
+	Richie: Until he decided profit mattered more than history.
+- What changed?
+	do Utils.register_dialogue_choice("richie_business_changed", "What changed?", "evidence", 0.2, 0.0, "", 0.0, 0.0, -0.1, 0.0)
+	Richie: He stopped honoring his side.
+	Richie: My firm hit rough water. He watched me drown from his yacht.
+	do Utils.character.increase_apprehension()
+- Sounds like a dispute.
+	do Utils.register_dialogue_choice("richie_business_dispute", "Sounds like a dispute.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: Dispute implies negotiation. He just locked the door in my face.
+	do Utils.character.decrease_trust()
+- Sounds personal.
+	do Utils.register_dialogue_choice("richie_business_personal", "Sounds personal.", "probe,reassure", 0.2, 0.0, "", 0.0, -0.1, 0.0, 0.1)
+	Richie: When a man ruins your livelihood over a dinner table, it gets personal fast.
+=> END
+
+
+~ alibi
+do Utils.character.talked("alibi")
+if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+	Richie: I was in the main hall most of the night.
+	Richie: Talking business. Like always.
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Richie: I moved around.
+	Richie: Did not keep track.
+else
+	Richie: I was around. Keeping to myself.
+- That is not helpful.
+	do Utils.register_dialogue_choice("richie_alibi_helpful", "That is not helpful.", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: I’m not here to write your report for you.
+	do Utils.character.decrease_trust()
+- Did anyone see you?
+	do Utils.register_dialogue_choice("richie_alibi_seen", "Did anyone see you?", "evidence", 0.1, 0.1, "", 0.0, 0.0, -0.1, 0.0)
+	Richie: Plenty of people saw the guy in armor drinking scotch.
+	Richie: None of them were paying attention.
+	do Utils.character.increase_apprehension()
+- That sounds convenient.
+	do Utils.register_dialogue_choice("richie_alibi_convenient", "That sounds convenient.", "pressure", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: It does.
+	Richie: Truth usually sounds inconvenient to a guy looking for a neat story.
+=> END
+
+
+~ conflict
+do Utils.character.talked("conflict")
+if Utils.character.get_trust() >= 5 or Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Richie: I begged him for a bridge loan. Twenty years of loyalty, and he looked at me like a beggar on the street.
+	- That must have hurt.
+		do Utils.register_dialogue_choice("richie_conflict_hurt", "That must have hurt.", "reassure,empathetic", 0.4, 0.0, "", 0.0, -0.1, 0.0, 0.1)
+		Richie: It lit a fire under me. Humiliation burns hotter than grief.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+	Richie: I know how this looks. Broken associate, dead billionaire. You think it's simple math.
+	Richie: Makes it look like I had a reason.
+	- Well, did you?
+		do Utils.register_dialogue_choice("richie_conflict_reason", "Well, did you?", "pressure,accusation", -0.2, 0.5, "", 0.0, 0.1, 0.0, -0.1)
+		Richie: Half the city had a reason to put him in the ground. Don't narrow your eyes at me just because I'm loud about mine.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Richie: You trying to frame me for your next book, writer?
+	- No.
+		do Utils.register_dialogue_choice("richie_conflict_no", "No.", "deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.1)
+		Richie: Then stop digging.
+		do Utils.character.decrease_trust()
+else
+	Richie: Business turns ugly when the money runs dry. That's life.
+=> END
+
+
+~ betrayal
+do Utils.character.talked("betrayal")
+if Utils.ctx["comfort_focus"] > (Utils.ctx["pressure_focus"] / 2)
+	Richie: Anger keeps you standing. If I let myself feel betrayed, I'd still be sitting on the floor of my bankrupt office.
+else
+	Richie: Betrayal is just anger waiting to mature. He matured mine very efficiently.
+- So he humiliated you.
+	do Utils.register_dialogue_choice("richie_betrayal_humiliated", "So he humiliated you.", "pressure", -0.1, 0.3, "", 0.0, 0.0, 0.0, 0.1)
+	Richie: In front of the board. Made sure everyone knew I was drowning.
+- That still does not make you a killer.
+	do Utils.register_dialogue_choice("richie_betrayal_killer", "That still does not make you a killer.", "reassure", 0.3, -0.1, "", 0.0, -0.1, 0.0, -0.1)
+	Richie: No. But it puts a massive red target on my chest whenever a detective walks into the room.
+=> END
+
+
+~ war
+do Utils.character.talked("war")
+Richie: Because he waged corporate warfare on his own allies! Everything was conquest to him.
+- And you?
+	do Utils.register_dialogue_choice("richie_war_you", "And you?", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: I fought to keep my workers fed while he stripped the assets.
+- That sounds like motive.
+	do Utils.register_dialogue_choice("richie_war_motive", "That sounds like motive.", "pressure,accusation", -0.2, 0.5, "", 0.0, 0.1, 0.0, -0.1)
+	Richie: It sounds like self-defense! You wouldn't understand, sitting at your little typewriter.
+=> END
+
+
+~ suspicion
+do Utils.character.talked("suspicion")
+if Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Richie: You know what rubs me wrong about you, Hilde?
+	Richie: You look at a dead body and your pulse doesn't even spike.
+	- People react differently.
+		do Utils.register_dialogue_choice("richie_suspicion_react", "People react differently.", "self_incriminate,deflect", 0.0, 0.0, "", 0.0, 0.0, 0.2, 0.2)
+		Richie: Bullshit. You react like a guy examining his own carpentry.
+		Richie: Like you have seen this before.
+		do Utils.character.increase_apprehension()
+elif Utils.character.get_apprehension() >= 5
+	Richie: You keep circling the same details.
+	Richie: Like you are building something in your head.
+	do Utils.character.increase_apprehension()
+else
+	Richie: You ask questions with a trapdoor at the end of them. I can feel the setup.
+- I feel like you do not trust me.
+	do Utils.register_dialogue_choice("richie_suspicion_trust", "I feel like you do not trust me.", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.1)
+	Richie: Why should I?
+	Richie: Trust a guy dressed like Sherlock Holmes at an actual homicide? Give me a break.
+do Utils.character.increase_interest()
+
+Richie: Let me ask you something.
+- Sure, go ahead.
+	Richie: You write thrillers. You dress up as an investigator.
+	Richie: A guy drops dead fifteen feet from your table, and suddenly you're running the crime scene.
+	Richie: You don't see how insanely guilty that makes you look?
+
+	- So you do think I sound guilty.
+		do Utils.register_dialogue_choice("richie_suspicion_guilty", "So you do think I sound guilty.", "self_incriminate,pressure", 0.0, 0.0, "", 0.0, 0.1, 0.1, 0.2)
+		if Utils.ctx["is_self_incriminating"]
+			Richie: I think you keep volunteering yourself into the frame.
+		else
+			Richie: I think you look far too comfortable inside a slaughterhouse.
+	- Can I be blamed for wanting to solve a mistery?
+		do Utils.register_dialogue_choice("richie_suspicion_blamed", "Can I be blamed for wanting to solve a mistery?", "deflect", 0.0, 0.1, "", 0.0, -0.1, 0.0, -0.2)
+		Richie: I guess not.
+		Richie: But you still sound like you're casting everyone for a role you could fill very well yourself.
+	if Utils.ctx["is_stressed"]
+		Richie: And now you are pushing faster than you are thinking.
+		Richie: Look at yourself. You're sweating through your collar. 
+		Richie: You're losing control of your own interrogation.
+=> END
+
+
+~ stress
+do Utils.character.talked("stress")
+Richie: Yeah. You look like a man running out of oxygen.
+- And how could I appear more calm?
+	do Utils.register_dialogue_choice("richie_stress_steady", "Then steady me.", "reassure,probe", 0.2, 0.0, "", 0.0, -0.2, -0.1, 0.0)
+	Richie: Drop the performance.
+	Richie: Plant your feet. Plant your eyes on one target. Stop chasing every shadow in the hallway.
+- I do not have time to slow down.
+	do Utils.register_dialogue_choice("richie_stress_time", "I do not have time to slow down.", "pressure,self_incriminate", 0.0, 0.1, "", 0.0, 0.1, 0.1, 0.2)
+	Richie: Then you really are in danger of missing what matters.
+=> END
+
+
+~ knife
+if Utils.is_clue_revisit_ready("knife")
+	do Utils.mark_clue_topic("knife", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Richie: Blood type confirmed, but still inconclusive? 
+		Richie: That isn't evidence, Hilde. That’s smoke.
+	else
+		Richie: More lab work, same dead end.
+	- So the knife was meant to provoke certainty.
+		do Utils.register_dialogue_choice("richie_knife_revisit_certainty", "So the knife was meant to provoke certainty.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Richie: Bingo. Leave a bloody blade out where the fools can panic over it.
+	- Someone tried to hide the real weapon behind it.
+		do Utils.register_dialogue_choice("richie_knife_revisit_real", "Someone tried to hide the real weapon behind it.", "evidence", 0.1, 0.1, "knife", 0.8, 0.0, -0.1, 0.0)
+		Richie: Tactical misdirection. The old man used to do it in boardrooms all the time.
+elif Utils.is_clue_hidden_ready("knife")
+	do Utils.mark_clue_topic("knife", "hidden")
+	if Utils.ctx["is_pressured"]
+		Richie: You think typing the blood makes me look worse? It proves nothing.
+	else
+		Richie: Not even confirmed human blood? 
+		Richie: Someone staged a cheap butcher's display.
+	- Then it was planted for effect.
+		do Utils.register_dialogue_choice("richie_knife_hidden_effect", "Then it was planted for effect.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Richie: To get our adrenaline pumping. It worked on half the room.
+	- Then it was handled by someone improvising.
+		do Utils.register_dialogue_choice("richie_knife_hidden_improv", "Then it was handled by someone improvising.", "pressure,evidence", -0.1, 0.2, "knife", 0.7, 0.0, 0.0, 0.0)
+		Richie: Desperate people make ugly messes.
+else
+	do Utils.character.talked("knife")
+	do Utils.mark_clue_topic("knife", "surface")
+	if Utils.character.get_apprehension() >= 5 or Utils.ctx["is_pressured"]
+		Richie: You think I'd slice a man up with kitchen steel? If I wanted him dead, I wouldn't leave props lying around.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Richie: That’s a stage prop, Hilde. Nobody with real rage leaves the weapon on a velvet cushion.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() <= -5
+		Richie: Shove that blade away from me before I take it from you.
+		do Utils.character.decrease_trust()
+	else
+		Richie: Sharp enough to kill. Obvious enough to be a frame-up.
+	- So you think the killer was methodical.
+		do Utils.register_dialogue_choice("richie_knife_methodical", "So you think the killer was methodical.", "evidence", 0.1, 0.0, "knife", 0.8, 0.0, -0.1, 0.0)
+		Richie: Cold as ice. Left the shiny toy for us to argue over.
+	- You think it was theatrical.
+		do Utils.register_dialogue_choice("richie_knife_theatrical", "You think it was theatrical.", "evidence", 0.1, 0.0, "knife", 0.7, 0.0, -0.1, 0.0)
+		Richie: Look at the outfits we're wearing. Everything tonight is theater.
+=> END
+
+
+~ meds
+if Utils.is_clue_revisit_ready("meds")
+	do Utils.mark_clue_topic("meds", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Richie: Anti-depressants with the name stripped.
+		Richie: That screams pressure point.
+	else
+		Richie: The medicine matters. The erased owner matters more.
+	- So somebody was protecting an identity.
+		do Utils.register_dialogue_choice("richie_meds_revisit_identity", "So somebody was protecting an identity.", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+		Richie: Or someone stole them to make sure the owner couldn't sleep.
+	- So someone was saving it for leverage later.
+		do Utils.register_dialogue_choice("richie_meds_revisit_later", "So someone was saving it for leverage later.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+		Richie: Blackmail is the local currency in this circle.
+elif Utils.is_clue_hidden_ready("meds")
+	do Utils.mark_clue_topic("meds", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Richie: Anti-depressants.
+		Richie: That could ruin somebody if exposed the wrong way.
+	else
+		Richie: So the bottle finally says something.
+		Richie: Scratched label means someone felt shame, or someone else felt greedy.
+	- A reason tied to shame.
+		do Utils.register_dialogue_choice("richie_meds_hidden_shame", "A reason tied to shame.", "evidence", 0.1, 0.0, "meds", 0.8, 0.0, -0.1, 0.0)
+		Richie: Rich people would rather die than look weak in public.
+	- With ties to someone powerful enough to protect.
+		do Utils.register_dialogue_choice("richie_meds_hidden_powerful", "With ties to someone powerful enough to protect.", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+		Richie: Powerful enough to kill over a prescription bottle.
+else
+	do Utils.character.talked("meds")
+	do Utils.mark_clue_topic("meds", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Richie: The old man didn't take those. 
+		Richie: He thought pills were for the weak.
+		do Utils.character.increase_interest()
+	elif Utils.character.get_trust() <= -5
+		Richie: People take pills.
+		Richie: Does not make them killers.
+	elif Utils.character.get_apprehension() >= 5
+		Richie: That bottle is ammunition. Whoever dropped it lost their leverage.
+		- Leverage for whom?
+			do Utils.register_dialogue_choice("richie_meds_whom", "Leverage for whom?", "evidence", 0.1, 0.1, "meds", 0.8, 0.0, -0.1, 0.0)
+			Richie: Anyone drowning in debt or scandal.
+		- You sound familiar with that.
+			do Utils.register_dialogue_choice("richie_meds_familiar", "You sound familiar with that.", "pressure,evidence", -0.1, 0.3, "meds", 0.7, 0.0, 0.0, 0.0)
+			Richie: I know what corporate blackmail looks like. I survived thirty years of it.
+	else
+		Richie: Could belong to anyone.
+=> END
+
+
+~ candlestick
+if Utils.is_clue_revisit_ready("candlestick")
+	do Utils.mark_clue_topic("candlestick", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Richie: Dent on the brass base, wax from the study. 
+		Richie: That heavy bastard was swung hard by someone who brought it down the hall.
+	else
+		Richie: Not just table decor. Someone gripped it with intent.
+	- Which means someone committed to using it.
+		do Utils.register_dialogue_choice("richie_candle_revisit_commit", "Which means someone committed to using it.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Richie: Takes upper body strength and absolute commitment to dent brass like that.
+	- The wrong wax means a staged location.
+		do Utils.register_dialogue_choice("richie_candle_revisit_staged", "The wrong wax means a staged location.", "evidence", 0.1, 0.0, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Richie: Moved after the blow. Classic cover-up.
+elif Utils.is_clue_hidden_ready("candlestick")
+	do Utils.mark_clue_topic("candlestick", "hidden")
+	if Utils.character.get_trust() <= -5
+		Richie: Stop examining the metal like it has my fingerprints engraved on it!
+	else
+		Richie: Heavy impact marks. 
+		Richie: Someone used blunt force while the rest of us were drinking toasts.
+	- Then it was selected, not improvised.
+		do Utils.register_dialogue_choice("richie_candle_hidden_selected", "Then it was selected, not improvised.", "evidence", 0.1, 0.0, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Richie: Picked for weight and balance. Like a mace.
+	- Selected because it looked harmless first.
+		do Utils.register_dialogue_choice("richie_candle_hidden_harmless", "Selected because it looked harmless first.", "evidence", 0.1, 0.1, "candlestick", 0.8, 0.0, -0.1, 0.0)
+		Richie: Nobody screams when you pick up a candle. Until you swing it.
+else
+	do Utils.character.talked("candlestick")
+	do Utils.mark_clue_topic("candlestick", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Richie: Solid brass. Crack a skull without making the sound a gunshot makes.
+		do Utils.character.increase_apprehension()
+	elif Utils.character.get_apprehension() >= 5
+		Richie: Grabbed in a panic. Someone saw red and grabbed the heaviest thing on the mantel.
+	elif Utils.character.get_trust() <= -5
+		Richie: You're showing me furniture now? Are you out of leads?
+	else
+		Richie: Heavy dining room piece.
+	- You say that like you measured it.
+		do Utils.register_dialogue_choice("richie_candle_measured", "You say that like you measured it.", "pressure,evidence", -0.1, 0.3, "candlestick", 0.7, 0.0, 0.0, 0.0)
+		Richie: I worked steel mills, Hilde. I know the weight of metal in my sleep.
+	- Quiet appeals to you?
+		do Utils.register_dialogue_choice("richie_candle_quiet", "Quiet appeals to you?", "pressure", -0.1, 0.2, "candlestick", 0.6, 0.0, 0.0, 0.0)
+		Richie: Noise draws crowds. Crowds get you caught.
+=> END
+
+
+~ note
+if Utils.is_clue_revisit_ready("note")
+	do Utils.mark_clue_topic("note", "revisit")
+	if Utils.ctx["evidence_focus"] >= 8
+		Richie: Disguised handwriting, broken sentences. Typical coward's threat sent before the storm hits.
+	else
+		Richie: Hidden hand, loud message.
+	- Because being known was the real danger.
+		do Utils.register_dialogue_choice("richie_note_revisit_danger", "Because being known was the real danger.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Richie: A blackmailer only has power while his face is in the dark.
+	- The note was leverage, not confession.
+		do Utils.register_dialogue_choice("richie_note_revisit_leverage", "The note was leverage, not confession.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Richie: Trying to squeeze one last dollar out of the old man before he died.
+elif Utils.is_clue_hidden_ready("note")
+	do Utils.mark_clue_topic("note", "hidden")
+	if Utils.character.get_apprehension() >= 5
+		Richie: 'He knows.' That’s panic ink. 
+		Richie: Somebody realized their secret was out.
+	else
+		Richie: Written fast under heavy pressure. That wasn't a party invite.
+	- Pressure on whom?
+		do Utils.register_dialogue_choice("richie_note_hidden_whom", "Pressure on whom?", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Richie: Whoever sat at the head of the table.
+	- So you see blackmail.
+		do Utils.register_dialogue_choice("richie_note_hidden_blackmail", "So you see blackmail.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Richie: Extortion. Corporate life is built on it.
+else
+	do Utils.character.talked("note")
+	do Utils.mark_clue_topic("note", "surface")
+	if Utils.character.get_trust() >= 5 or Utils.ctx["evidence_focus"] >= 8
+		Richie: Cowardly little note. If you have a problem with a man, look him in the eye.
+	elif Utils.character.get_trust() <= -5
+		Richie: Scrap paper. Means zilch to me.
+	else
+		Richie: Rushed writing. Nervous hand.
+	- Or calculated.
+		do Utils.register_dialogue_choice("richie_note_calculated", "Or calculated.", "evidence", 0.1, 0.1, "note", 0.8, 0.0, -0.1, 0.0)
+		Richie: Cold-blooded men fake nervous hands all the time.
+	- You think it was a warning.
+		do Utils.register_dialogue_choice("richie_note_warning", "You think it was a warning.", "evidence", 0.1, 0.0, "note", 0.8, 0.0, -0.1, 0.0)
+		Richie: A warning that arrived five minutes too late.
+=> END
+
+
+~ costume_self
+do Utils.character.talked("costume_self")
+Richie: A medieval knight. Plate armor and broadsword.
+- Protector?
+	do Utils.register_dialogue_choice("richie_costume_protector", "Protector?", "probe,reassure", 0.1, 0.0, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: Knights protected kingdoms. I couldn't even protect my own company.
+	do Utils.character.decrease_joy()
+- Attacker?
+	do Utils.register_dialogue_choice("richie_costume_attacker", "Attacker?", "pressure", -0.1, 0.2, "", 0.0, 0.0, 0.0, 0.0)
+	Richie: When you're cornered, the sword isn't for show anymore.
+	do Utils.character.increase_interest()
+=> END
+
+
+~ costume_player
+do Utils.character.talked("costume_player")
+if Utils.character.get_trust() >= 5 or Utils.ctx["is_favorite"]
+	Richie: Dressed like a hardboiled gumshoe. 
+	Richie: At least you're actually doing the legwork instead of drinking champagne.
+	do Utils.character.increase_interest()
+elif Utils.character.get_trust() <= -5 or Utils.ctx["is_suspicious"]
+	Richie: Take off the costume, Hilde. This isn't a murder mystery parlor game. A man's dead.
+	do Utils.character.decrease_trust()
+else
+	Richie: Detective. Figures.
+- It helps me think.
+	do Utils.register_dialogue_choice("richie_costume_think", "It helps me think.", "self_incriminate,probe", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.1)
+	Richie: Hiding behind a character trait so you don't have to feel the reality of the room.
+	Richie: That is exactly what worries me.
+- I am a novelist. I study structure.
+	do Utils.register_dialogue_choice("richie_costume_novelist", "I am a novelist. I study structure.", "self_incriminate,evidence", 0.0, 0.0, "", 0.0, 0.0, 0.1, 0.2)
+	Richie: Real corpses don't follow plot arcs.
+	Richie: They rot.
+=> END
+
+
+~ costume_victim
+do Utils.character.talked("costume_victim")
+if Utils.character.get_interest() >= 5 or Utils.ctx["family_focus"] >= 3
+	Richie: Dressed up as a stage magician. Perfect fit.
+	Richie: Always hiding something.
+	Richie: The man made millions disappear into thin air.
+	do Utils.character.increase_interest()
+else
+	Richie: Cheap velvet cape. Arrogant bastard even died in theatrical costume.
+	- So you saw him as a fraud.
+		do Utils.register_dialogue_choice("richie_costume_fraud", "So you saw him as a fraud.", "probe", 0.1, 0.1, "", 0.0, 0.0, 0.0, 0.0)
+		Richie: I saw him as a master illusionist whose favorite trick was ruining honest men.
+=> END
+
+
+~ blamed
+if Utils.character.get_trust() >= 6 and not Utils.ctx["is_suspicious"] and not Utils.ctx["is_pressured"]
+	Richie: You’ve got to be kidding me. 
+	Richie: I stood here and gave you straight answers while everyone else lied to your face!
+	Richie: You picked the angry guy because it makes for an easier last chapter. Cowardly work, Hilde.
+elif Utils.ctx["is_pressured"] or Utils.ctx["is_suspicious"] or Utils.character.get_trust() <= -4
+	Richie: Finally pointed the finger, huh? 
+	Richie: You’ve been itching to frame me since you walked into the hall.
+	Richie: Let’s see if your little notebook holds up when the actual police get here.
+elif Utils.ctx["evidence_focus"] >= 9 and Utils.ctx["blame"] < 3
+	Richie: No. Your own forensics don't even support me wielding that weapon.
+	Richie: You lost your nerve at the final hurdle and picked the loudest suspect in the room.
+	Richie: That is where you failed.
+elif Utils.ctx["is_self_incriminating"] and Utils.character.get_apprehension() >= 4
+	Richie: Throwing the blame onto my broad shoulders so nobody looks inside your trench coat? 
+	Richie: I see you, mister detective.
+elif Utils.ctx["is_stressed"] or Utils.ctx["is_confused"]
+	Richie: Listen to your voice. You’re trembling! 
+	Richie: You don't even believe your own accusation!
+	Richie: You’re just pointing at me because you're drowning and need a raft!
+else
+	Richie: Fine. Say it loud for the room. Own it.
+	Richie: But look me in the eye when you do it, while you tell yourself this isn't just convenient fiction.
+=> END

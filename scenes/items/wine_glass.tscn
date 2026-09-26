@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://dn6erudypkxc5"]
+
+[ext_resource type="PackedScene" uid="uid://crxbeic5uasw2" path="res://scenes/items/collectable.tscn" id="1_y5uq1"]
+[ext_resource type="Resource" uid="uid://conrm5q4q7m0h" path="res://inventory/items/wine-glass.tres" id="2_ine1w"]
+[ext_resource type="Texture2D" uid="uid://ji5buefq55tr" path="res://assets/items/wine.png" id="3_csekc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_14dis"]
+resource_local_to_scene = true
+radius = 18.0
+
+[node name="Collectable" instance=ExtResource("1_y5uq1")]
+itemRes = ExtResource("2_ine1w")
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_14dis")
+
+[node name="Sprite2D" parent="." index="1"]
+position = Vector2(-2.3841858e-07, -2.3841858e-07)
+scale = Vector2(0.625, 0.625)
+texture = ExtResource("3_csekc")

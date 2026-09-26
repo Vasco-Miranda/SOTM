@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://ci0hvpbtnk61b"]
+
+[ext_resource type="PackedScene" uid="uid://i53d2k83u02q" path="res://scenes/NPCs/NPC.tscn" id="1_7i5mr"]
+[ext_resource type="Script" uid="uid://bxm12krsjcl5t" path="res://scripts/NPC/char_info.gd" id="2_g4unx"]
+[ext_resource type="Resource" uid="uid://c3spdog14hk3m" path="res://dialogue/richie.dialogue" id="3_t7bai"]
+[ext_resource type="Texture2D" uid="uid://c0egdxgn1171b" path="res://assets/NPCs/Richie_Silverthorne/Richie_Silverthorne-portrait1.png" id="4_5iq06"]
+[ext_resource type="Script" uid="uid://gtp16gqhcnnu" path="res://scripts/NPC/character.gd" id="5_qt4u8"]
+[ext_resource type="Texture2D" uid="uid://b65dwfuy6d3pa" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/east/frame_000.png" id="6_udfve"]
+[ext_resource type="Texture2D" uid="uid://ddos8e7kfwjbd" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/east/frame_001.png" id="7_vmnpc"]
+[ext_resource type="Texture2D" uid="uid://bswvnytpp4067" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/east/frame_002.png" id="8_qvcje"]
+[ext_resource type="Texture2D" uid="uid://mg6t6j4e4fuk" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/east/frame_003.png" id="9_iyodo"]
+[ext_resource type="Texture2D" uid="uid://bimd3rx3fuljt" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/north/frame_000.png" id="10_4mp04"]
+[ext_resource type="Texture2D" uid="uid://wd8465wcrybs" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/north/frame_001.png" id="11_16aeg"]
+[ext_resource type="Texture2D" uid="uid://pmgaxgpamrae" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/north/frame_002.png" id="12_kybhh"]
+[ext_resource type="Texture2D" uid="uid://bkwcc6vwxfdwx" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/north/frame_003.png" id="13_6jr5l"]
+[ext_resource type="Texture2D" uid="uid://khaiyqbbi3h3" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/south/frame_000.png" id="14_u211f"]
+[ext_resource type="Texture2D" uid="uid://cwu48isswptws" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/south/frame_001.png" id="15_bvaiw"]
+[ext_resource type="Texture2D" uid="uid://w6siggtkifkb" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/south/frame_002.png" id="16_assi2"]
+[ext_resource type="Texture2D" uid="uid://cmm35jder7lmb" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/south/frame_003.png" id="17_d7lvy"]
+[ext_resource type="Texture2D" uid="uid://bbtn65v03w3fa" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/west/frame_000.png" id="18_5gclc"]
+[ext_resource type="Texture2D" uid="uid://es0m2a1oupac" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/west/frame_001.png" id="19_4qrx3"]
+[ext_resource type="Texture2D" uid="uid://cmr1cb8fpspvf" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/west/frame_002.png" id="20_3wrbr"]
+[ext_resource type="Texture2D" uid="uid://d3gwnaspdnybp" path="res://assets/NPCs/Richie_Silverthorne/animations/breathing-idle/west/frame_003.png" id="21_s6btt"]
+
+[sub_resource type="Resource" id="Resource_u3pvu"]
+script = ExtResource("2_g4unx")
+age = 49
+nationality = "British"
+blood_type = 2
+description = "Victim's friend and associate, stoic and respectable. His businesses went bankrupt recently."
+metadata/_custom_type_script = "uid://bxm12krsjcl5t"
+
+[sub_resource type="Resource" id="Resource_lwbn0"]
+script = ExtResource("5_qt4u8")
+name = "Richie Thorne"
+char_info = SubResource("Resource_u3pvu")
+portrait = ExtResource("4_5iq06")
+dialogue = ExtResource("3_t7bai")
+metadata/_custom_type_script = "uid://gtp16gqhcnnu"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r5dcf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_udfve")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_vmnpc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_qvcje")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_iyodo")
+}],
+"loop": true,
+"name": &"idle_east",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_4mp04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_16aeg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_kybhh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_6jr5l")
+}],
+"loop": true,
+"name": &"idle_north",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_u211f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_bvaiw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_assi2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_d7lvy")
+}],
+"loop": true,
+"name": &"idle_south",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_5gclc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_4qrx3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_3wrbr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_s6btt")
+}],
+"loop": true,
+"name": &"idle_west",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n8y46"]
+size = Vector2(9, 11)
+
+[node name="Richie" unique_id=1914177994 instance=ExtResource("1_7i5mr")]
+char_name = "Richie Thorne"
+char = SubResource("Resource_lwbn0")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(1.45, 1)
+sprite_frames = SubResource("SpriteFrames_r5dcf")
+animation = &"idle_south"
+autoplay = "idle_south"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_n8y46")

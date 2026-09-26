@@ -1,0 +1,26 @@
+~ blamed
+if Utils.ctx["is_self_incriminating"] and Utils.ctx["self_doubt"] >= 5
+	Alwin: And there it is. The pen points back at the author.
+	Alwin: I spent the entire night looking for a narrative that made sense, only to realize I'm the only one here who arrived with the plot already outlined.
+	Alwin: Maybe that’s what guilt feels like.
+elif Utils.ctx["is_stressed"] and Utils.ctx["is_confused"]
+	Alwin: My head is splitting. Every timeline intersects, every motive cancels the other out.
+	Alwin: When a story loses its structure, you look at the person holding the pen. 
+	Alwin: Right now, I am the only suspect in this house whose motives I actually understand.
+elif Utils.ctx["is_aggressive"] and Utils.ctx["pressure_focus"] > Utils.ctx["comfort_focus"]
+	Alwin: I backed them all into corners until someone had to bite. 
+	Alwin: But looking around this room... I was the only predator here tonight.
+	Alwin: If force was the only tool I brought to this investigation, perhaps I was just trying to drown out the sound of my own footsteps.
+elif Utils.ctx["evidence_focus"] >= 9 and Utils.ctx["self_doubt"] <= 1
+	Alwin: Let’s strip away the masquerade. 
+	Alwin: A writer arrives at a secluded mansion dressed as a detective, carrying notes on a murder that mirrors the exact crime committed halfway through the evening.
+	Alwin: In any chapter I’ve ever published, that man is either the orchestrator or a fool. And I don't feel like a fool.
+	Alwin: Anyone would accuse that man.
+elif Utils.ctx["is_stressed"]
+	Alwin: My hands are shaking. Is that the adrenaline of solving a crime, or the terror of being caught in one?
+	Alwin: The line between investigating a murder and studying one is far thinner than I cared to admit.
+else
+	Alwin: If I place the blame on myself, at least I know what I am accusing.
+	Alwin: Curiosity. Distance. An obsession with how violence shapes a room. 
+	Alwin: Whether those traits make me a killer or just a deeply unsettled observer... that is the one chapter I can't write.
+=> END

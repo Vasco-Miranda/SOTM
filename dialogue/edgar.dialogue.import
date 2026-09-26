@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://db48cg4sktcwv"
+path="res://.godot/imported/edgar.dialogue-e9013636be7b81a8a0f74337846a0c40.tres"
+
+[deps]
+
+source_file="res://dialogue/edgar.dialogue"
+dest_files=["res://.godot/imported/edgar.dialogue-e9013636be7b81a8a0f74337846a0c40.tres"]
+
+[params]
+
+defaults=true

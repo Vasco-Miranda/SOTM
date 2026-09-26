@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://dtvxkjg5djaxx"
+path="res://.godot/imported/ryu.dialogue-72c06d4d93492eef8d433bffc87ff155.tres"
+
+[deps]
+
+source_file="res://dialogue/ryu.dialogue"
+dest_files=["res://.godot/imported/ryu.dialogue-72c06d4d93492eef8d433bffc87ff155.tres"]
+
+[params]
+
+defaults=true

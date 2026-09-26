@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=4 format=3 uid="uid://conrm5q4q7m0h"]
+
+[ext_resource type="Script" uid="uid://bvtithxgfgonm" path="res://inventory/inventory_item.gd" id="1_36ms8"]
+[ext_resource type="PackedScene" uid="uid://bm8lrowlpm5lv" path="res://scenes/clue_minigames/wine_minigame.tscn" id="1_pq67o"]
+[ext_resource type="Texture2D" uid="uid://ji5buefq55tr" path="res://assets/items/wine.png" id="2_pq67o"]
+
+[resource]
+script = ExtResource("1_36ms8")
+name = "Wine glass"
+texture = ExtResource("2_pq67o")
+description = "A partially filled wine glass. The scent is unusual, slightly bitter beneath the aroma."
+hidden_info = "A partially filled wine glass. A foreign substance was added, though it could't be identified."
+minigame = ExtResource("1_pq67o")
+metadata/_custom_type_script = "uid://bvtithxgfgonm"

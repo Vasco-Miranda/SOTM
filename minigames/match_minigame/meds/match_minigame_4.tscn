@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3hc558ckaqve"]
+
+[ext_resource type="PackedScene" uid="uid://c3222yxfognu0" path="res://minigames/match_minigame/base_match_minigame.tscn" id="1_j2324"]
+[ext_resource type="Texture2D" uid="uid://bjo8tu3ixpfil" path="res://assets/minigames/words/1day.png" id="2_c5ed6"]
+
+[node name="Match" instance=ExtResource("1_j2324")]
+correct_word = "1x p/ day"
+wrong_word_1 = "1x p/ week"
+wrong_word_2 = "4x p/ day"
+wrong_word_3 = "2x p/ week"
+
+[node name="HiddenTexture" parent="NinePatchRect/VBoxContainer/Header" index="1"]
+texture = ExtResource("2_c5ed6")

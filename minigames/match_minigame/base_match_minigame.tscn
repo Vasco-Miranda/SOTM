@@ -1,0 +1,104 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3222yxfognu0"]
+
+[ext_resource type="Script" uid="uid://d1ta7lc4gxn67" path="res://minigames/match_minigame/base_match_minigame.gd" id="1_711ib"]
+[ext_resource type="Texture2D" uid="uid://drtpp5axlcvto" path="res://assets/inventory/inventory-background.png" id="1_dultt"]
+[ext_resource type="Texture2D" uid="uid://dxcy4q8becm1u" path="res://assets/inventory/inventory-slot.png" id="2_711ib"]
+
+[node name="Match" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_711ib")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_dultt")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="CenterContainer" parent="NinePatchRect/VBoxContainer"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Background" type="TextureRect" parent="NinePatchRect/VBoxContainer/Header"]
+custom_minimum_size = Vector2(400, 125)
+layout_mode = 2
+texture = ExtResource("2_711ib")
+expand_mode = 1
+
+[node name="HiddenTexture" type="TextureRect" parent="NinePatchRect/VBoxContainer/Header"]
+custom_minimum_size = Vector2(350, 100)
+layout_mode = 2
+expand_mode = 5
+stretch_mode = 5
+
+[node name="OptionsContainer" type="GridContainer" parent="NinePatchRect/VBoxContainer"]
+custom_minimum_size = Vector2(1000, 450)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="Button1" type="Button" parent="NinePatchRect/VBoxContainer/OptionsContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 80
+text = "teste"
+icon_alignment = 1
+
+[node name="Button2" type="Button" parent="NinePatchRect/VBoxContainer/OptionsContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 80
+text = "teste"
+icon_alignment = 1
+
+[node name="Button3" type="Button" parent="NinePatchRect/VBoxContainer/OptionsContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 80
+text = "teste"
+icon_alignment = 1
+
+[node name="Button4" type="Button" parent="NinePatchRect/VBoxContainer/OptionsContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 80
+text = "teste"
+icon_alignment = 1
+
+[node name="Control" type="Control" parent="NinePatchRect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 8

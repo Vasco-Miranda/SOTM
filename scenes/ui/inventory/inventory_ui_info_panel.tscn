@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgppl3c6moirb"]
+
+[ext_resource type="Script" uid="uid://c8fmyy5hgblo6" path="res://scripts/inventory/info_panel.gd" id="1_cyx33"]
+[ext_resource type="FontFile" uid="uid://cd1r1clgpr62k" path="res://assets/fonts/Silver.ttf" id="2_yj5ns"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kehql"]
+line_spacing = -8.0
+font = ExtResource("2_yj5ns")
+font_size = 19
+
+[node name="InfoPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cyx33")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 103.0
+offset_bottom = 21.0
+text = "Teste"
+label_settings = SubResource("LabelSettings_kehql")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
